@@ -1,0 +1,43 @@
+{
+  "_demo": "INVENTED DEMO DATA in the documented League shape (the docs show no example /leagues/ body). enabled mirrors the public free plan scope: MLB, NFL, AFL and NRL.",
+  "success": true,
+  "nextCursor": null,
+  "data": [
+    {
+      "leagueID": "AFL",
+      "sportID": "AUSSIE_RULES",
+      "name": "AFL",
+      "enabled": true
+    },
+    {
+      "leagueID": "NRL",
+      "sportID": "RUGBY_LEAGUE",
+      "name": "NRL",
+      "enabled": true
+    },
+    {
+      "leagueID": "NFL",
+      "sportID": "FOOTBALL",
+      "name": "NFL",
+      "enabled": true
+    },
+    {
+      "leagueID": "MLB",
+      "sportID": "BASEBALL",
+      "name": "MLB",
+      "enabled": true
+    },
+    {
+      "leagueID": "RUGBYLEAGUE_NRLW",
+      "sportID": "RUGBY_LEAGUE",
+      "name": "NRLW",
+      "enabled": false
+    },
+    {
+      "leagueID": "EPL",
+      "sportID": "SOCCER",
+      "name": "Premier League",
+      "enabled": false
+    }
+  ]
+}

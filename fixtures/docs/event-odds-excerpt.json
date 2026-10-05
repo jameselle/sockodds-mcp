@@ -1,0 +1,21 @@
+{
+  "eventID": "…",
+  "odds": {
+    "points-home-game-ml-home": {
+      "oddID": "points-home-game-ml-home", "statID": "points", "statEntityID": "home", "periodID": "game", "betTypeID": "ml", "sideID": "home",
+      "opposingOddID": "points-away-game-ml-away", "marketName": "Head to Head - Brisbane Lions",
+      "fairOdds": "-115", "fairOddsAvailable": true, "bookOdds": "-108", "bookOddsAvailable": true,
+      "bookSpread": null, "bookOverUnder": null, "fairSpread": null, "fairOverUnder": null,
+      "started": false, "ended": false, "cancelled": false, "scoringSupported": true,
+      "byBookmaker": {
+        "sportsbet": { "bookmakerID": "sportsbet", "odds": "-108", "decimal": 1.93, "available": true, "lastUpdatedAt": "2026-09-06T08:27:48.000Z", "eventName": "Brisbane - Adelaide" },
+        "tab":       { "bookmakerID": "tab", "odds": "-110", "decimal": 1.91, "available": true, "lastUpdatedAt": "2026-09-06T08:27:31.000Z" }
+      }
+    },
+    "points-all-game-ou-over": {
+      "oddID": "points-all-game-ou-over", "statID": "points", "statEntityID": "all", "periodID": "game", "betTypeID": "ou", "sideID": "over",
+      "fairOdds": "-108", "fairOverUnder": "165.5", "bookOdds": "-110", "bookOverUnder": "165.5",
+      "byBookmaker": { "sportsbet": { "odds": "-110", "decimal": 1.91, "overUnder": "165.5", "available": true } }
+    }
+  }
+}

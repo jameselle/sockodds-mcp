@@ -1,0 +1,564 @@
+{
+  "_demo": "INVENTED DEMO DATA in the SockOdds response shape. Event ids and team names follow the public docs' examples; every price and timestamp is made up. Not real or current odds.",
+  "success": true,
+  "nextCursor": null,
+  "data": [
+    {
+      "eventID": "afl_2026-09-12_brisbane_lions_vs_adelaide_crows",
+      "sportID": "AUSSIE_RULES",
+      "leagueID": "AFL",
+      "type": "match",
+      "teams": {
+        "home": {
+          "teamID": "BRISBANE_LIONS_AFL",
+          "names": {
+            "long": "Brisbane Lions",
+            "medium": "Brisbane",
+            "short": "BRI"
+          },
+          "statEntityID": "home"
+        },
+        "away": {
+          "teamID": "ADELAIDE_CROWS_AFL",
+          "names": {
+            "long": "Adelaide Crows",
+            "medium": "Adelaide",
+            "short": "ADE"
+          },
+          "statEntityID": "away"
+        }
+      },
+      "status": {
+        "started": false,
+        "ended": false,
+        "cancelled": false,
+        "live": false,
+        "finalized": false,
+        "oddsPresent": true,
+        "oddsAvailable": true,
+        "startsAt": "2026-09-12T09:35:00Z",
+        "displayLong": "Upcoming"
+      },
+      "info": {
+        "displayName": "Adelaide Crows @ Brisbane Lions",
+        "commenceTime": "2026-09-12T09:35:00Z",
+        "lastUpdatedAt": "2026-09-11T06:01:40.000Z",
+        "stale": false
+      },
+      "odds": {
+        "points-home-game-ml-home": {
+          "oddID": "points-home-game-ml-home",
+          "opposingOddID": "points-away-game-ml-away",
+          "marketName": "Head to Head - Brisbane Lions",
+          "statID": "points",
+          "statEntityID": "home",
+          "periodID": "game",
+          "betTypeID": "ml",
+          "sideID": "home",
+          "bookOdds": "-108",
+          "bookOddsAvailable": true,
+          "fairOdds": null,
+          "fairOddsAvailable": false,
+          "bookSpread": null,
+          "bookOverUnder": null,
+          "fairSpread": null,
+          "fairOverUnder": null,
+          "started": false,
+          "ended": false,
+          "cancelled": false,
+          "byBookmaker": {
+            "sportsbet": {
+              "bookmakerID": "sportsbet",
+              "odds": "-108",
+              "decimal": 1.93,
+              "available": true,
+              "lastUpdatedAt": "2026-09-11T06:00:12.000Z"
+            },
+            "tab": {
+              "bookmakerID": "tab",
+              "odds": "-110",
+              "decimal": 1.91,
+              "available": true,
+              "lastUpdatedAt": "2026-09-11T06:01:40.000Z"
+            },
+            "unibet": {
+              "bookmakerID": "unibet",
+              "odds": "-105",
+              "decimal": 1.95,
+              "available": true,
+              "lastUpdatedAt": "2026-09-11T05:59:03.000Z"
+            },
+            "ladbrokes": {
+              "bookmakerID": "ladbrokes",
+              "odds": "+110",
+              "decimal": 2.1,
+              "available": false,
+              "lastUpdatedAt": "2026-09-11T04:12:00.000Z"
+            }
+          }
+        },
+        "points-away-game-ml-away": {
+          "oddID": "points-away-game-ml-away",
+          "opposingOddID": "points-home-game-ml-home",
+          "marketName": "Head to Head - Adelaide Crows",
+          "statID": "points",
+          "statEntityID": "away",
+          "periodID": "game",
+          "betTypeID": "ml",
+          "sideID": "away",
+          "bookOdds": "-115",
+          "bookOddsAvailable": true,
+          "fairOdds": null,
+          "fairOddsAvailable": false,
+          "bookSpread": null,
+          "bookOverUnder": null,
+          "fairSpread": null,
+          "fairOverUnder": null,
+          "started": false,
+          "ended": false,
+          "cancelled": false,
+          "byBookmaker": {
+            "sportsbet": {
+              "bookmakerID": "sportsbet",
+              "odds": "-115",
+              "decimal": 1.87,
+              "available": true,
+              "lastUpdatedAt": "2026-09-11T06:00:12.000Z"
+            },
+            "tab": {
+              "bookmakerID": "tab",
+              "odds": "-111",
+              "decimal": 1.9,
+              "available": true,
+              "lastUpdatedAt": "2026-09-11T06:01:40.000Z"
+            },
+            "unibet": {
+              "bookmakerID": "unibet",
+              "odds": "-118",
+              "decimal": 1.85,
+              "available": true,
+              "lastUpdatedAt": "2026-09-11T05:59:03.000Z"
+            }
+          }
+        },
+        "points-home-game-sp-home": {
+          "oddID": "points-home-game-sp-home",
+          "opposingOddID": "points-away-game-sp-away",
+          "marketName": "Line - Brisbane Lions",
+          "statID": "points",
+          "statEntityID": "home",
+          "periodID": "game",
+          "betTypeID": "sp",
+          "sideID": "home",
+          "bookOdds": "-111",
+          "bookOddsAvailable": true,
+          "fairOdds": null,
+          "fairOddsAvailable": false,
+          "bookSpread": "-2.5",
+          "bookOverUnder": null,
+          "fairSpread": null,
+          "fairOverUnder": null,
+          "started": false,
+          "ended": false,
+          "cancelled": false,
+          "byBookmaker": {
+            "sportsbet": {
+              "bookmakerID": "sportsbet",
+              "odds": "-111",
+              "decimal": 1.9,
+              "available": true,
+              "lastUpdatedAt": "2026-09-11T06:00:12.000Z",
+              "spread": "-2.5"
+            },
+            "tab": {
+              "bookmakerID": "tab",
+              "odds": "-111",
+              "decimal": 1.9,
+              "available": true,
+              "lastUpdatedAt": "2026-09-11T06:01:40.000Z",
+              "spread": "-2.5"
+            },
+            "unibet": {
+              "bookmakerID": "unibet",
+              "odds": "-102",
+              "decimal": 1.98,
+              "available": true,
+              "lastUpdatedAt": "2026-09-11T05:59:03.000Z",
+              "spread": "-3.5"
+            }
+          }
+        },
+        "points-away-game-sp-away": {
+          "oddID": "points-away-game-sp-away",
+          "opposingOddID": "points-home-game-sp-home",
+          "marketName": "Line - Adelaide Crows",
+          "statID": "points",
+          "statEntityID": "away",
+          "periodID": "game",
+          "betTypeID": "sp",
+          "sideID": "away",
+          "bookOdds": "-111",
+          "bookOddsAvailable": true,
+          "fairOdds": null,
+          "fairOddsAvailable": false,
+          "bookSpread": "2.5",
+          "bookOverUnder": null,
+          "fairSpread": null,
+          "fairOverUnder": null,
+          "started": false,
+          "ended": false,
+          "cancelled": false,
+          "byBookmaker": {
+            "sportsbet": {
+              "bookmakerID": "sportsbet",
+              "odds": "-111",
+              "decimal": 1.9,
+              "available": true,
+              "lastUpdatedAt": "2026-09-11T06:00:12.000Z",
+              "spread": "2.5"
+            },
+            "tab": {
+              "bookmakerID": "tab",
+              "odds": "-109",
+              "decimal": 1.92,
+              "available": true,
+              "lastUpdatedAt": "2026-09-11T06:01:40.000Z",
+              "spread": "2.5"
+            },
+            "unibet": {
+              "bookmakerID": "unibet",
+              "odds": "-119",
+              "decimal": 1.84,
+              "available": true,
+              "lastUpdatedAt": "2026-09-11T05:59:03.000Z",
+              "spread": "3.5"
+            }
+          }
+        },
+        "points-all-game-ou-over": {
+          "oddID": "points-all-game-ou-over",
+          "opposingOddID": "points-all-game-ou-under",
+          "marketName": "Total Points - Over",
+          "statID": "points",
+          "statEntityID": "all",
+          "periodID": "game",
+          "betTypeID": "ou",
+          "sideID": "over",
+          "bookOdds": "-111",
+          "bookOddsAvailable": true,
+          "fairOdds": null,
+          "fairOddsAvailable": false,
+          "bookSpread": null,
+          "bookOverUnder": "165.5",
+          "fairSpread": null,
+          "fairOverUnder": null,
+          "started": false,
+          "ended": false,
+          "cancelled": false,
+          "byBookmaker": {
+            "sportsbet": {
+              "bookmakerID": "sportsbet",
+              "odds": "-111",
+              "decimal": 1.9,
+              "available": true,
+              "lastUpdatedAt": "2026-09-11T06:00:12.000Z",
+              "overUnder": "165.5"
+            },
+            "tab": {
+              "bookmakerID": "tab",
+              "odds": "-114",
+              "decimal": 1.88,
+              "available": true,
+              "lastUpdatedAt": "2026-09-11T06:01:40.000Z",
+              "overUnder": "165.5"
+            },
+            "unibet": {
+              "bookmakerID": "unibet",
+              "odds": "-105",
+              "decimal": 1.95,
+              "available": true,
+              "lastUpdatedAt": "2026-09-11T05:59:03.000Z",
+              "overUnder": "166.5"
+            }
+          }
+        },
+        "points-all-game-ou-under": {
+          "oddID": "points-all-game-ou-under",
+          "opposingOddID": "points-all-game-ou-over",
+          "marketName": "Total Points - Under",
+          "statID": "points",
+          "statEntityID": "all",
+          "periodID": "game",
+          "betTypeID": "ou",
+          "sideID": "under",
+          "bookOdds": "-111",
+          "bookOddsAvailable": true,
+          "fairOdds": null,
+          "fairOddsAvailable": false,
+          "bookSpread": null,
+          "bookOverUnder": "165.5",
+          "fairSpread": null,
+          "fairOverUnder": null,
+          "started": false,
+          "ended": false,
+          "cancelled": false,
+          "byBookmaker": {
+            "sportsbet": {
+              "bookmakerID": "sportsbet",
+              "odds": "-111",
+              "decimal": 1.9,
+              "available": true,
+              "lastUpdatedAt": "2026-09-11T06:00:12.000Z",
+              "overUnder": "165.5"
+            },
+            "tab": {
+              "bookmakerID": "tab",
+              "odds": "-109",
+              "decimal": 1.92,
+              "available": true,
+              "lastUpdatedAt": "2026-09-11T06:01:40.000Z",
+              "overUnder": "165.5"
+            },
+            "unibet": {
+              "bookmakerID": "unibet",
+              "odds": "-118",
+              "decimal": 1.85,
+              "available": true,
+              "lastUpdatedAt": "2026-09-11T05:59:03.000Z",
+              "overUnder": "166.5"
+            }
+          }
+        }
+      },
+      "players": {}
+    },
+    {
+      "eventID": "nrl_2026-09-03_canterbury_bulldogs_vs_brisbane_broncos",
+      "sportID": "RUGBY_LEAGUE",
+      "leagueID": "NRL",
+      "type": "match",
+      "teams": {
+        "home": {
+          "teamID": "CANTERBURY_BULLDOGS_NRL",
+          "names": {
+            "long": "Canterbury Bulldogs",
+            "medium": "Bulldogs",
+            "short": "CBY"
+          },
+          "statEntityID": "home"
+        },
+        "away": {
+          "teamID": "BRISBANE_BRONCOS_NRL",
+          "names": {
+            "long": "Brisbane Broncos",
+            "medium": "Broncos",
+            "short": "BRI"
+          },
+          "statEntityID": "away"
+        }
+      },
+      "status": {
+        "started": false,
+        "ended": false,
+        "cancelled": false,
+        "live": false,
+        "finalized": false,
+        "oddsPresent": true,
+        "oddsAvailable": true,
+        "startsAt": "2026-09-03T09:50:00Z",
+        "displayLong": "Upcoming"
+      },
+      "info": {
+        "displayName": "Brisbane Broncos @ Canterbury Bulldogs",
+        "commenceTime": "2026-09-03T09:50:00Z",
+        "lastUpdatedAt": "2026-09-02T22:11:47.000Z",
+        "stale": false
+      },
+      "odds": {
+        "points-home-game-ml-home": {
+          "oddID": "points-home-game-ml-home",
+          "opposingOddID": "points-away-game-ml-away",
+          "marketName": "Head to Head - Canterbury Bulldogs",
+          "statID": "points",
+          "statEntityID": "home",
+          "periodID": "game",
+          "betTypeID": "ml",
+          "sideID": "home",
+          "bookOdds": "+120",
+          "bookOddsAvailable": true,
+          "fairOdds": null,
+          "fairOddsAvailable": false,
+          "bookSpread": null,
+          "bookOverUnder": null,
+          "fairSpread": null,
+          "fairOverUnder": null,
+          "started": false,
+          "ended": false,
+          "cancelled": false,
+          "byBookmaker": {
+            "sportsbet": {
+              "bookmakerID": "sportsbet",
+              "odds": "+120",
+              "decimal": 2.2,
+              "available": true,
+              "lastUpdatedAt": "2026-09-02T22:10:05.000Z"
+            },
+            "tab": {
+              "bookmakerID": "tab",
+              "odds": "+125",
+              "decimal": 2.25,
+              "available": true,
+              "lastUpdatedAt": "2026-09-02T22:09:30.000Z"
+            },
+            "neds": {
+              "bookmakerID": "neds",
+              "odds": "+115",
+              "decimal": 2.15,
+              "available": true,
+              "lastUpdatedAt": "2026-09-02T22:11:47.000Z"
+            }
+          }
+        },
+        "points-away-game-ml-away": {
+          "oddID": "points-away-game-ml-away",
+          "opposingOddID": "points-home-game-ml-home",
+          "marketName": "Head to Head - Brisbane Broncos",
+          "statID": "points",
+          "statEntityID": "away",
+          "periodID": "game",
+          "betTypeID": "ml",
+          "sideID": "away",
+          "bookOdds": "-147",
+          "bookOddsAvailable": true,
+          "fairOdds": null,
+          "fairOddsAvailable": false,
+          "bookSpread": null,
+          "bookOverUnder": null,
+          "fairSpread": null,
+          "fairOverUnder": null,
+          "started": false,
+          "ended": false,
+          "cancelled": false,
+          "byBookmaker": {
+            "sportsbet": {
+              "bookmakerID": "sportsbet",
+              "odds": "-147",
+              "decimal": 1.68,
+              "available": true,
+              "lastUpdatedAt": "2026-09-02T22:10:05.000Z"
+            },
+            "tab": {
+              "bookmakerID": "tab",
+              "odds": "-154",
+              "decimal": 1.65,
+              "available": true,
+              "lastUpdatedAt": "2026-09-02T22:09:30.000Z"
+            },
+            "neds": {
+              "bookmakerID": "neds",
+              "odds": "-143",
+              "decimal": 1.7,
+              "available": true,
+              "lastUpdatedAt": "2026-09-02T22:11:47.000Z"
+            }
+          }
+        },
+        "points-home-game-sp-home": {
+          "oddID": "points-home-game-sp-home",
+          "opposingOddID": "points-away-game-sp-away",
+          "marketName": "Line - Canterbury Bulldogs",
+          "statID": "points",
+          "statEntityID": "home",
+          "periodID": "game",
+          "betTypeID": "sp",
+          "sideID": "home",
+          "bookOdds": "-111",
+          "bookOddsAvailable": true,
+          "fairOdds": null,
+          "fairOddsAvailable": false,
+          "bookSpread": "4.5",
+          "bookOverUnder": null,
+          "fairSpread": null,
+          "fairOverUnder": null,
+          "started": false,
+          "ended": false,
+          "cancelled": false,
+          "byBookmaker": {
+            "sportsbet": {
+              "bookmakerID": "sportsbet",
+              "odds": "-111",
+              "decimal": 1.9,
+              "available": true,
+              "lastUpdatedAt": "2026-09-02T22:10:05.000Z",
+              "spread": "4.5"
+            },
+            "tab": {
+              "bookmakerID": "tab",
+              "odds": "-111",
+              "decimal": 1.9,
+              "available": true,
+              "lastUpdatedAt": "2026-09-02T22:09:30.000Z",
+              "spread": "4.5"
+            },
+            "neds": {
+              "bookmakerID": "neds",
+              "odds": "-110",
+              "decimal": 1.91,
+              "available": true,
+              "lastUpdatedAt": "2026-09-02T22:11:47.000Z",
+              "spread": "4.5"
+            }
+          }
+        },
+        "points-away-game-sp-away": {
+          "oddID": "points-away-game-sp-away",
+          "opposingOddID": "points-home-game-sp-home",
+          "marketName": "Line - Brisbane Broncos",
+          "statID": "points",
+          "statEntityID": "away",
+          "periodID": "game",
+          "betTypeID": "sp",
+          "sideID": "away",
+          "bookOdds": "-111",
+          "bookOddsAvailable": true,
+          "fairOdds": null,
+          "fairOddsAvailable": false,
+          "bookSpread": "-4.5",
+          "bookOverUnder": null,
+          "fairSpread": null,
+          "fairOverUnder": null,
+          "started": false,
+          "ended": false,
+          "cancelled": false,
+          "byBookmaker": {
+            "sportsbet": {
+              "bookmakerID": "sportsbet",
+              "odds": "-111",
+              "decimal": 1.9,
+              "available": true,
+              "lastUpdatedAt": "2026-09-02T22:10:05.000Z",
+              "spread": "-4.5"
+            },
+            "tab": {
+              "bookmakerID": "tab",
+              "odds": "-111",
+              "decimal": 1.9,
+              "available": true,
+              "lastUpdatedAt": "2026-09-02T22:09:30.000Z",
+              "spread": "-4.5"
+            },
+            "neds": {
+              "bookmakerID": "neds",
+              "odds": "-112",
+              "decimal": 1.89,
+              "available": true,
+              "lastUpdatedAt": "2026-09-02T22:11:47.000Z",
+              "spread": "-4.5"
+            }
+          }
+        }
+      },
+      "players": {}
+    }
+  ]
+}

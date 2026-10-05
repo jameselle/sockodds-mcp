@@ -1,0 +1,52 @@
+{
+  "success": true,
+  "nextCursor": "afl_2026-09-03_fremantle_vs_hawthorn",
+  "data": [
+    {
+      "eventID": "afl_2026-09-03_fremantle_vs_hawthorn",
+      "sportID": "AUSSIE_RULES",
+      "leagueID": "AFL",
+      "type": "match",
+      "teams": {
+        "home": { "teamID": "FREMANTLE_AFL", "names": { "long": "Fremantle", "medium": "Fremantle", "short": "FRE" }, "statEntityID": "home" },
+        "away": { "teamID": "HAWTHORN_AFL", "names": { "long": "Hawthorn", "medium": "Hawthorn", "short": "HAW" }, "statEntityID": "away" }
+      },
+      "status": { "started": false, "ended": false, "cancelled": false, "live": false, "finalized": false, "oddsPresent": true, "oddsAvailable": true, "startsAt": "2026-09-03T09:40:00Z", "displayLong": "Upcoming" },
+      "info": { "displayName": "Hawthorn @ Fremantle", "commenceTime": "2026-09-03T09:40:00Z", "lastUpdatedAt": "2026-09-03T08:27:48.000Z", "stale": false },
+      "odds": {
+        "points-all-game-eo-odd": {
+          "oddID": "points-all-game-eo-odd",
+          "opposingOddID": "points-all-game-eo-even",
+          "marketName": "Odd/Even Total Points",
+          "statID": "points",
+          "statEntityID": "all",
+          "periodID": "game",
+          "betTypeID": "eo",
+          "sideID": "odd",
+          "bookOdds": "-116",
+          "fairOdds": null,
+          "bookOverUnder": null,
+          "bookSpread": null,
+          "byBookmaker": {
+            "unibet": {
+              "bookmakerID": "unibet",
+              "odds": "-115",
+              "decimal": 1.87,
+              "available": true,
+              "lastUpdatedAt": "2026-09-03T10:22:09.000Z"
+            },
+            "tabtouch": {
+              "bookmakerID": "tabtouch",
+              "odds": "-118",
+              "decimal": 1.85,
+              "available": true,
+              "lastUpdatedAt": "2026-09-03T10:21:03.000Z"
+            }
+          }
+        }
+      },
+      "links": { "bookmakers": { "sportsbet": "https://www.sportsbet.com.au/betting/australian-rules/afl/…", "tab": "https://www.tab.com.au/sports/betting/Australian%20Rules/competitions/AFL/matches/…" } },
+      "players": {}
+    }
+  ]
+}

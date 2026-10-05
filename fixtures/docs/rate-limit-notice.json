@@ -1,0 +1,6 @@
+{
+  "success": true,
+  "data": [],
+  "nextCursor": "afl_2026-09-12_brisbane_lions_vs_adelaide_crows",
+  "notice": "Response is missing 3 events and 15 bookmaker odds. Upgrade your API key to access all data from this query."
+}
