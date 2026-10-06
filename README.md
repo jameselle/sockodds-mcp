@@ -1,6 +1,6 @@
 # sockodds-mcp
 
-Ask Claude "what are the odds on X right now" and get every Australian bookmaker's price, the best price and the no-vig fair price, from the [SockOdds](https://sockodds.com/) sports odds API.
+Ask Claude "what are the odds on X right now" and get Australian bookmakers' prices, the best price and the no-vig fair price, from the [SockOdds](https://sockodds.com/) sports odds API. The free key covers 3 bookmakers and 4 leagues; paid plans add more ([pricing](https://sockodds.com/pricing/)).
 
 A free, open-source MCP server plus a Claude Code skill, built for the "$1M in 365 Days" series. MIT licence.
 
@@ -41,7 +41,7 @@ This transcript uses demo mode (`SOCKODDS_DEMO=1`), so the prices are invented s
 | --- | --- |
 | `list_leagues` | Leagues SockOdds carries and whether your key's plan can read each one |
 | `find_event` | Turns "Broncos v Bulldogs" or "AFL grand final" into events with start times and event IDs |
-| `get_odds` | Every bookmaker's decimal prices for head to head, line and total, each with the time it was read |
+| `get_odds` | Each bookmaker's decimal prices for head to head, line and total, each with the time it was read |
 | `best_price` | Best price for one side of one market, plus the field; suspended prices and other lines are left out |
 | `fair_odds` | No-vig fair price for a two- or three-way market (see the method below); also works by hand with no API call |
 
