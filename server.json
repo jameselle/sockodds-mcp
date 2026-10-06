@@ -1,0 +1,45 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.jameselle/sockodds-mcp",
+  "title": "SockOdds",
+  "description": "Australian sports odds from the SockOdds API: bookmaker prices, best price and no-vig fair odds.",
+  "websiteUrl": "https://sockodds.com/",
+  "repository": {
+    "url": "https://github.com/jameselle/sockodds-mcp",
+    "source": "github"
+  },
+  "version": "0.1.0",
+  "packages": [
+    {
+      "registryType": "npm",
+      "registryBaseUrl": "https://registry.npmjs.org",
+      "identifier": "sockodds-mcp",
+      "version": "0.1.0",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "SOCKODDS_API_KEY",
+          "description": "Your SockOdds API key. A free key is available at https://sockodds.com/signup/",
+          "isRequired": false,
+          "isSecret": true,
+          "format": "string"
+        },
+        {
+          "name": "SOCKODDS_DEMO",
+          "description": "Set to 1 to try the tools with invented sample data and no key. Ignored when a key is set.",
+          "isRequired": false,
+          "format": "string"
+        },
+        {
+          "name": "SOCKODDS_TIMEZONE",
+          "description": "Time zone for start times (UTC is always shown too)",
+          "isRequired": false,
+          "default": "Australia/Sydney",
+          "format": "string"
+        }
+      ]
+    }
+  ]
+}

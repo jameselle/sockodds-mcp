@@ -1,8 +1,17 @@
 {
   "name": "sockodds-mcp",
   "version": "0.1.0",
+  "mcpName": "io.github.jameselle/sockodds-mcp",
   "description": "MCP server that lets Claude answer 'what are the odds on X right now' with the SockOdds sports odds API.",
   "license": "MIT",
+  "homepage": "https://github.com/jameselle/sockodds-mcp#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jameselle/sockodds-mcp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jameselle/sockodds-mcp/issues"
+  },
   "type": "module",
   "bin": {
     "sockodds-mcp": "dist/src/index.js"

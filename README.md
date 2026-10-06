@@ -139,6 +139,19 @@ Tests use Node's built-in test runner. They cover the fair odds maths, best pric
 
 `docs/API-NOTES.md` lists every endpoint and field this server relies on, with links to the SockOdds docs. `fixtures/docs/` holds example responses copied from those docs; `fixtures/demo/` holds invented data in the same shape for demo mode.
 
+## Release
+
+`package.json` (`version`, `mcpName`) and `server.json` (`version`, `packages[0].version`) must carry the same version. To release:
+
+```bash
+npm test
+npm publish
+mcp-publisher login github
+mcp-publisher publish
+```
+
+`server.json` lists this server in the [official MCP Registry](https://registry.modelcontextprotocol.io/) as `io.github.jameselle/sockodds-mcp`, and the registry checks that the npm package's `mcpName` matches. `glama.json` names the maintainers of the [Glama listing](https://glama.ai/mcp/servers/jameselle/sockodds-mcp).
+
 ## Gamble responsibly
 
 18+. Odds change all the time and nothing this tool shows is a tip or advice. If gambling is causing you or someone close to you harm, call Gambling Help Online on 1800 858 858 or visit [gamblinghelponline.org.au](https://www.gamblinghelponline.org.au/). You can exclude yourself from Australian online bookmakers at [BetStop](https://www.betstop.gov.au/).
