@@ -57,7 +57,7 @@ SockOdds has a price history endpoint (`/v2/odds/history/`), but its homepage an
 
 ## Get a free SockOdds key
 
-[Get a free SockOdds key](https://sockodds.com/signup/?utm_source=1m365-gh&utm_medium=github&utm_campaign=sockodds-mcp). No card needed; the key is shown once, so copy it somewhere safe.
+[Get a free SockOdds key](https://sockodds.com/signup/?utm_source=1m365-gh&utm_medium=github&utm_campaign=sockodds-mcp). No card needed. Sign-up asks for an Australian or international mobile number and sends a one-time SMS code to confirm it. The key is shown once, so copy it somewhere safe. To try the tools before signing up, set `SOCKODDS_DEMO=1`: every tool works on invented sample data, no key needed.
 
 The free Developer plan, as stated on the [pricing page](https://sockodds.com/pricing/), the [signup page](https://sockodds.com/signup/) and the [rate limit docs](https://sockodds.com/docs/info/rate-limiting/):
 
