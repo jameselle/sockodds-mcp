@@ -71,34 +71,25 @@ To stay inside that, this server caches every response for 60 seconds, never ret
 
 ## Install
 
-You need Node.js 20 or newer.
-
-### From source
-
-```bash
-git clone https://github.com/jameselle/sockodds-mcp.git
-cd sockodds-mcp
-npm install
-npm run build
-```
+You need Node.js 20 or newer. The server is on npm as [`sockodds-mcp`](https://www.npmjs.com/package/sockodds-mcp), so there is nothing to build.
 
 ### Claude Code
-
-```bash
-claude mcp add sockodds --env SOCKODDS_API_KEY=your-key -- node /full/path/to/sockodds-mcp/dist/src/index.js
-```
-
-Once the package is on npm you can use `npx` instead:
 
 ```bash
 claude mcp add sockodds --env SOCKODDS_API_KEY=your-key -- npx -y sockodds-mcp
 ```
 
-To add the skill, which tells Claude when to use the tools and how to quote prices, copy the `skill` folder into your skills directory:
+No key yet? Try it on invented sample data first:
+
+```bash
+claude mcp add sockodds --env SOCKODDS_DEMO=1 -- npx -y sockodds-mcp
+```
+
+To add the skill, which tells Claude when to use the tools and how to quote prices:
 
 ```bash
 mkdir -p ~/.claude/skills/sockodds-odds
-cp skill/SKILL.md ~/.claude/skills/sockodds-odds/SKILL.md
+curl -fsSL https://raw.githubusercontent.com/jameselle/sockodds-mcp/main/skill/SKILL.md -o ~/.claude/skills/sockodds-odds/SKILL.md
 ```
 
 ### Claude Desktop
@@ -109,14 +100,30 @@ Add this to `claude_desktop_config.json` (Settings, Developer, Edit Config), the
 {
   "mcpServers": {
     "sockodds": {
-      "command": "node",
-      "args": ["/full/path/to/sockodds-mcp/dist/src/index.js"],
+      "command": "npx",
+      "args": ["-y", "sockodds-mcp"],
       "env": {
         "SOCKODDS_API_KEY": "your-key"
       }
     }
   }
 }
+```
+
+For demo mode, swap the `env` block for `"SOCKODDS_DEMO": "1"`.
+
+### Other MCP clients
+
+Any client that runs a local (stdio) server: command `npx`, arguments `-y sockodds-mcp`, environment `SOCKODDS_API_KEY`. It is also listed in the [official MCP Registry](https://registry.modelcontextprotocol.io/) as `io.github.jameselle/sockodds-mcp`.
+
+### From source
+
+```bash
+git clone https://github.com/jameselle/sockodds-mcp.git
+cd sockodds-mcp
+npm install
+npm run build
+claude mcp add sockodds --env SOCKODDS_API_KEY=your-key -- node "$(pwd)/dist/src/index.js"
 ```
 
 ### Settings
