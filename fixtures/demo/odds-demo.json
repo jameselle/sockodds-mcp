@@ -1,0 +1,632 @@
+{
+  "_demo": "INVENTED DEMO DATA in the SockOdds API v1 response shape (GET /v1/odds). Every id, price and timestamp is made up. Not real or current odds.",
+  "data": [
+    {
+      "id": "ev_kqe6aepys23z",
+      "name": "Brisbane Lions v Adelaide Crows",
+      "league": {
+        "key": "afl",
+        "name": "AFL"
+      },
+      "scheduled_start": "2026-09-12T09:35:00.000Z",
+      "status": "scheduled",
+      "participants": [
+        {
+          "role": "home",
+          "identity": {
+            "key": "brisbane_lions",
+            "name": "Brisbane Lions"
+          }
+        },
+        {
+          "role": "away",
+          "identity": {
+            "key": "adelaide_crows",
+            "name": "Adelaide Crows"
+          }
+        }
+      ],
+      "bookmakers": [
+        {
+          "key": "sportsbet",
+          "name": "Sportsbet",
+          "markets": [
+            {
+              "id": "mk_mqt1sh3en97g6ye5",
+              "key": "winner",
+              "name": "Winner",
+              "subject": null,
+              "period": "full",
+              "outcomes": [
+                {
+                  "id": "oc_yd2kykjsgzp5kdz3",
+                  "name": "Brisbane Lions",
+                  "side": "home",
+                  "line": null,
+                  "decimal_odds": 1.93,
+                  "implied_probability": 0.518135,
+                  "available": true,
+                  "alternate": false,
+                  "bookmaker": "sportsbet",
+                  "observed_at": "2026-09-11T06:00:12.000Z"
+                },
+                {
+                  "id": "oc_a0zag74hjxwqq5r0",
+                  "name": "Adelaide Crows",
+                  "side": "away",
+                  "line": null,
+                  "decimal_odds": 1.87,
+                  "implied_probability": 0.534759,
+                  "available": true,
+                  "alternate": false,
+                  "bookmaker": "sportsbet",
+                  "observed_at": "2026-09-11T06:00:12.000Z"
+                }
+              ]
+            },
+            {
+              "id": "mk_g5bk3g6xa7rd2s3t",
+              "key": "handicap",
+              "name": "Handicap",
+              "subject": null,
+              "period": "full",
+              "outcomes": [
+                {
+                  "id": "oc_xe98t4rb5sr4gkj6",
+                  "name": "Brisbane Lions",
+                  "side": "home",
+                  "line": -2.5,
+                  "decimal_odds": 1.9,
+                  "implied_probability": 0.526316,
+                  "available": true,
+                  "alternate": false,
+                  "bookmaker": "sportsbet",
+                  "observed_at": "2026-09-11T06:00:12.000Z"
+                },
+                {
+                  "id": "oc_zx8hpn4gkrm8b5gv",
+                  "name": "Adelaide Crows",
+                  "side": "away",
+                  "line": 2.5,
+                  "decimal_odds": 1.9,
+                  "implied_probability": 0.526316,
+                  "available": true,
+                  "alternate": false,
+                  "bookmaker": "sportsbet",
+                  "observed_at": "2026-09-11T06:00:12.000Z"
+                }
+              ]
+            },
+            {
+              "id": "mk_ya0hshs75mwmadvk",
+              "key": "total_points",
+              "name": "Total points",
+              "subject": null,
+              "period": "full",
+              "outcomes": [
+                {
+                  "id": "oc_z17whq077gsz24w8",
+                  "name": "Over",
+                  "side": "over",
+                  "line": 165.5,
+                  "decimal_odds": 1.9,
+                  "implied_probability": 0.526316,
+                  "available": true,
+                  "alternate": false,
+                  "bookmaker": "sportsbet",
+                  "observed_at": "2026-09-11T06:00:12.000Z"
+                },
+                {
+                  "id": "oc_mechhr2jmsr01krh",
+                  "name": "Under",
+                  "side": "under",
+                  "line": 165.5,
+                  "decimal_odds": 1.9,
+                  "implied_probability": 0.526316,
+                  "available": true,
+                  "alternate": false,
+                  "bookmaker": "sportsbet",
+                  "observed_at": "2026-09-11T06:00:12.000Z"
+                }
+              ]
+            },
+            {
+              "id": "mk_fm5ehj562bttfdzs",
+              "key": "winner",
+              "name": "Winner",
+              "subject": null,
+              "period": "half_1",
+              "outcomes": [
+                {
+                  "id": "oc_zc6f51tk7egexenb",
+                  "name": "Brisbane Lions",
+                  "side": "home",
+                  "line": null,
+                  "decimal_odds": 1.9,
+                  "implied_probability": 0.526316,
+                  "available": true,
+                  "alternate": false,
+                  "bookmaker": "sportsbet",
+                  "observed_at": "2026-09-11T06:00:12.000Z"
+                },
+                {
+                  "id": "oc_90nkq1kapp0m1fta",
+                  "name": "Adelaide Crows",
+                  "side": "away",
+                  "line": null,
+                  "decimal_odds": 1.9,
+                  "implied_probability": 0.526316,
+                  "available": true,
+                  "alternate": false,
+                  "bookmaker": "sportsbet",
+                  "observed_at": "2026-09-11T06:00:12.000Z"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "tab",
+          "name": "TAB",
+          "markets": [
+            {
+              "id": "mk_mqt1sh3en97g6ye5",
+              "key": "winner",
+              "name": "Winner",
+              "subject": null,
+              "period": "full",
+              "outcomes": [
+                {
+                  "id": "oc_yd2kykjsgzp5kdz3",
+                  "name": "Brisbane Lions",
+                  "side": "home",
+                  "line": null,
+                  "decimal_odds": 1.91,
+                  "implied_probability": 0.52356,
+                  "available": true,
+                  "alternate": false,
+                  "bookmaker": "tab",
+                  "observed_at": "2026-09-11T06:01:40.000Z"
+                },
+                {
+                  "id": "oc_a0zag74hjxwqq5r0",
+                  "name": "Adelaide Crows",
+                  "side": "away",
+                  "line": null,
+                  "decimal_odds": 1.9,
+                  "implied_probability": 0.526316,
+                  "available": true,
+                  "alternate": false,
+                  "bookmaker": "tab",
+                  "observed_at": "2026-09-11T06:01:40.000Z"
+                }
+              ]
+            },
+            {
+              "id": "mk_g5bk3g6xa7rd2s3t",
+              "key": "handicap",
+              "name": "Handicap",
+              "subject": null,
+              "period": "full",
+              "outcomes": [
+                {
+                  "id": "oc_xe98t4rb5sr4gkj6",
+                  "name": "Brisbane Lions",
+                  "side": "home",
+                  "line": -2.5,
+                  "decimal_odds": 1.9,
+                  "implied_probability": 0.526316,
+                  "available": true,
+                  "alternate": false,
+                  "bookmaker": "tab",
+                  "observed_at": "2026-09-11T06:01:40.000Z"
+                },
+                {
+                  "id": "oc_zx8hpn4gkrm8b5gv",
+                  "name": "Adelaide Crows",
+                  "side": "away",
+                  "line": 2.5,
+                  "decimal_odds": 1.92,
+                  "implied_probability": 0.520833,
+                  "available": true,
+                  "alternate": false,
+                  "bookmaker": "tab",
+                  "observed_at": "2026-09-11T06:01:40.000Z"
+                }
+              ]
+            },
+            {
+              "id": "mk_ya0hshs75mwmadvk",
+              "key": "total_points",
+              "name": "Total points",
+              "subject": null,
+              "period": "full",
+              "outcomes": [
+                {
+                  "id": "oc_z17whq077gsz24w8",
+                  "name": "Over",
+                  "side": "over",
+                  "line": 165.5,
+                  "decimal_odds": 1.88,
+                  "implied_probability": 0.531915,
+                  "available": true,
+                  "alternate": false,
+                  "bookmaker": "tab",
+                  "observed_at": "2026-09-11T06:01:40.000Z"
+                },
+                {
+                  "id": "oc_mechhr2jmsr01krh",
+                  "name": "Under",
+                  "side": "under",
+                  "line": 165.5,
+                  "decimal_odds": 1.92,
+                  "implied_probability": 0.520833,
+                  "available": true,
+                  "alternate": false,
+                  "bookmaker": "tab",
+                  "observed_at": "2026-09-11T06:01:40.000Z"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "unibet",
+          "name": "Unibet",
+          "markets": [
+            {
+              "id": "mk_mqt1sh3en97g6ye5",
+              "key": "winner",
+              "name": "Winner",
+              "subject": null,
+              "period": "full",
+              "outcomes": [
+                {
+                  "id": "oc_yd2kykjsgzp5kdz3",
+                  "name": "Brisbane Lions",
+                  "side": "home",
+                  "line": null,
+                  "decimal_odds": 1.95,
+                  "implied_probability": 0.512821,
+                  "available": true,
+                  "alternate": false,
+                  "bookmaker": "unibet",
+                  "observed_at": "2026-09-11T05:59:03.000Z"
+                },
+                {
+                  "id": "oc_a0zag74hjxwqq5r0",
+                  "name": "Adelaide Crows",
+                  "side": "away",
+                  "line": null,
+                  "decimal_odds": 1.85,
+                  "implied_probability": 0.540541,
+                  "available": true,
+                  "alternate": false,
+                  "bookmaker": "unibet",
+                  "observed_at": "2026-09-11T05:59:03.000Z"
+                }
+              ]
+            },
+            {
+              "id": "mk_57tyek27da8wvz5s",
+              "key": "handicap",
+              "name": "Handicap",
+              "subject": null,
+              "period": "full",
+              "outcomes": [
+                {
+                  "id": "oc_xbbm5jd8ncg11n4g",
+                  "name": "Brisbane Lions",
+                  "side": "home",
+                  "line": -3.5,
+                  "decimal_odds": 1.98,
+                  "implied_probability": 0.505051,
+                  "available": true,
+                  "alternate": false,
+                  "bookmaker": "unibet",
+                  "observed_at": "2026-09-11T05:59:03.000Z"
+                },
+                {
+                  "id": "oc_cp3171814wabqk0k",
+                  "name": "Adelaide Crows",
+                  "side": "away",
+                  "line": 3.5,
+                  "decimal_odds": 1.84,
+                  "implied_probability": 0.543478,
+                  "available": true,
+                  "alternate": false,
+                  "bookmaker": "unibet",
+                  "observed_at": "2026-09-11T05:59:03.000Z"
+                }
+              ]
+            },
+            {
+              "id": "mk_0n0dn0znd4z46er2",
+              "key": "total_points",
+              "name": "Total points",
+              "subject": null,
+              "period": "full",
+              "outcomes": [
+                {
+                  "id": "oc_2d3vx488mb0qde62",
+                  "name": "Over",
+                  "side": "over",
+                  "line": 166.5,
+                  "decimal_odds": 1.95,
+                  "implied_probability": 0.512821,
+                  "available": true,
+                  "alternate": false,
+                  "bookmaker": "unibet",
+                  "observed_at": "2026-09-11T05:59:03.000Z"
+                },
+                {
+                  "id": "oc_4whg10224tjvcxwd",
+                  "name": "Under",
+                  "side": "under",
+                  "line": 166.5,
+                  "decimal_odds": 1.85,
+                  "implied_probability": 0.540541,
+                  "available": true,
+                  "alternate": false,
+                  "bookmaker": "unibet",
+                  "observed_at": "2026-09-11T05:59:03.000Z"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ev_sdhmfzqx2xpy",
+      "name": "Canterbury-Bankstown Bulldogs v Brisbane Broncos",
+      "league": {
+        "key": "nrl",
+        "name": "NRL"
+      },
+      "scheduled_start": "2026-09-03T09:50:00.000Z",
+      "status": "scheduled",
+      "participants": [
+        {
+          "role": "away",
+          "identity": {
+            "key": "brisbane_broncos",
+            "name": "Brisbane Broncos"
+          }
+        },
+        {
+          "role": "home",
+          "identity": {
+            "key": "canterbury_bankstown_bulldogs",
+            "name": "Canterbury-Bankstown Bulldogs"
+          }
+        }
+      ],
+      "bookmakers": [
+        {
+          "key": "sportsbet",
+          "name": "Sportsbet",
+          "markets": [
+            {
+              "id": "mk_wtswrccwrx2b9fq3",
+              "key": "winner",
+              "name": "Winner",
+              "subject": null,
+              "period": "full",
+              "outcomes": [
+                {
+                  "id": "oc_y89nbnxajavzhpqz",
+                  "name": "Canterbury-Bankstown Bulldogs",
+                  "side": "home",
+                  "line": null,
+                  "decimal_odds": 2.2,
+                  "implied_probability": 0.454545,
+                  "available": true,
+                  "alternate": false,
+                  "bookmaker": "sportsbet",
+                  "observed_at": "2026-09-02T22:10:05.000Z"
+                },
+                {
+                  "id": "oc_w4k5zt3n6fabmxs7",
+                  "name": "Brisbane Broncos",
+                  "side": "away",
+                  "line": null,
+                  "decimal_odds": 1.68,
+                  "implied_probability": 0.595238,
+                  "available": true,
+                  "alternate": false,
+                  "bookmaker": "sportsbet",
+                  "observed_at": "2026-09-02T22:10:05.000Z"
+                }
+              ]
+            },
+            {
+              "id": "mk_y85zsctcgd63bj3n",
+              "key": "handicap",
+              "name": "Handicap",
+              "subject": null,
+              "period": "full",
+              "outcomes": [
+                {
+                  "id": "oc_b6nk7r8axkfztjxv",
+                  "name": "Canterbury-Bankstown Bulldogs",
+                  "side": "home",
+                  "line": 4.5,
+                  "decimal_odds": 1.9,
+                  "implied_probability": 0.526316,
+                  "available": true,
+                  "alternate": false,
+                  "bookmaker": "sportsbet",
+                  "observed_at": "2026-09-02T22:10:05.000Z"
+                },
+                {
+                  "id": "oc_hzb1tkvgr7yvvart",
+                  "name": "Brisbane Broncos",
+                  "side": "away",
+                  "line": -4.5,
+                  "decimal_odds": 1.9,
+                  "implied_probability": 0.526316,
+                  "available": true,
+                  "alternate": false,
+                  "bookmaker": "sportsbet",
+                  "observed_at": "2026-09-02T22:10:05.000Z"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "tab",
+          "name": "TAB",
+          "markets": [
+            {
+              "id": "mk_wtswrccwrx2b9fq3",
+              "key": "winner",
+              "name": "Winner",
+              "subject": null,
+              "period": "full",
+              "outcomes": [
+                {
+                  "id": "oc_y89nbnxajavzhpqz",
+                  "name": "Canterbury-Bankstown Bulldogs",
+                  "side": "home",
+                  "line": null,
+                  "decimal_odds": 2.25,
+                  "implied_probability": 0.444444,
+                  "available": true,
+                  "alternate": false,
+                  "bookmaker": "tab",
+                  "observed_at": "2026-09-02T22:09:30.000Z"
+                },
+                {
+                  "id": "oc_w4k5zt3n6fabmxs7",
+                  "name": "Brisbane Broncos",
+                  "side": "away",
+                  "line": null,
+                  "decimal_odds": 1.65,
+                  "implied_probability": 0.606061,
+                  "available": true,
+                  "alternate": false,
+                  "bookmaker": "tab",
+                  "observed_at": "2026-09-02T22:09:30.000Z"
+                }
+              ]
+            },
+            {
+              "id": "mk_y85zsctcgd63bj3n",
+              "key": "handicap",
+              "name": "Handicap",
+              "subject": null,
+              "period": "full",
+              "outcomes": [
+                {
+                  "id": "oc_b6nk7r8axkfztjxv",
+                  "name": "Canterbury-Bankstown Bulldogs",
+                  "side": "home",
+                  "line": 4.5,
+                  "decimal_odds": 1.9,
+                  "implied_probability": 0.526316,
+                  "available": true,
+                  "alternate": false,
+                  "bookmaker": "tab",
+                  "observed_at": "2026-09-02T22:09:30.000Z"
+                },
+                {
+                  "id": "oc_hzb1tkvgr7yvvart",
+                  "name": "Brisbane Broncos",
+                  "side": "away",
+                  "line": -4.5,
+                  "decimal_odds": 1.9,
+                  "implied_probability": 0.526316,
+                  "available": true,
+                  "alternate": false,
+                  "bookmaker": "tab",
+                  "observed_at": "2026-09-02T22:09:30.000Z"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "neds",
+          "name": "Neds",
+          "markets": [
+            {
+              "id": "mk_wtswrccwrx2b9fq3",
+              "key": "winner",
+              "name": "Winner",
+              "subject": null,
+              "period": "full",
+              "outcomes": [
+                {
+                  "id": "oc_y89nbnxajavzhpqz",
+                  "name": "Canterbury-Bankstown Bulldogs",
+                  "side": "home",
+                  "line": null,
+                  "decimal_odds": 2.15,
+                  "implied_probability": 0.465116,
+                  "available": true,
+                  "alternate": false,
+                  "bookmaker": "neds",
+                  "observed_at": "2026-09-02T22:11:47.000Z"
+                },
+                {
+                  "id": "oc_w4k5zt3n6fabmxs7",
+                  "name": "Brisbane Broncos",
+                  "side": "away",
+                  "line": null,
+                  "decimal_odds": 1.7,
+                  "implied_probability": 0.588235,
+                  "available": true,
+                  "alternate": false,
+                  "bookmaker": "neds",
+                  "observed_at": "2026-09-02T22:11:47.000Z"
+                }
+              ]
+            },
+            {
+              "id": "mk_y85zsctcgd63bj3n",
+              "key": "handicap",
+              "name": "Handicap",
+              "subject": null,
+              "period": "full",
+              "outcomes": [
+                {
+                  "id": "oc_b6nk7r8axkfztjxv",
+                  "name": "Canterbury-Bankstown Bulldogs",
+                  "side": "home",
+                  "line": 4.5,
+                  "decimal_odds": 1.91,
+                  "implied_probability": 0.52356,
+                  "available": true,
+                  "alternate": false,
+                  "bookmaker": "neds",
+                  "observed_at": "2026-09-02T22:11:47.000Z"
+                },
+                {
+                  "id": "oc_hzb1tkvgr7yvvart",
+                  "name": "Brisbane Broncos",
+                  "side": "away",
+                  "line": -4.5,
+                  "decimal_odds": 1.89,
+                  "implied_probability": 0.529101,
+                  "available": true,
+                  "alternate": false,
+                  "bookmaker": "neds",
+                  "observed_at": "2026-09-02T22:11:47.000Z"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "count": 2,
+    "cursor": null
+  },
+  "links": {
+    "next": null
+  }
+}

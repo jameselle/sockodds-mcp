@@ -1,84 +1,97 @@
-/** The parts of the SockOdds v2 schema this server reads. See docs/API-NOTES.md. */
+/**
+ * The parts of the SockOdds API v1 schema this server reads, with the contract's own field names.
+ * Source: https://sockodds.com/openapi.json (SockOdds API 1.0.0). See docs/API-NOTES.md.
+ */
 
+/** Every successful v1 response: `{ data, meta, links }`. */
 export interface Envelope<T> {
-  success: boolean;
   data: T;
-  nextCursor?: string | null;
-  notice?: string;
-  error?: string;
+  meta?: { count: number; cursor: string | null };
+  links?: { next: string | null };
+}
+
+/** An error body (`application/problem+json`). */
+export interface Problem {
+  type?: string;
+  title?: string;
+  status?: number;
+  detail?: string;
+  instance?: string;
+}
+
+export interface NamedKey {
+  key: string;
+  name: string;
 }
 
 export interface League {
-  leagueID: string;
-  sportID?: string;
-  name?: string;
-  shortName?: string;
-  enabled?: boolean;
-  activeEvents?: number;
+  key: string;
+  name: string;
+  sport?: string;
+  region?: string;
 }
 
-export interface TeamSide {
-  teamID?: string;
-  names?: { long?: string; medium?: string; short?: string };
-  statEntityID?: string;
+/** A team is a NamedKey; a tennis player or fighter is `{ id, name }`. */
+export type Identity = { key: string; name: string } | { id: string; name: string };
+
+export type Role = "home" | "away" | "competitor_1" | "competitor_2";
+
+export interface Participant {
+  role: Role;
+  identity: Identity;
 }
 
-export interface ByBookmakerOdds {
-  bookmakerID?: string;
-  odds?: string;
-  decimal?: number;
-  available?: boolean;
-  lastUpdatedAt?: string;
-  spread?: string;
-  overUnder?: string;
-  expiresAt?: string;
-  carriedFrom?: string;
-  independentlyObserved?: boolean;
-  deeplink?: string;
-}
-
-export interface Odds {
-  oddID?: string;
-  opposingOddID?: string | null;
-  marketName?: string;
-  statID?: string;
-  statEntityID?: string;
-  periodID?: string;
-  betTypeID?: string;
-  sideID?: string;
-  bookOdds?: string | null;
-  fairOdds?: string | null;
-  bookSpread?: string | null;
-  bookOverUnder?: string | null;
-  fairSpread?: string | null;
-  fairOverUnder?: string | null;
-  byBookmaker?: Record<string, ByBookmakerOdds>;
-}
+export type EventStatus = "scheduled" | "live" | "final" | "postponed" | "cancelled";
 
 export interface SockEvent {
-  eventID: string;
-  sportID?: string;
-  leagueID?: string;
-  type?: string;
-  teams?: { home?: TeamSide; away?: TeamSide };
-  status?: {
-    started?: boolean;
-    ended?: boolean;
-    live?: boolean;
-    cancelled?: boolean;
-    startsAt?: string;
-    displayLong?: string;
-  };
-  info?: { displayName?: string; commenceTime?: string; lastUpdatedAt?: string; stale?: boolean };
-  odds?: Record<string, Odds>;
-  links?: { bookmakers?: Record<string, string> };
+  id: string;
+  name: string;
+  league: NamedKey;
+  scheduled_start: string;
+  status: EventStatus;
+  participants: Participant[];
+}
+
+export interface Outcome {
+  id: string;
+  name: string;
+  /** home, away, draw, over, under, yes, no, competitor_1, competitor_2, or a player id. */
+  side: string;
+  /** The outcome's own line (home -6.5 pairs with away 6.5). Null when the market has no line. */
+  line: number | null;
+  decimal_odds: number | null;
+  implied_probability: number | null;
+  available?: boolean;
+  alternate: boolean;
+  bookmaker: string;
+  observed_at: string;
+}
+
+export interface QuotedMarket {
+  /** Built from the event, market type, subject, period and line, so it is the same at every bookmaker. */
+  id: string;
+  key: string;
+  name: string;
+  subject: null | { key: string; name: string } | { id: string; name: string };
+  period: string;
+  outcomes: Outcome[];
+}
+
+export interface QuotedBookmaker {
+  key: string;
+  name: string;
+  markets: QuotedMarket[];
+}
+
+export interface OddsEvent extends SockEvent {
+  bookmakers?: QuotedBookmaker[];
 }
 
 /** The result of one API call, with the moment it was read. */
 export interface Fetched<T> {
   data: T;
-  notice?: string;
-  nextCursor?: string | null;
+  /** `links.next`: set when there is another page. */
+  next?: string | null;
   fetchedAt: string;
   source: "live" | "demo";
 }

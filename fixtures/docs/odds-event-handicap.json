@@ -1,0 +1,76 @@
+{
+  "data": {
+    "id": "ev_000ckk0nc1tg",
+    "name": "Australia v New Zealand",
+    "league": {
+      "key": "rlwc",
+      "name": "Rugby League World Cup"
+    },
+    "scheduled_start": "2026-10-15T09:05:00.000Z",
+    "status": "scheduled",
+    "participants": [
+      {
+        "role": "away",
+        "identity": {
+          "key": "new_zealand_rugby_league",
+          "name": "New Zealand"
+        }
+      },
+      {
+        "role": "home",
+        "identity": {
+          "key": "australia_rugby_league",
+          "name": "Australia"
+        }
+      }
+    ],
+    "bookmakers": [
+      {
+        "key": "tab",
+        "name": "TAB",
+        "markets": [
+          {
+            "id": "mk_4n31ewa9j30vmrxd",
+            "key": "handicap",
+            "name": "Handicap",
+            "subject": null,
+            "period": "full",
+            "outcomes": [
+              {
+                "id": "oc_023zzy2y32rg8dbb",
+                "name": "Australia",
+                "side": "home",
+                "line": -6.5,
+                "decimal_odds": 1.96,
+                "implied_probability": 0.510204,
+                "available": true,
+                "alternate": false,
+                "bookmaker": "tab",
+                "observed_at": "2026-10-15T07:58:00.000Z"
+              },
+              {
+                "id": "oc_pacntj8smhyp1rjt",
+                "name": "New Zealand",
+                "side": "away",
+                "line": 6.5,
+                "decimal_odds": 1.96,
+                "implied_probability": 0.510204,
+                "available": true,
+                "alternate": false,
+                "bookmaker": "tab",
+                "observed_at": "2026-10-15T07:58:00.000Z"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "meta": {
+    "count": 1,
+    "cursor": null
+  },
+  "links": {
+    "next": null
+  }
+}

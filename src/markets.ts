@@ -1,91 +1,72 @@
-/** Turn a SockOdds event into the handful of markets people ask about. Pure functions. */
-import { americanToDecimal, type BookMarket, type Quote } from "./odds-math.js";
-import type { Odds, SockEvent } from "./types.js";
+/** Turn a SockOdds v1 event's prices into the handful of markets people ask about. Pure functions. */
+import type { BookMarket, Quote } from "./odds-math.js";
+import type { OddsEvent, QuotedMarket, SockEvent } from "./types.js";
 
 export type MarketKind = "h2h" | "h2h_3way" | "line" | "total";
 export const MARKET_KINDS: MarketKind[] = ["h2h", "h2h_3way", "line", "total"];
 
-const BET_TYPE_BY_KIND: Record<MarketKind, string> = { h2h: "ml", h2h_3way: "ml3way", line: "sp", total: "ou" };
-const KIND_BY_BET_TYPE: Record<string, MarketKind> = { ml: "h2h", ml3way: "h2h_3way", sp: "line", ou: "total" };
-const MAIN_PERIODS = ["game", "reg"];
-const SIDE_ORDER = ["home", "away", "draw", "over", "under", "yes", "no", "odd", "even"];
+/**
+ * v1 market keys behind each kind, from the market catalogue (https://sockodds.com/docs/markets/).
+ * A sport has one main total: points (football codes, basketball), goals (soccer, ice hockey),
+ * runs (baseball), games (tennis), rounds (UFC) or maps (esports). AFL prices both points and
+ * goals totals; points comes first.
+ */
+export const MARKET_KEYS: Record<MarketKind, string[]> = {
+  h2h: ["winner"],
+  h2h_3way: ["result"],
+  line: ["handicap"],
+  total: ["total_points", "total_goals", "total_runs", "total_games", "total_rounds", "total_maps"],
+};
+
+/** Every main market key, for the `markets` filter (at most 20 keys). */
+export const MAIN_MARKET_KEYS: string[] = MARKET_KINDS.flatMap((k) => MARKET_KEYS[k]);
+
+/** Whole-game periods, best first: `full` includes extra time, `regulation` does not. */
+const MAIN_PERIODS = ["full", "regulation"];
+const SIDE_ORDER = ["home", "competitor_1", "away", "competitor_2", "draw", "over", "under", "yes", "no", "odd", "even"];
 
 export interface SideView {
-  oddID: string;
-  sideID: string;
+  /** The outcome's side key: home, away, draw, over, under, competitor_1, ... */
+  side: string;
   label: string;
   quotes: Quote[];
-  /** Consensus line across books (bookSpread / bookOverUnder), when the market has one. */
-  consensusLine?: number;
-  /** SockOdds' consensus price across books, as decimal. Includes the margin. */
-  bookDecimal?: number;
-  /** SockOdds' own sharp-sourced fair price, as decimal. Null on plans without fair odds. */
-  fairDecimal?: number;
-  fairLine?: number;
 }
 
 export interface MarketView {
-  key: string;
+  /** market key | subject | period */
+  groupKey: string;
   kind?: MarketKind;
-  statID: string;
-  periodID: string;
-  betTypeID: string;
+  /** v1 market key, such as `winner` or `handicap`. */
+  key: string;
+  period: string;
+  /** True for a handicap, whose lines carry a sign (home -6.5 pairs with away +6.5). */
+  signed: boolean;
   label: string;
   sides: SideView[];
 }
 
-function num(s: string | number | null | undefined): number | undefined {
-  if (s === null || s === undefined || s === "") return undefined;
-  const n = Number(s);
-  return Number.isFinite(n) ? n : undefined;
-}
-
-export function teamName(ev: SockEvent, side: "home" | "away"): string {
-  const t = ev.teams?.[side];
-  return t?.names?.long || t?.names?.medium || t?.teamID || side;
+function kindOf(m: QuotedMarket): MarketKind | undefined {
+  if (m.subject !== null || !MAIN_PERIODS.includes(m.period)) return undefined;
+  return MARKET_KINDS.find((k) => MARKET_KEYS[k].includes(m.key));
 }
 
 export function eventTitle(ev: SockEvent): string {
-  if (ev.teams?.home || ev.teams?.away) return `${teamName(ev, "home")} v ${teamName(ev, "away")}`;
-  return ev.info?.displayName || ev.eventID;
+  if (ev.name) return ev.name;
+  const byRole = (role: string) => ev.participants?.find((p) => p.role === role)?.identity.name;
+  const first = byRole("home") ?? byRole("competitor_1");
+  const second = byRole("away") ?? byRole("competitor_2");
+  return first && second ? `${first} v ${second}` : ev.id;
 }
 
 export function eventStart(ev: SockEvent): string | undefined {
-  return ev.status?.startsAt || ev.info?.commenceTime;
+  return ev.scheduled_start;
 }
 
-export function quotesFor(odds: Odds): Quote[] {
-  const out: Quote[] = [];
-  for (const [id, b] of Object.entries(odds.byBookmaker ?? {})) {
-    const decimal = typeof b.decimal === "number" ? b.decimal : americanToDecimal(b.odds);
-    if (decimal === undefined) continue;
-    out.push({
-      bookmakerID: b.bookmakerID || id,
-      decimal,
-      american: b.odds,
-      line: num(b.spread ?? b.overUnder),
-      available: b.available !== false,
-      lastUpdatedAt: b.lastUpdatedAt,
-      expiresAt: b.expiresAt,
-      carriedFrom: b.carriedFrom,
-    });
-  }
-  return out;
+function subjectLabel(m: QuotedMarket): string {
+  return m.subject ? m.subject.name : "";
 }
 
-function isComboSide(sideID: string): boolean {
-  return sideID.includes("+") || sideID.startsWith("not_");
-}
-
-function sideLabel(ev: SockEvent, o: Odds): string {
-  const side = o.sideID ?? "";
-  if ((side === "home" || side === "away") && ["ml", "ml3way", "sp"].includes(o.betTypeID ?? "")) return teamName(ev, side);
-  if (side === "draw") return "Draw";
-  if (side) return side.charAt(0).toUpperCase() + side.slice(1);
-  return o.marketName || o.oddID || "?";
-}
-
-function marketLabel(kind: MarketKind | undefined, o: Odds, ev: SockEvent): string {
+function marketLabel(kind: MarketKind | undefined, m: QuotedMarket): string {
   const base =
     kind === "h2h"
       ? "Head to head"
@@ -93,79 +74,74 @@ function marketLabel(kind: MarketKind | undefined, o: Odds, ev: SockEvent): stri
         ? "Head to head (with the draw)"
         : kind === "line"
           ? "Line (handicap)"
-          : kind === "total" && o.statEntityID !== "all" && (o.statEntityID === "home" || o.statEntityID === "away")
-            ? `Team total: ${teamName(ev, o.statEntityID)}`
-            : kind === "total"
-              ? "Total points"
-              : (o.marketName ?? o.oddID ?? "Market").replace(/\s[\u2013\u2014]\s.*$/, "");
-  const period = o.periodID && o.periodID !== "game" ? ` [period: ${o.periodID}]` : "";
+          : kind === "total"
+            ? m.name
+            : `${m.name}${m.subject ? `: ${subjectLabel(m)}` : ""}`;
+  const period = m.period !== "full" ? ` [period: ${m.period}]` : "";
   return base + period;
 }
 
-/** Group key: one market holds every side of the same stat, period and bet type. */
-function groupKey(o: Odds): string {
-  const entity = ["ml", "ml3way", "sp"].includes(o.betTypeID ?? "") ? "match" : o.statEntityID;
-  return [o.statID, entity, o.periodID, o.betTypeID].join("|");
+function groupKeyOf(m: QuotedMarket): string {
+  const subject = m.subject ? ("key" in m.subject ? m.subject.key : m.subject.id) : "event";
+  return [m.key, subject, m.period].join("|");
 }
 
-export function isMainMarket(o: Odds): boolean {
-  const kind = KIND_BY_BET_TYPE[o.betTypeID ?? ""];
-  if (!kind || o.statID !== "points" || !MAIN_PERIODS.includes(o.periodID ?? "")) return false;
-  if (isComboSide(o.sideID ?? "")) return false;
-  if (kind === "total") return o.statEntityID === "all";
-  return true;
-}
-
-export function groupMarkets(ev: SockEvent, opts: { mainOnly?: boolean } = {}): MarketView[] {
+/**
+ * Line the bookmakers' markets up by market type, subject and period, with one side per outcome
+ * side and one quote per bookmaker and line. Outcomes without a current price are skipped.
+ */
+export function groupMarkets(ev: OddsEvent, opts: { mainOnly?: boolean } = {}): MarketView[] {
   const mainOnly = opts.mainOnly ?? true;
   const groups = new Map<string, MarketView>();
-  for (const [oddID, o] of Object.entries(ev.odds ?? {})) {
-    if (mainOnly && !isMainMarket(o)) continue;
-    if (isComboSide(o.sideID ?? "")) continue;
-    const key = groupKey(o);
-    const kind = isMainMarket(o) ? KIND_BY_BET_TYPE[o.betTypeID ?? ""] : undefined;
-    let g = groups.get(key);
-    if (!g) {
-      g = {
-        key,
-        kind,
-        statID: o.statID ?? "",
-        periodID: o.periodID ?? "",
-        betTypeID: o.betTypeID ?? "",
-        label: marketLabel(kind, o, ev),
-        sides: [],
-      };
-      groups.set(key, g);
+  for (const book of ev.bookmakers ?? []) {
+    for (const m of book.markets ?? []) {
+      const kind = kindOf(m);
+      if (mainOnly && !kind) continue;
+      const key = groupKeyOf(m);
+      let g = groups.get(key);
+      if (!g) {
+        g = { groupKey: key, kind, key: m.key, period: m.period, signed: m.key === "handicap", label: marketLabel(kind, m), sides: [] };
+        groups.set(key, g);
+      }
+      for (const o of m.outcomes ?? []) {
+        if (typeof o.decimal_odds !== "number") continue;
+        let side = g.sides.find((s) => s.side === o.side);
+        if (!side) {
+          side = { side: o.side, label: o.name || o.side, quotes: [] };
+          g.sides.push(side);
+        }
+        side.quotes.push({
+          bookmakerID: o.bookmaker || book.key,
+          bookmakerName: book.name,
+          decimal: o.decimal_odds,
+          line: typeof o.line === "number" ? o.line : undefined,
+          available: o.available !== false,
+          observedAt: o.observed_at,
+          outcomeID: o.id,
+        });
+      }
     }
-    g.sides.push({
-      oddID: o.oddID || oddID,
-      sideID: o.sideID ?? "",
-      label: sideLabel(ev, o),
-      quotes: quotesFor(o),
-      consensusLine: num(o.bookSpread ?? o.bookOverUnder),
-      bookDecimal: americanToDecimal(o.bookOdds),
-      fairDecimal: americanToDecimal(o.fairOdds),
-      fairLine: num(o.fairSpread ?? o.fairOverUnder),
-    });
   }
   const rank = (s: string) => (SIDE_ORDER.indexOf(s) === -1 ? 99 : SIDE_ORDER.indexOf(s));
   const kindRank = (k?: MarketKind) => (k ? MARKET_KINDS.indexOf(k) : 99);
-  const out = [...groups.values()];
-  for (const g of out) g.sides.sort((a, b) => rank(a.sideID) - rank(b.sideID));
+  const keyRank = (g: MarketView) => (g.kind ? MARKET_KEYS[g.kind].indexOf(g.key) : 0);
+  const periodRank = (p: string) => (MAIN_PERIODS.indexOf(p) === -1 ? 9 : MAIN_PERIODS.indexOf(p));
+  const out = [...groups.values()].filter((g) => g.sides.length > 0);
+  for (const g of out) g.sides.sort((a, b) => rank(a.side) - rank(b.side) || a.label.localeCompare(b.label));
   out.sort(
     (a, b) =>
       kindRank(a.kind) - kindRank(b.kind) ||
-      MAIN_PERIODS.indexOf(a.periodID) - MAIN_PERIODS.indexOf(b.periodID) ||
-      a.key.localeCompare(b.key),
+      keyRank(a) - keyRank(b) ||
+      periodRank(a.period) - periodRank(b.period) ||
+      a.groupKey.localeCompare(b.groupKey),
   );
   return out;
 }
 
 /** Find a main market of one kind, preferring the full game over regulation time. */
-export function findMarket(ev: SockEvent, kind: MarketKind, periodID?: string): MarketView | undefined {
-  const bt = BET_TYPE_BY_KIND[kind];
-  const candidates = groupMarkets(ev, { mainOnly: true }).filter((m) => m.betTypeID === bt);
-  if (periodID) return candidates.find((m) => m.periodID === periodID);
+export function findMarket(ev: OddsEvent, kind: MarketKind, period?: string): MarketView | undefined {
+  const candidates = groupMarkets(ev, { mainOnly: true }).filter((m) => m.kind === kind);
+  if (period) return candidates.find((m) => m.period === period);
   return candidates[0];
 }
 
@@ -182,20 +158,19 @@ function mode(values: number[]): number | undefined {
 }
 
 /**
- * The line to compare prices at for one side. Uses the given line, else SockOdds'
- * consensus line, else the line most books quote. Undefined for markets without lines.
+ * The line to compare prices at for one side: the given line, else the line most bookmakers
+ * quote right now. Undefined for markets without lines.
  */
 export function chooseLine(side: SideView, requested?: number): number | undefined {
   if (requested !== undefined) return requested;
   const lines = side.quotes.map((q) => q.line).filter((l): l is number => l !== undefined);
   if (lines.length === 0) return undefined;
-  if (side.consensusLine !== undefined) return side.consensusLine;
   return mode(side.quotes.filter((q) => q.available).map((q) => q.line).filter((l): l is number => l !== undefined)) ?? mode(lines);
 }
 
 /**
- * Each bookmaker's complete, open market at one line, ready for de-vigging.
- * `line` is the first side's line (the home team's line for a handicap, the total for over/under).
+ * Each bookmaker's complete, available market at one line, ready for de-vigging.
+ * `line` is the first side's line (the home side's line for a handicap, the total for over/under).
  * A handicap pairs home at L with away at -L; a total pairs over and under at the same L.
  */
 export function bookMarketsAt(market: MarketView, line?: number): { line?: number; outcomes: string[]; books: BookMarket[] } {
@@ -204,7 +179,7 @@ export function bookMarketsAt(market: MarketView, line?: number): { line?: numbe
   const lineUsed = first ? chooseLine(first, line) : undefined;
   const lineForSide = (i: number): number | undefined => {
     if (lineUsed === undefined) return undefined;
-    if (market.betTypeID === "sp" && i > 0) return lineUsed === 0 ? 0 : -lineUsed;
+    if (market.signed && i > 0) return lineUsed === 0 ? 0 : -lineUsed;
     return lineUsed;
   };
   const bookIDs = new Set(sides.flatMap((s) => s.quotes.map((q) => q.bookmakerID)));
@@ -213,13 +188,18 @@ export function bookMarketsAt(market: MarketView, line?: number): { line?: numbe
     const decimals: number[] = [];
     for (let i = 0; i < sides.length; i++) {
       const want = lineForSide(i);
-      const q = sides[i].quotes.find(
-        (x) => x.bookmakerID === id && x.available && (want === undefined || x.line === want),
-      );
+      const q = sides[i].quotes.find((x) => x.bookmakerID === id && x.available && (want === undefined || x.line === want));
       if (!q) break;
       decimals.push(q.decimal);
     }
     if (decimals.length === sides.length) books.push({ bookmakerID: id, decimals });
   }
   return { line: lineUsed, outcomes: sides.map((s) => s.label), books };
+}
+
+/** Objects a response uses: one for the event, plus one per priced outcome (https://sockodds.com/docs/limits/). */
+export function objectsUsed(ev: OddsEvent): number {
+  let outcomes = 0;
+  for (const b of ev.bookmakers ?? []) for (const m of b.markets ?? []) outcomes += (m.outcomes ?? []).length;
+  return 1 + outcomes;
 }

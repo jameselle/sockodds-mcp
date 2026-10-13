@@ -1,124 +1,117 @@
-# SockOdds API notes
+# SockOdds API notes (v1)
 
-Everything this server relies on, taken only from the public SockOdds website and docs.
-Read on 6 October 2026. If the docs change, these notes and the fixtures may need updating.
+Everything this server relies on, taken only from the public SockOdds API v1 contract and docs:
+the OpenAPI contract at https://sockodds.com/openapi.json and the guides under https://sockodds.com/docs/ .
+Written for sockodds-mcp 1.0.0 against SockOdds API 1.0.0. If the contract changes, these notes and the
+fixtures may need updating.
 
-The docs also serve Markdown copies of each page: add `.md` to the page path, for example
-`https://sockodds.com/docs/basics/quickstart.md`.
+Every docs page is also served as Markdown: add `.md` to the page path, for example
+`https://sockodds.com/docs/quickstart.md`.
 
 ## Basics
 
 | What | Value | Source |
 | --- | --- | --- |
-| Base URL | `https://api.sockodds.com/v2` | https://sockodds.com/docs/reference/ and https://sockodds.com/docs/basics/cheat-sheet/ |
-| Auth | `x-api-key: <key>` header (case-insensitive), or `?apiKey=`. This server only uses the header so the key stays out of URLs and logs. | https://sockodds.com/docs/reference/ , https://sockodds.com/docs/faq/ |
-| Schema | SockOdds v2: paths, envelope and oddID grammar | https://sockodds.com/docs/ , https://sockodds.com/openapi.json |
-| Envelope | `{ success, data, nextCursor, notice }`; errors are `{ success: false, error }` | https://sockodds.com/docs/basics/cheat-sheet/ |
-| OpenAPI | https://sockodds.com/openapi.json | https://sockodds.com/docs/reference/ |
-
-`notice` appears only when the key's plan filtered the response (league scope, bookmaker cap, fair odds).
-Source: https://sockodds.com/docs/info/rate-limiting/
+| Base URL | `https://api.sockodds.com/v1` | https://sockodds.com/docs/ |
+| Auth | `Authorization: Bearer <key>` only. A key in the query string or any other header is ignored and the request fails with 401. | https://sockodds.com/docs/authentication/ |
+| Envelope | `{ data, meta: { count, cursor }, links: { next } }` | https://sockodds.com/docs/quickstart/ |
+| Errors | `application/problem+json`: `{ type, title, status, detail, instance }` | https://sockodds.com/docs/errors/ |
+| Paging | Follow `links.next` unchanged until it is null. `limit` 1 to 100, default 25. | https://sockodds.com/docs/pagination/ |
+| Times | UTC, ISO 8601 ending in `Z`. Offsets such as `+10:00` are refused. | https://sockodds.com/docs/errors/ |
+| Prices | Decimal only (`decimal_odds`), exactly as the bookmaker showed them. A price not seen for ten minutes is withheld from current responses. | https://sockodds.com/docs/odds/ |
 
 ## Endpoints used
 
-### GET /leagues/ (tool: list_leagues)
+### GET /v1/leagues (tool: list_leagues)
 
-Doc: https://sockodds.com/docs/endpoints/getLeagues/
+- Query: `sport` (optional sport key, such as `rugby_league`), `limit` (this server sends 100).
+- League fields read: `key`, `name`, `sport`, `region`.
+- The response does not say whether the key's plan covers a league. A league outside the plan answers
+  403 `Plan restriction` when it is asked for.
 
-- Query: `sportID` (optional), `leagueID` (optional).
-- Response: `{ success, data: League[], nextCursor }`.
-- League fields read: `leagueID`, `sportID`, `name`, `shortName`, `enabled` (whether the key's plan can read it), `activeEvents`.
-- The docs show no example body for this endpoint, so `fixtures/demo/leagues-demo.json` is built from the documented fields.
+### GET /v1/events (tool: find_event)
 
-### GET /events/ (tools: find_event, get_odds, best_price, fair_odds)
+| Parameter | Why |
+| --- | --- |
+| `league` | One league key, to keep the search small |
+| `starts_after` | Six hours ago, so games in progress are still found |
+| `starts_before` | `days_ahead` days from now |
+| `limit` | 25 with a league, 50 without (at most 100) |
 
-Doc: https://sockodds.com/docs/endpoints/getEvents/ ; example response: https://sockodds.com/docs/basics/quickstart/
+Event fields read: `id`, `name` (home side first in team sports), `league.key`, `league.name`,
+`scheduled_start`, `status` (`scheduled`, `live`, `final`, `postponed`, `cancelled`), and
+`participants[].role` and `participants[].identity.name` / `.key` for matching team names. Finished and
+cancelled events are left out of the answer. `links.next` set means more events matched than were fetched.
 
-Query parameters this server sends:
+### GET /v1/events/{event_id}/odds (tools: get_odds, best_price, fair_odds)
 
 | Parameter | Used by | Why |
 | --- | --- | --- |
-| `leagueID` | find_event | Keep the search to one league (each event returned counts as one object) |
-| `oddsAvailable=true` | find_event | Only events with markets open now |
-| `startsBefore` (ISO date) | find_event | Only events in the next `days_ahead` days |
-| `oddID=points-home-game-ml-home` + `includeOpposingOdds=true` | find_event | Shrink the payload to the head to head only (pattern from the cheat sheet) |
-| `limit` | find_event | Default 10, max 100 per the docs; this server uses 25 (50 with no league) |
-| `eventID` | get_odds, best_price, fair_odds | One event. eventID overrides every other filter |
-| `bookmakerID` | get_odds (optional) | Comma separated list, for example `sportsbet,tab` |
+| `markets` | get_odds (unless `all_markets`), best_price (with `market`), fair_odds | Only the market keys shown, so fewer objects are used |
+| `bookmakers` | get_odds (optional) | Comma separated bookmaker keys, at most 20 |
 
-Without a date window or eventID, events that kicked off more than 24 hours ago are left out (SockOdds extension `includeFinished`).
+Fields read: the event fields above, then `bookmakers[].key` and `.name`; each market's `id`, `key`,
+`name`, `subject`, `period`; each outcome's `id`, `name`, `side`, `line`, `decimal_odds`, `available`,
+`bookmaker` and `observed_at`.
 
-Response: `{ success, data: Event[], nextCursor, notice? }`. Fields read:
+Markets are lined up across bookmakers by market key, subject and period, and each side by the outcome's
+`side`. The market `id` includes the line, so it is not used to group lines together; an outcome `id` is
+the same at every bookmaker for one market, line and side, which is what `best_price` takes as `outcome_id`.
 
-- `Event.eventID`, `leagueID`, `sportID`
-- `Event.teams.home|away.names.long|medium|short`, `teamID`
-- `Event.status.startsAt`, `live`, and `Event.info.commenceTime`, `displayName`, `stale` (true when no source write for 45 minutes)
-- `Event.odds[oddID]`: `oddID`, `statID`, `statEntityID`, `periodID`, `betTypeID`, `sideID`, `marketName`,
-  `bookOdds` (consensus with margin, American string), `fairOdds` (sharp de-vigged consensus, American string or null),
-  `bookSpread`, `bookOverUnder`, `fairSpread`, `fairOverUnder`
-- `Event.odds[oddID].byBookmaker[bookmakerID]`: `odds` (American string), `decimal` (number), `available`,
-  `lastUpdatedAt`, `spread`, `overUnder`, `expiresAt`, `carriedFrom`
+### Market keys for the main markets
 
-Field reference: https://sockodds.com/docs/reference/ (Event, Odds, ByBookmakerOdds) and https://sockodds.com/docs/data-types/odds/
+From the market catalogue (https://sockodds.com/docs/markets/). Main markets are whole-event markets
+(`subject` null) in period `full`, else `regulation`.
 
-### oddID grammar
-
-`{statID}-{statEntityID}-{periodID}-{betTypeID}-{sideID}`, for example `points-home-game-ml-home`.
-Source: https://sockodds.com/docs/data-types/odds/
-
-What this server treats as a "main market" (statID `points`, periodID `game`, else `reg`):
-
-| Tool name | betTypeID | Sides | Source |
-| --- | --- | --- | --- |
-| `h2h` | `ml` | home, away | https://sockodds.com/docs/data-types/bet-types/ |
-| `h2h_3way` | `ml3way` | home, away, draw (the combined sides such as `home+draw` are skipped) | same |
-| `line` | `sp` | home, away; lines mirror (home -2.5 pairs with away +2.5) | https://sockodds.com/docs/info/consensus-odds/ |
-| `total` | `ou` | over, under at the same total (statEntityID `all`) | same |
-
-Periods: https://sockodds.com/docs/data-types/periods/
+| Tool name | v1 market keys | Sides |
+| --- | --- | --- |
+| `h2h` | `winner` | home, away (competitor_1, competitor_2 in tennis and UFC) |
+| `h2h_3way` | `result` | home, draw, away |
+| `line` | `handicap` | home, away; each outcome carries its own line (home -6.5 pairs with away 6.5) |
+| `total` | `total_points`, `total_goals`, `total_runs`, `total_games`, `total_rounds`, `total_maps` (first priced wins) | over, under at the same line |
 
 ## Errors and limits
 
-Source: https://sockodds.com/docs/info/errors/ and https://sockodds.com/docs/info/rate-limiting/
+Source: https://sockodds.com/docs/errors/ and https://sockodds.com/docs/limits/
 
-| Status | Body | What this server does |
+| Status | Title | What this server does |
 | --- | --- | --- |
-| 401 | `{"success":false,"error":"Invalid API key"}` | Says the key was rejected and links to signup |
-| 403 | `{"success":false,"error":"Inactive API key"}` | Says the key is inactive, contact api@sockodds.com |
-| 429 | `{"success":false,"error":"Rate limit exceeded"}` with `Retry-After` (seconds) | Explains the free limits, does not retry, and refuses further calls locally until Retry-After passes (rejected calls still count for the minute) |
-| 400, 404, 5xx | `{ success: false, error }` | Shows the message; does not retry |
+| 400 | `Invalid request` | Shows the detail; retrying unchanged will not help |
+| 401 | `Unauthorised` | Says the key was rejected and links to signup |
+| 401 | `Access changed` | Asks for the active key |
+| 403 | `Plan restriction` | Names what the free plan covers and links to pricing |
+| 404 | `Not found` | Points to find_event for a current ev_ ID; a 404 with no problem body points at SOCKODDS_BASE_URL |
+| 410 | (retired API) | Says the address is retired and to use `https://api.sockodds.com/v1` |
+| 429 | `Rate limit reached` (with `Retry-After`) | Explains the limit, does not retry, and refuses further calls locally until Retry-After passes |
+| 429 | `Monthly allowance reached` (no `Retry-After`) | Says retrying will not help until the next UTC month |
+| 503 | `Service unavailable` | Asks to try again shortly; does not retry |
 
-The docs suggest one retry on 500 and 503. This server does not retry at all, so a person never burns quota without asking.
+This server never retries on its own, so a person never spends allowance without asking.
 
-Every response carries `x-ratelimit-limit` and `x-ratelimit-remaining` (fixed epoch minutes). Not read yet.
+Usage is counted in objects: each record in `data` is one, and each priced outcome inside an odds
+response is one more. Catalogue lists count one object per record.
 
-## Free tier (Developer plan), as stated publicly
+## Free plan (Developer), as stated publicly
 
-From https://sockodds.com/pricing/ , https://sockodds.com/signup/ and https://sockodds.com/docs/faq/ :
+From https://sockodds.com/pricing/ and https://sockodds.com/docs/limits/ :
 
 - Free, no card required
-- 2,500 objects per month (reset at the start of each UTC calendar month)
-- 10 requests per minute
-- About 2 minute update frequency
-- 4 leagues: MLB, NFL, AFL and NRL
-- 3 bookmakers: Sportsbet, TAB and Ladbrokes
-- An object is a top-level item in a response: one event with all its markets and books is one object; ten events is ten objects
+- 2,500 objects a month (reset each UTC calendar month)
+- 10 requests a minute
+- Leagues: MLB, NFL, AFL, NRL, Rugby League World Cup, Rugby League World Cup Women's
+- Bookmakers: Sportsbet, TAB, Ladbrokes. Others are left out of responses rather than refused.
 
-## Price history: why there is no explain_line_movement tool
+## Not used
 
-`GET /v2/odds/history/` exists (https://sockodds.com/docs/endpoints/getOddsHistory/), but the homepage
-(https://sockodds.com/) and FAQ (https://sockodds.com/docs/faq/) say recorded price movements are a Pro and
-Platform feature. The free key cannot use it, so the tool is left out.
+- `/v1/odds/history`, `/v1/history/files`, `snapshots=` and `/v1/stream/odds` are Pro only, so there is
+  no line movement tool.
+- `/v1/odds` (many events with prices) costs an object per priced outcome, so `find_event` reads
+  `/v1/events` and the odds tools read one event at a time.
+- `/v1/results`, `/v1/events/lookup`, `/v1/teams`, `/v1/players`, `/v1/markets` and `/v1/bookmakers`.
 
 ## Not verified without a key
 
-- Live response bodies. Every fixture is either copied from the docs (`fixtures/docs/`) or invented in the
-  documented shape (`fixtures/demo/`).
-- Exactly how `ml3way` is keyed for soccer (the period may be `game` or `reg`); the server looks for both.
-- What happens when the monthly object allowance runs out. The docs describe 429 for the per-minute limit only;
-  this server treats any 429 the same way and shows SockOdds' own error text.
-- Whether `fairOdds` is filled on the free plan. The pricing page lists "Fair odds (fairOdds, de-vigged)" for
-  Developer, while https://sockodds.com/docs/info/consensus-odds/ says fair fields are always null on the Lite
-  plan. The `fair_odds` tool works out its own no-vig price from bookmaker prices either way, and shows
-  SockOdds' sharp fair price when it is present.
-- Whether passing `oddID` to `/events/` drops events that do not price that market.
+- Live response bodies. Every fixture is either copied from the recorded samples on the docs pages
+  (`fixtures/docs/`) or invented in the documented shape (`fixtures/demo/`).
+- Whether `/v1/leagues` lists only the leagues in the key's plan.
+- The exact `detail` text of a 429; `fixtures/docs/error-429*.json` are built from the documented titles.

@@ -1,0 +1,7 @@
+{
+  "type": "https://api.sockodds.com/problems/404",
+  "title": "Not found",
+  "status": 404,
+  "detail": "Event not found.",
+  "instance": "/v1/events/ev_000000000000"
+}

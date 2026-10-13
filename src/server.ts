@@ -5,26 +5,26 @@ import { type Settings } from "./config.js";
 import { SockOddsError } from "./errors.js";
 import { bestPrice, fairOdds, findEvent, getOdds, listLeagues, type ToolDeps } from "./tools.js";
 
-export const VERSION = "0.1.0";
+export const VERSION = "1.0.0";
 
 const MARKET_ENUM = ["h2h", "h2h_3way", "line", "total"] as const;
 
 export const INSTRUCTIONS = [
-  "Answers 'what are the odds on X right now' from the SockOdds sports odds API (Australian bookmakers, decimal odds).",
+  "Answers 'what are the odds on X right now' from SockOdds API v1 (Australian and international bookmakers, decimal odds).",
   "Usual flow: find_event to get an event ID, then get_odds, best_price or fair_odds.",
   "Always tell the person which bookmaker each price is from and when it was read. Odds change; nothing here is a tip. 18+, gamble responsibly.",
-  "Each event fetched counts as one object against the key's monthly allowance (2,500 on the free plan), and the free plan allows 10 requests a minute. Responses are cached for 60 s.",
+  "Usage is counted in objects: each event returned is one, plus one for every priced outcome in an odds answer (2,500 a month on the free plan, which also allows 10 requests a minute). Responses are cached for 60 s.",
 ].join(" ");
 
 const TOOL_TEXT = {
   list_leagues:
-    "List the leagues SockOdds carries and whether this API key's plan can read each one. The free Developer plan covers MLB, NFL, AFL and NRL. Use it when you are unsure of a leagueID.",
+    "List the leagues SockOdds carries, with each league's key (for example afl, nrl, nfl, mlb, rlwc). The free Developer plan covers MLB, NFL, AFL, NRL and the Rugby League World Cup (men's and women's). Use it when you are unsure of a league key.",
   find_event:
-    "Find upcoming events (games) from a plain question such as 'Broncos v Bulldogs', 'AFL grand final' or 'Lions Crows'. Returns matching events with start times (local and UTC), event IDs and the best head to head price per side. Pass league_id whenever you know the league (for example AFL, NRL, NFL, MLB): it keeps the search small, because every event returned counts as one object against the key's monthly allowance. With no team named, it lists the soonest events in the league.",
+    "Find upcoming and live events (games) from a plain question such as 'Broncos v Bulldogs', 'AFL grand final' or 'Australia v New Zealand'. Returns matching events with start times (local and UTC) and event IDs (ev_...), but no prices. Pass league_id whenever you know the league (for example afl, nrl, nfl, mlb, rlwc): it keeps the search small, because every event returned counts as one object against the key's monthly allowance. With no team named, it lists the soonest events in the league.",
   get_odds:
-    "Get every bookmaker's current decimal prices for one event's main markets: head to head (with the draw where the sport has one), line (handicap) and total points. Each price shows the bookmaker and when it was last seen. Set all_markets to true to include every priced market, such as halves and props. Costs one object.",
+    "Get every bookmaker's current decimal prices for one event's main markets: head to head (with the draw where the sport has one), line (handicap) and the main total. Each price shows the bookmaker and when SockOdds saw it. Set all_markets to true to include every priced market, such as halves and props (this costs more objects: one for the event plus one per priced outcome).",
   best_price:
-    "Find the best (highest) decimal price for one side of one market across bookmakers, and show the rest of the field. Only prices open right now count; suspended or expired prices are listed separately. For line and total markets prices are compared at one line only: the line you give, else SockOdds' consensus line. Give market and side, or an exact odd_id from get_odds. Costs one object.",
+    "Find the best (highest) decimal price for one side of one market across bookmakers, and show the rest of the field. Only available prices count. For line and total markets prices are compared at one line only: the line you give, else the line most bookmakers quote. Give market and side, or an exact outcome_id (oc_...) from get_odds with all_markets.",
   fair_odds:
     "Work out the no-vig (margin-free) fair price for a two- or three-way market. Method: for each bookmaker that prices every outcome at the same line, convert prices to implied chances (1 / decimal price), divide by their total so they add to 100% (the proportional method), then average those chances across bookmakers and convert back (1 / chance). Also reports each bookmaker's margin and the combined margin of the best prices. Use event_id and market for live prices, or pass prices to calculate by hand with no API call. The result estimates the chance; it is not a prediction or a tip.",
 };
@@ -56,7 +56,7 @@ export function createServer(settings: Settings, source: OddsSource = sourceFor(
     {
       title: "List leagues",
       description: TOOL_TEXT.list_leagues,
-      inputSchema: { sport_id: z.string().optional().describe("Optional sportID filter, for example AUSSIE_RULES or RUGBY_LEAGUE") },
+      inputSchema: { sport_id: z.string().optional().describe("Optional sport key filter, for example australian_football, rugby_league or soccer") },
       annotations: readOnly,
     },
     wrap(deps, listLeagues),
@@ -69,7 +69,7 @@ export function createServer(settings: Settings, source: OddsSource = sourceFor(
       description: TOOL_TEXT.find_event,
       inputSchema: {
         query: z.string().min(1).describe("Plain question or team names, for example 'Broncos v Bulldogs' or 'AFL grand final'"),
-        league_id: z.string().optional().describe("League, for example AFL, NRL, NFL, MLB. Strongly recommended."),
+        league_id: z.string().optional().describe("League key, for example afl, nrl, nfl, mlb or rlwc. Strongly recommended."),
         days_ahead: z.number().int().min(1).max(60).optional().describe("Only events starting within this many days. Default 14."),
         limit: z.number().int().min(1).max(100).optional().describe("Most events to fetch. Default 25 with a league, 50 without."),
       },
@@ -84,8 +84,8 @@ export function createServer(settings: Settings, source: OddsSource = sourceFor(
       title: "Get odds for an event",
       description: TOOL_TEXT.get_odds,
       inputSchema: {
-        event_id: z.string().min(1).describe("Event ID from find_event, for example afl_2026-09-12_brisbane_lions_vs_adelaide_crows"),
-        bookmakers: z.string().optional().describe("Optional comma separated bookmakerIDs, for example sportsbet,tab"),
+        event_id: z.string().min(1).describe("Event ID from find_event, for example ev_000ckk0nc1tg"),
+        bookmakers: z.string().optional().describe("Optional comma separated bookmaker keys, at most 20, for example sportsbet,tab"),
         all_markets: z.boolean().optional().describe("Include every priced market, not just head to head, line and total"),
       },
       annotations: readOnly,
@@ -101,8 +101,11 @@ export function createServer(settings: Settings, source: OddsSource = sourceFor(
       inputSchema: {
         event_id: z.string().min(1).describe("Event ID from find_event"),
         market: z.enum(MARKET_ENUM).optional().describe("h2h, h2h_3way, line or total"),
-        side: z.enum(["home", "away", "draw", "over", "under"]).optional().describe("home or away (h2h, line), draw (h2h_3way), over or under (total)"),
-        odd_id: z.string().optional().describe("Exact oddID from get_odds instead of market and side, for any market"),
+        side: z
+          .enum(["home", "away", "draw", "over", "under", "competitor_1", "competitor_2"])
+          .optional()
+          .describe("home or away (h2h, line; competitor_1 or competitor_2 in tennis and UFC), draw (h2h_3way), over or under (total)"),
+        outcome_id: z.string().optional().describe("Exact outcome_id (oc_...) from get_odds with all_markets, instead of market and side, for any market"),
         line: z.number().optional().describe("Compare at this line. For a line market this is the chosen side's own handicap, for example -2.5"),
       },
       annotations: readOnly,

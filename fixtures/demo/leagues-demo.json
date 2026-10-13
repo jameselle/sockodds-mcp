@@ -1,43 +1,60 @@
 {
-  "_demo": "INVENTED DEMO DATA in the documented League shape (the docs show no example /leagues/ body). enabled mirrors the public free plan scope: MLB, NFL, AFL and NRL.",
-  "success": true,
-  "nextCursor": null,
+  "_demo": "DEMO DATA in the SockOdds API v1 League shape (GET /v1/leagues). Keys and names follow https://sockodds.com/leagues/ .",
   "data": [
     {
-      "leagueID": "AFL",
-      "sportID": "AUSSIE_RULES",
+      "key": "afl",
       "name": "AFL",
-      "enabled": true
+      "sport": "australian_football",
+      "region": "au"
     },
     {
-      "leagueID": "NRL",
-      "sportID": "RUGBY_LEAGUE",
+      "key": "nrl",
       "name": "NRL",
-      "enabled": true
+      "sport": "rugby_league",
+      "region": "au"
     },
     {
-      "leagueID": "NFL",
-      "sportID": "FOOTBALL",
+      "key": "nfl",
       "name": "NFL",
-      "enabled": true
+      "sport": "american_football",
+      "region": "us"
     },
     {
-      "leagueID": "MLB",
-      "sportID": "BASEBALL",
+      "key": "mlb",
       "name": "MLB",
-      "enabled": true
+      "sport": "baseball",
+      "region": "us"
     },
     {
-      "leagueID": "RUGBYLEAGUE_NRLW",
-      "sportID": "RUGBY_LEAGUE",
-      "name": "NRLW",
-      "enabled": false
+      "key": "rlwc",
+      "name": "Rugby League World Cup",
+      "sport": "rugby_league",
+      "region": "intl"
     },
     {
-      "leagueID": "EPL",
-      "sportID": "SOCCER",
-      "name": "Premier League",
-      "enabled": false
+      "key": "rlwcw",
+      "name": "Rugby League World Cup Women's",
+      "sport": "rugby_league",
+      "region": "intl"
+    },
+    {
+      "key": "aflw",
+      "name": "AFL Women's",
+      "sport": "australian_football",
+      "region": "au"
+    },
+    {
+      "key": "epl",
+      "name": "English Premier League",
+      "sport": "soccer",
+      "region": "uk"
     }
-  ]
+  ],
+  "meta": {
+    "count": 8,
+    "cursor": null
+  },
+  "links": {
+    "next": null
+  }
 }

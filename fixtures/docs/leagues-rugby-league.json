@@ -1,0 +1,59 @@
+{
+  "data": [
+    {
+      "key": "nrl",
+      "name": "NRL",
+      "sport": "rugby_league",
+      "region": "au",
+      "periods": [
+        "full",
+        "regulation",
+        "half_1",
+        "half_2"
+      ]
+    },
+    {
+      "key": "nrlw",
+      "name": "NRL Women's",
+      "sport": "rugby_league",
+      "region": "au",
+      "periods": [
+        "full",
+        "regulation",
+        "half_1",
+        "half_2"
+      ]
+    },
+    {
+      "key": "rlwc",
+      "name": "Rugby League World Cup",
+      "sport": "rugby_league",
+      "region": "intl",
+      "periods": [
+        "full",
+        "regulation",
+        "half_1",
+        "half_2"
+      ]
+    },
+    {
+      "key": "rlwcw",
+      "name": "Rugby League World Cup Women's",
+      "sport": "rugby_league",
+      "region": "intl",
+      "periods": [
+        "full",
+        "regulation",
+        "half_1",
+        "half_2"
+      ]
+    }
+  ],
+  "meta": {
+    "count": 4,
+    "cursor": null
+  },
+  "links": {
+    "next": null
+  }
+}

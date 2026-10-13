@@ -1,0 +1,7 @@
+{
+  "type": "https://api.sockodds.com/problems/429",
+  "title": "Monthly allowance reached",
+  "status": 429,
+  "detail": "Monthly allowance reached.",
+  "instance": "/v1/events?league=afl"
+}
