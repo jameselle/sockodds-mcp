@@ -1,8 +1,8 @@
 {
   "name": "sockodds-mcp",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "mcpName": "io.github.jameselle/sockodds-mcp",
-  "description": "MCP server that lets Claude answer 'what are the odds on X right now' with the SockOdds sports odds API.",
+  "description": "MCP server that lets Claude answer 'what are the odds on X right now' with SockOdds API v1.",
   "license": "MIT",
   "homepage": "https://github.com/jameselle/sockodds-mcp#readme",
   "repository": {
@@ -41,6 +41,7 @@
     "odds-api",
     "afl",
     "nrl",
+    "rugby-league-world-cup",
     "sockodds"
   ],
   "dependencies": {

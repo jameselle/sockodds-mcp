@@ -1,0 +1,78 @@
+{
+  "data": [
+    {
+      "id": "ev_000ckk0nc1tg",
+      "name": "Australia v New Zealand",
+      "league": {
+        "key": "rlwc",
+        "name": "Rugby League World Cup"
+      },
+      "scheduled_start": "2026-10-15T09:05:00.000Z",
+      "status": "scheduled",
+      "participants": [
+        {
+          "role": "away",
+          "identity": {
+            "key": "new_zealand_rugby_league",
+            "name": "New Zealand"
+          }
+        },
+        {
+          "role": "home",
+          "identity": {
+            "key": "australia_rugby_league",
+            "name": "Australia"
+          }
+        }
+      ],
+      "bookmakers": [
+        {
+          "key": "sportsbet",
+          "name": "Sportsbet",
+          "markets": [
+            {
+              "id": "mk_qpcfjj74vm67qng3",
+              "key": "winner",
+              "name": "Winner",
+              "subject": null,
+              "period": "full",
+              "outcomes": [
+                {
+                  "id": "oc_2eq7ejh9tvepckre",
+                  "name": "Australia",
+                  "side": "home",
+                  "line": null,
+                  "decimal_odds": 1.72,
+                  "implied_probability": 0.581395,
+                  "available": true,
+                  "alternate": false,
+                  "bookmaker": "sportsbet",
+                  "observed_at": "2026-10-15T07:58:00.000Z"
+                },
+                {
+                  "id": "oc_43ctd7dv6hy4dqjz",
+                  "name": "New Zealand",
+                  "side": "away",
+                  "line": null,
+                  "decimal_odds": 2.12,
+                  "implied_probability": 0.471698,
+                  "available": true,
+                  "alternate": false,
+                  "bookmaker": "sportsbet",
+                  "observed_at": "2026-10-15T07:58:00.000Z"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "count": 1,
+    "cursor": null
+  },
+  "links": {
+    "next": null
+  }
+}

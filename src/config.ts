@@ -1,23 +1,26 @@
 /** Public constants. Everything here comes from the public SockOdds docs. */
 
-/** Base URL from https://sockodds.com/docs/reference/ */
-export const DEFAULT_BASE_URL = "https://api.sockodds.com/v2";
+/** Base URL of SockOdds API v1, from https://sockodds.com/docs/ and https://sockodds.com/openapi.json */
+export const DEFAULT_BASE_URL = "https://api.sockodds.com/v1";
 
 /** Free key signup page, tagged for the "$1M in 365 Days" series. */
 export const SIGNUP_URL =
   "https://sockodds.com/signup/?utm_source=1m365-gh&utm_medium=github&utm_campaign=sockodds-mcp";
 
-/** Responses are cached this long. SockOdds refreshes about every 2 minutes, so 60 s loses nothing. */
+export const PRICING_URL = "https://sockodds.com/pricing/";
+
+/** Responses are cached this long, so asking the same thing twice in a minute costs nothing. */
 export const CACHE_TTL_MS = 60_000;
 
 /** Give up on a request after this long. */
 export const REQUEST_TIMEOUT_MS = 15_000;
 
-/** Free Developer plan, as stated on https://sockodds.com/pricing/ */
+/** Free Developer plan, as stated on https://sockodds.com/pricing/ and https://sockodds.com/docs/limits/ */
 export const FREE_TIER = {
   requestsPerMinute: 10,
   objectsPerMonth: 2500,
-  leagues: ["MLB", "NFL", "AFL", "NRL"],
+  leagues: ["MLB", "NFL", "AFL", "NRL", "Rugby League World Cup", "Rugby League World Cup Women's"],
+  bookmakers: ["Sportsbet", "TAB", "Ladbrokes"],
 } as const;
 
 export const RESPONSIBLE_GAMBLING =
@@ -38,4 +41,13 @@ export function readSettings(env: NodeJS.ProcessEnv = process.env): Settings {
     demo: !apiKey && /^(1|true|yes)$/i.test(env.SOCKODDS_DEMO ?? ""),
     timeZone: env.SOCKODDS_TIMEZONE?.trim() || "Australia/Sydney",
   };
+}
+
+/** True when the base URL points at the retired v2 API, which answers 410 Gone. */
+export function isRetiredBaseUrl(baseUrl: string): boolean {
+  return /\/v2$/i.test(baseUrl);
+}
+
+export function listWords(items: readonly string[]): string {
+  return items.length < 2 ? items.join("") : `${items.slice(0, -1).join(", ")} and ${items[items.length - 1]}`;
 }

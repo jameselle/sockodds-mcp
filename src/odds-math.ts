@@ -1,13 +1,5 @@
 /** Pure odds maths. No I/O, so every function here is unit tested. */
 
-/** American odds string ("+240", "-108") to decimal odds. Returns undefined if it cannot be read. */
-export function americanToDecimal(american: string | number | null | undefined): number | undefined {
-  if (american === null || american === undefined) return undefined;
-  const n = typeof american === "number" ? american : Number(String(american).trim().replace(/^\+/, ""));
-  if (!Number.isFinite(n) || n === 0 || Math.abs(n) < 100) return undefined;
-  return n > 0 ? 1 + n / 100 : 1 + 100 / Math.abs(n);
-}
-
 export function round(n: number, dp = 2): number {
   const f = 10 ** dp;
   return Math.round(n * f) / f;
@@ -92,14 +84,18 @@ export function consensusFairOdds(outcomes: string[], books: BookMarket[]): Fair
 }
 
 export interface Quote {
+  /** Bookmaker key, such as `sportsbet`. */
   bookmakerID: string;
+  /** Bookmaker display name from the response, when known. */
+  bookmakerName?: string;
   decimal: number;
-  american?: string;
+  /** This outcome's own line (a handicap or a total). Undefined when the market has no line. */
   line?: number;
   available: boolean;
-  lastUpdatedAt?: string;
-  expiresAt?: string;
-  carriedFrom?: string;
+  /** When SockOdds saw this price at the bookmaker (`observed_at`, UTC). */
+  observedAt?: string;
+  /** The outcome id (`oc_...`), the same at every bookmaker for the same market, line and side. */
+  outcomeID?: string;
 }
 
 export interface BestPrice {
@@ -107,21 +103,20 @@ export interface BestPrice {
   best: Quote[];
   /** Every open quote at the chosen line, best first. */
   field: Quote[];
-  /** Quotes left out because they were suspended, expired or at another line. */
+  /** Quotes left out because they were not available or at another line. */
   excluded: Array<Quote & { reason: string }>;
 }
 
 /**
- * Pick the highest decimal price among quotes that are open right now and, when a
- * line is given, at exactly that line.
+ * Pick the highest decimal price among quotes that are available and, when a line is
+ * given, at exactly that line. SockOdds already withholds prices it has not seen for
+ * ten minutes, so there is no expiry check here.
  */
-export function selectBestPrice(quotes: Quote[], opts: { line?: number; now?: Date } = {}): BestPrice {
-  const now = (opts.now ?? new Date()).getTime();
+export function selectBestPrice(quotes: Quote[], opts: { line?: number } = {}): BestPrice {
   const field: Quote[] = [];
   const excluded: BestPrice["excluded"] = [];
   for (const q of quotes) {
-    if (!q.available) excluded.push({ ...q, reason: "suspended" });
-    else if (q.expiresAt && Date.parse(q.expiresAt) <= now) excluded.push({ ...q, reason: "expired" });
+    if (!q.available) excluded.push({ ...q, reason: "not available" });
     else if (!(q.decimal > 1)) excluded.push({ ...q, reason: "no price" });
     else if (opts.line !== undefined && q.line !== opts.line) excluded.push({ ...q, reason: "different line" });
     else field.push(q);

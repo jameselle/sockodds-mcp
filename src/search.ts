@@ -2,32 +2,42 @@
 import { eventStart } from "./markets.js";
 import type { SockEvent } from "./types.js";
 
-/** Words in a question that name a league. Keys are lower case; values are SockOdds leagueIDs. */
+/**
+ * Words in a question that name a league. Keys are lower case; values are SockOdds v1 league keys
+ * from https://sockodds.com/leagues/ . Longer phrases come first so they win.
+ */
 const LEAGUE_WORDS: Array<[string, string]> = [
-  ["state of origin", "RUGBYLEAGUE_STATE_ORIGIN"],
-  ["premier league", "EPL"],
-  ["champions league", "UCL"],
-  ["la liga", "LA_LIGA"],
-  ["serie a", "IT_SERIE_A"],
-  ["origin", "RUGBYLEAGUE_STATE_ORIGIN"],
-  ["aflw", "AFLW"],
-  ["nrlw", "RUGBYLEAGUE_NRLW"],
-  ["afl", "AFL"],
-  ["nrl", "NRL"],
-  ["nfl", "NFL"],
-  ["mlb", "MLB"],
-  ["nba", "NBA"],
-  ["nhl", "NHL"],
-  ["epl", "EPL"],
-  ["ucl", "UCL"],
-  ["mls", "MLS"],
-  ["ufc", "UFC"],
-  ["ipl", "IPL"],
-  ["ncaaf", "NCAAF"],
-  ["atp", "ATP"],
-  ["wta", "WTA"],
-  ["f1", "F1"],
-  ["bundesliga", "BUNDESLIGA"],
+  ["rugby league world cup women s", "rlwcw"],
+  ["rugby league world cup womens", "rlwcw"],
+  ["rugby league world cup", "rlwc"],
+  ["premier league", "epl"],
+  ["champions league", "champions_league"],
+  ["la liga", "la_liga"],
+  ["serie a", "serie_a"],
+  ["ligue 1", "ligue_1"],
+  ["college football", "ncaaf"],
+  ["aflw", "aflw"],
+  ["nrlw", "nrlw"],
+  ["rlwcw", "rlwcw"],
+  ["rlwc", "rlwc"],
+  ["afl", "afl"],
+  ["nrl", "nrl"],
+  ["nfl", "nfl"],
+  ["mlb", "mlb"],
+  ["nba", "nba"],
+  ["nbl", "nbl"],
+  ["wnba", "wnba"],
+  ["nhl", "nhl"],
+  ["epl", "epl"],
+  ["ucl", "champions_league"],
+  ["mls", "mls"],
+  ["ufc", "ufc"],
+  ["ipl", "ipl"],
+  ["ncaaf", "ncaaf"],
+  ["atp", "atp"],
+  ["wta", "wta"],
+  ["f1", "f1"],
+  ["bundesliga", "bundesliga"],
 ];
 
 /** Words that carry no team information. */
@@ -74,7 +84,7 @@ const NICKNAMES: Record<string, string[]> = {
 };
 
 export interface ParsedQuery {
-  leagueIDs: string[];
+  leagues: string[];
   tokens: string[];
 }
 
@@ -90,26 +100,24 @@ export function normalise(s: string): string {
 
 export function parseQuery(query: string): ParsedQuery {
   let q = ` ${normalise(query)} `;
-  const leagueIDs: string[] = [];
+  const leagues: string[] = [];
   for (const [word, id] of LEAGUE_WORDS) {
     const re = new RegExp(` ${word} `, "g");
     if (re.test(q)) {
-      if (!leagueIDs.includes(id)) leagueIDs.push(id);
+      if (!leagues.includes(id)) leagues.push(id);
       q = q.replace(re, " ");
     }
   }
   const tokens = q
     .split(" ")
     .filter((t) => t.length >= 2 && !STOP_WORDS.has(t) && !/^\d+$/.test(t));
-  return { leagueIDs, tokens };
+  return { leagues, tokens };
 }
 
 function haystack(ev: SockEvent): string[] {
-  const parts: string[] = [ev.eventID, ev.info?.displayName ?? ""];
-  for (const side of ["home", "away"] as const) {
-    const t = ev.teams?.[side];
-    if (!t) continue;
-    parts.push(t.names?.long ?? "", t.names?.medium ?? "", t.names?.short ?? "", (t.teamID ?? "").replace(/_/g, " "));
+  const parts: string[] = [ev.name ?? ""];
+  for (const p of ev.participants ?? []) {
+    parts.push(p.identity.name ?? "", "key" in p.identity ? p.identity.key : "");
   }
   return normalise(parts.join(" ").replace(/_/g, " ")).split(" ").filter(Boolean);
 }

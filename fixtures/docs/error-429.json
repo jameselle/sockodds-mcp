@@ -1,1 +1,7 @@
-{"success":false,"error":"Rate limit exceeded"}
+{
+  "type": "https://api.sockodds.com/problems/429",
+  "title": "Rate limit reached",
+  "status": 429,
+  "detail": "Rate limit reached.",
+  "instance": "/v1/events?league=afl"
+}

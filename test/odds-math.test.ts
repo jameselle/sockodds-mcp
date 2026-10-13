@@ -1,18 +1,8 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { americanToDecimal, consensusFairOdds, devigProportional, impliedProbability } from "../src/odds-math.js";
+import { consensusFairOdds, devigProportional, impliedProbability } from "../src/odds-math.js";
 
 const close = (a: number, b: number, eps = 1e-9) => assert.ok(Math.abs(a - b) < eps, `${a} is not close to ${b}`);
-
-test("americanToDecimal converts both signs and rejects junk", () => {
-  close(americanToDecimal("+240")!, 3.4);
-  close(americanToDecimal("-108")!, 1 + 100 / 108);
-  close(americanToDecimal("-115")!, 1 + 100 / 115);
-  close(americanToDecimal(100)!, 2);
-  assert.equal(americanToDecimal(null), undefined);
-  assert.equal(americanToDecimal("abc"), undefined);
-  assert.equal(americanToDecimal("50"), undefined);
-});
 
 test("impliedProbability rejects prices of 1 or less", () => {
   close(impliedProbability(2), 0.5);

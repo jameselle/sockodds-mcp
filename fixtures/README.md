@@ -1,18 +1,20 @@
 # Fixtures
 
-`docs/` holds example responses copied from the public SockOdds docs, so tests check parsing against
-the documented shape:
+`docs/` holds example responses from the public SockOdds API v1 docs, so tests check parsing against the
+documented shape. Each docs page shows the output its sample printed when run against a local copy of the
+API with invented prices:
 
 | File | Copied from |
 | --- | --- |
-| `events-quickstart.json` | https://sockodds.com/docs/basics/quickstart/ (Step 3 response) |
-| `event-odds-excerpt.json` | https://sockodds.com/docs/data-types/odds/ ("Accessing odds" example) |
-| `events-homepage-sample.json` | https://sockodds.com/ (recorded sample JSON response) |
-| `error-401.json`, `error-429.json` | https://sockodds.com/docs/endpoints/getEvents/ (status codes) |
-| `rate-limit-notice.json` | https://sockodds.com/docs/info/rate-limiting/ (notice example; the docs' `[...]` data is an empty list here) |
+| `odds-quickstart.json` | https://sockodds.com/docs/quickstart/ (the odds request in step 3) |
+| `odds-event-handicap.json` | https://sockodds.com/docs/odds/ ("One event's prices") |
+| `odds-withheld.json` | https://sockodds.com/docs/odds/ ("Why a price can be missing") |
+| `events-rlwc.json` | https://sockodds.com/docs/ (`GET /v1/events?league=rlwc` sample) |
+| `leagues-rugby-league.json` | https://sockodds.com/docs/ (`GET /v1/leagues?sport=rugby_league` sample) |
+| `error-400.json`, `error-404.json` | https://sockodds.com/docs/errors/ |
+| `error-401.json` | https://sockodds.com/docs/authentication/ |
+| `error-403.json` | https://sockodds.com/docs/limits/ (a league outside the free plan) |
+| `error-429.json`, `error-429-monthly.json` | Built from the problem fields and the two 429 titles in https://sockodds.com/docs/errors/ (the docs show no recorded 429 body) |
 
-Small edits: one long dash in a market name is written as a hyphen. Nothing else is changed.
-
-`demo/` holds INVENTED data in the same shape, used by demo mode (`SOCKODDS_DEMO=1`) and by tests.
-Event IDs and team names follow the docs' examples; every price and timestamp is made up and none
-are real or current odds.
+`demo/` holds INVENTED data in the v1 shape, used by demo mode (`SOCKODDS_DEMO=1`) and by tests. Every id,
+price and timestamp is made up and none are real or current odds.

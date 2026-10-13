@@ -1,0 +1,36 @@
+{
+  "data": {
+    "id": "ev_000ckk06psy5",
+    "name": "Arizona Cardinals v Atlanta Falcons",
+    "league": {
+      "key": "nfl",
+      "name": "NFL"
+    },
+    "scheduled_start": "2026-10-12T08:00:00.000Z",
+    "status": "final",
+    "participants": [
+      {
+        "role": "away",
+        "identity": {
+          "key": "atlanta_falcons",
+          "name": "Atlanta Falcons"
+        }
+      },
+      {
+        "role": "home",
+        "identity": {
+          "key": "arizona_cardinals",
+          "name": "Arizona Cardinals"
+        }
+      }
+    ],
+    "bookmakers": []
+  },
+  "meta": {
+    "count": 1,
+    "cursor": null
+  },
+  "links": {
+    "next": null
+  }
+}

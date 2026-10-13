@@ -1,0 +1,7 @@
+{
+  "type": "https://api.sockodds.com/problems/400",
+  "title": "Invalid request",
+  "status": 400,
+  "detail": "Invalid starts_after",
+  "instance": "/v1/odds?league=epl&starts_after=tomorrow"
+}

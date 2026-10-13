@@ -1,1 +1,7 @@
-{"success":false,"error":"Invalid API key"}
+{
+  "type": "https://api.sockodds.com/problems/401",
+  "title": "Unauthorised",
+  "status": 401,
+  "detail": "Provide a valid bearer key.",
+  "instance": "/v1/sports"
+}

@@ -1,0 +1,7 @@
+{
+  "type": "https://api.sockodds.com/problems/403",
+  "title": "Plan restriction",
+  "status": 403,
+  "detail": "This league is not in your plan.",
+  "instance": "/v1/odds?league=epl&limit=1"
+}

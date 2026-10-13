@@ -2,13 +2,18 @@ import { readFileSync } from "node:fs";
 import { CACHE_TTL_MS, REQUEST_TIMEOUT_MS, type Settings } from "./config.js";
 import { TtlCache } from "./cache.js";
 import { MissingKeyError, SockOddsError, errorFromResponse, rateLimitMessage } from "./errors.js";
-import type { Envelope, Fetched, League, SockEvent } from "./types.js";
+import type { Envelope, Fetched, League, OddsEvent, SockEvent } from "./types.js";
 
 export type Params = Record<string, string | number | boolean | undefined>;
 
+/** Where the tools get their data: the live v1 API, or the invented demo fixtures. */
 export interface OddsSource {
+  /** GET /v1/leagues (query: sport, limit) */
   leagues(params?: Params): Promise<Fetched<League[]>>;
+  /** GET /v1/events (query: league, starts_after, starts_before, limit) */
   events(params: Params): Promise<Fetched<SockEvent[]>>;
+  /** GET /v1/events/{event_id}/odds (query: markets, bookmakers) */
+  eventOdds(eventId: string, params?: Params): Promise<Fetched<OddsEvent>>;
 }
 
 type FetchFn = typeof fetch;
@@ -23,9 +28,9 @@ function queryString(params: Params): string {
 }
 
 /**
- * Live client. Sends the key in the x-api-key header (never in the URL), caches each
- * response for 60 s, and never retries. After a 429 it refuses to call again until
- * Retry-After has passed, because rejected calls still count against the minute.
+ * Live client for SockOdds API v1. Sends the key only as `Authorization: Bearer` (never in the URL),
+ * caches each response for 60 s, and never retries. After a 429 with Retry-After it refuses to call
+ * again until that time has passed, because every request counts towards the per-minute limit.
  */
 export class SockOddsClient implements OddsSource {
   private readonly cache: TtlCache<Fetched<unknown>>;
@@ -40,11 +45,15 @@ export class SockOddsClient implements OddsSource {
   }
 
   leagues(params: Params = {}): Promise<Fetched<League[]>> {
-    return this.get<League[]>("/leagues/", params);
+    return this.get<League[]>("/leagues", params);
   }
 
   events(params: Params): Promise<Fetched<SockEvent[]>> {
-    return this.get<SockEvent[]>("/events/", params);
+    return this.get<SockEvent[]>("/events", params);
+  }
+
+  eventOdds(eventId: string, params: Params = {}): Promise<Fetched<OddsEvent>> {
+    return this.get<OddsEvent>(`/events/${encodeURIComponent(eventId)}/odds`, params);
   }
 
   async get<T>(path: string, params: Params): Promise<Fetched<T>> {
@@ -59,7 +68,7 @@ export class SockOddsClient implements OddsSource {
       let res: Response;
       try {
         res = await this.fetchFn(url, {
-          headers: { "x-api-key": key, accept: "application/json", "user-agent": "sockodds-mcp" },
+          headers: { authorization: `Bearer ${key}`, accept: "application/json", "user-agent": "sockodds-mcp" },
           signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
         });
       } catch (err) {
@@ -71,16 +80,18 @@ export class SockOddsClient implements OddsSource {
       } catch {
         body = undefined;
       }
-      if (!res.ok || !body || (body as Envelope<T>).success !== true) {
+      const ok = res.ok && !!body && typeof body === "object" && "data" in body;
+      if (!ok) {
         const err = errorFromResponse(res.ok ? 502 : res.status, body, res.headers.get("retry-after"));
-        if (err.status === 429) this.blockedUntil = this.now() + (err.retryAfterSeconds ?? 60) * 1000;
+        if (err.status === 429 && err.retryAfterSeconds !== undefined) {
+          this.blockedUntil = this.now() + err.retryAfterSeconds * 1000;
+        }
         throw err;
       }
       const env = body as Envelope<T>;
       return {
         data: env.data,
-        notice: env.notice,
-        nextCursor: env.nextCursor ?? null,
+        next: env.links?.next ?? null,
         fetchedAt: new Date(this.now()).toISOString(),
         source: "live",
       } satisfies Fetched<T>;
@@ -93,24 +104,41 @@ function loadFixture<T>(name: string): Envelope<T> {
   return JSON.parse(readFileSync(url, "utf8")) as Envelope<T>;
 }
 
+function list(value: Params[string]): string[] | undefined {
+  return value === undefined || value === "" ? undefined : String(value).split(",").map((s) => s.trim()).filter(Boolean);
+}
+
 /** Serves the invented demo fixtures. Used only when SOCKODDS_DEMO=1 and no key is set. */
 export class DemoSource implements OddsSource {
   async leagues(params: Params = {}): Promise<Fetched<League[]>> {
     const env = loadFixture<League[]>("demo/leagues-demo.json");
-    const sport = params.sportID ? String(params.sportID) : undefined;
-    return this.wrap(env.data.filter((l) => !sport || l.sportID === sport));
+    const sport = params.sport ? String(params.sport) : undefined;
+    return this.wrap(env.data.filter((l) => !sport || l.sport === sport));
   }
 
   async events(params: Params): Promise<Fetched<SockEvent[]>> {
-    const env = loadFixture<SockEvent[]>("demo/events-demo.json");
-    const ids = params.eventID ? [String(params.eventID)] : undefined;
-    const leagues = params.leagueID ? String(params.leagueID).split(",") : undefined;
-    return this.wrap(
-      env.data.filter((e) => (!ids || ids.includes(e.eventID)) && (!leagues || leagues.includes(e.leagueID ?? ""))),
-    );
+    const env = loadFixture<OddsEvent[]>("demo/odds-demo.json");
+    const league = params.league ? String(params.league) : undefined;
+    const events = env.data
+      .filter((e) => !league || e.league.key === league)
+      .map(({ bookmakers: _omit, ...event }) => event as SockEvent);
+    return this.wrap(events);
+  }
+
+  async eventOdds(eventId: string, params: Params = {}): Promise<Fetched<OddsEvent>> {
+    const env = loadFixture<OddsEvent[]>("demo/odds-demo.json");
+    const ev = env.data.find((e) => e.id === eventId);
+    if (!ev) throw new SockOddsError(`SockOdds could not find that (HTTP 404, Not found). SockOdds said: "Event not found.". Use find_event to get a current event ID (they start with ev_).`, 404);
+    const markets = list(params.markets);
+    const books = list(params.bookmakers);
+    const bookmakers = (ev.bookmakers ?? [])
+      .filter((b) => !books || books.includes(b.key))
+      .map((b) => ({ ...b, markets: b.markets.filter((m) => !markets || markets.includes(m.key)) }))
+      .filter((b) => b.markets.length > 0);
+    return this.wrap({ ...ev, bookmakers });
   }
 
   private wrap<T>(data: T): Fetched<T> {
-    return { data, fetchedAt: new Date().toISOString(), source: "demo", nextCursor: null };
+    return { data, fetchedAt: new Date().toISOString(), source: "demo", next: null };
   }
 }
