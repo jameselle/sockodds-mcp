@@ -1,6 +1,6 @@
 {
   "name": "sockodds-mcp",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "mcpName": "io.github.jameselle/sockodds-mcp",
   "description": "MCP server that lets Claude answer 'what are the odds on X right now' with SockOdds API v1.",
   "license": "MIT",
