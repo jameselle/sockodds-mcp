@@ -2,7 +2,7 @@
 
 Everything this server relies on, taken only from the public SockOdds API v1 contract and docs:
 the OpenAPI contract at https://sockodds.com/openapi.json and the guides under https://sockodds.com/docs/ .
-Written for sockodds-mcp 1.0.0 against SockOdds API 1.0.0. If the contract changes, these notes and the
+Written for sockodds-mcp 1.1.0 against SockOdds API 1.0.0. If the contract changes, these notes and the
 fixtures may need updating.
 
 Every docs page is also served as Markdown: add `.md` to the page path, for example
@@ -50,9 +50,21 @@ cancelled events are left out of the answer. `links.next` set means more events 
 | `markets` | get_odds (unless `all_markets`), best_price (with `market`), fair_odds | Only the market keys shown, so fewer objects are used |
 | `bookmakers` | get_odds (optional) | Comma separated bookmaker keys, at most 20 |
 
+The API groups prices by market by default: `markets[]`, each with `id`, `key`, `name`, `period`, `subject`,
+`alternate` and `outcomes[]`; each outcome has `id`, `name`, `side`, `line` and `prices[]`, each price
+`bookmaker`, `decimal_odds`, `implied_probability`, `available` and `observed_at`. With `group_by=bookmaker`
+it sends `bookmakers[]` instead, each with its own `markets[]`. The client accepts either and turns the
+market grouping into the bookmaker grouping the tools read (`src/odds-shape.ts`), price for price.
+
 Fields read: the event fields above, then `bookmakers[].key` and `.name`; each market's `id`, `key`,
 `name`, `subject`, `period`; each outcome's `id`, `name`, `side`, `line`, `decimal_odds`, `available`,
 `bookmaker` and `observed_at`.
+
+### GET /v1/bookmakers (only with the market grouping)
+
+Prices name bookmakers by key, so the first market-grouped answer reads `/v1/bookmakers?limit=100` once
+for display names. It counts one object per bookmaker listed, and that answer's usage line includes them.
+If the read fails, keys stand in for names.
 
 Markets are lined up across bookmakers by market key, subject and period, and each side by the outcome's
 `side`. The market `id` includes the line, so it is not used to group lines together; an outcome `id` is
@@ -107,7 +119,7 @@ From https://sockodds.com/pricing/ and https://sockodds.com/docs/limits/ :
   no line movement tool.
 - `/v1/odds` (many events with prices) costs an object per priced outcome, so `find_event` reads
   `/v1/events` and the odds tools read one event at a time.
-- `/v1/results`, `/v1/events/lookup`, `/v1/teams`, `/v1/players`, `/v1/markets` and `/v1/bookmakers`.
+- `/v1/results`, `/v1/events/lookup`, `/v1/teams`, `/v1/players` and `/v1/markets`.
 
 ## Not verified without a key
 

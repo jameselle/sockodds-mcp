@@ -3,6 +3,7 @@ import { CACHE_TTL_MS, REQUEST_TIMEOUT_MS, type Settings } from "./config.js";
 import { TtlCache } from "./cache.js";
 import { MissingKeyError, SockOddsError, errorFromResponse, rateLimitMessage } from "./errors.js";
 import type { Envelope, Fetched, League, OddsEvent, SockEvent } from "./types.js";
+import { byBookmaker } from "./odds-shape.js";
 
 export type Params = Record<string, string | number | boolean | undefined>;
 
@@ -52,8 +53,27 @@ export class SockOddsClient implements OddsSource {
     return this.get<SockEvent[]>("/events", params);
   }
 
-  eventOdds(eventId: string, params: Params = {}): Promise<Fetched<OddsEvent>> {
-    return this.get<OddsEvent>(`/events/${encodeURIComponent(eventId)}/odds`, params);
+  /**
+   * Accepts either grouping: the API's default (by market) is turned into the bookmaker grouping the
+   * tools read. Bookmaker display names then come from /v1/bookmakers, read once per process and
+   * only when a market-grouped response arrives.
+   */
+  async eventOdds(eventId: string, params: Params = {}): Promise<Fetched<OddsEvent>> {
+    const fetched = await this.get<OddsEvent>(`/events/${encodeURIComponent(eventId)}/odds`, params);
+    if (!Array.isArray(fetched.data?.markets)) return fetched;
+    const fresh = this.names === undefined;
+    const names = await this.bookmakerNames();
+    // The catalogue read counts one object per bookmaker listed, so the answer that made it says so.
+    return { ...fetched, data: byBookmaker(fetched.data, names), ...(fresh && names.size ? { extraObjects: names.size } : {}) };
+  }
+
+  private names?: Promise<Map<string, string>>;
+  /** Bookmaker key → name. If the catalogue cannot be read, keys stand in for names (and the next call tries again). */
+  private bookmakerNames(): Promise<Map<string, string>> {
+    this.names ??= this.get<Array<{ key: string; name: string }>>("/bookmakers", { limit: 100 })
+      .then((r) => new Map(r.data.map((b) => [b.key, b.name])))
+      .catch(() => { this.names = undefined; return new Map<string, string>(); });
+    return this.names;
   }
 
   async get<T>(path: string, params: Params): Promise<Fetched<T>> {

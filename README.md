@@ -146,6 +146,10 @@ Tests use Node's built-in test runner with a fake `fetch`. They cover the fair o
 
 `docs/API-NOTES.md` lists every endpoint and field this server relies on, with links to the SockOdds docs. `fixtures/docs/` holds example responses copied from those docs; `fixtures/demo/` holds invented data in the same shape for demo mode.
 
+## What changed in 1.1.0
+
+SockOdds now groups odds by market by default: each market and outcome once, with every bookmaker's price under it. 1.1.0 reads that shape as well as the older one, so the answers are the same as in 1.0.0. The first odds answer reads the bookmaker list once for display names, and its usage line counts those objects.
+
 ## Upgrading from 0.x
 
 Version 1.0.0 moves from the retired v2 API to SockOdds API v1. What changes for you:

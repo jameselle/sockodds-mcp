@@ -55,7 +55,8 @@ function isFresh(fetched: Fetched<unknown>, deps: ToolDeps): boolean {
 }
 
 function costLine(fetched: Fetched<unknown>, deps: ToolDeps, objects: number, what: string): string[] {
-  return isFresh(fetched, deps) ? ["", `${what} used ${objects} object${objects === 1 ? "" : "s"} of the key's monthly allowance.`] : [];
+  const used = objects + (fetched.extraObjects ?? 0);
+  return isFresh(fetched, deps) ? ["", `${what} used ${used} object${used === 1 ? "" : "s"} of the key's monthly allowance.`] : [];
 }
 
 function finish(lines: string[]): string {

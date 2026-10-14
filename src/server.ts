@@ -5,7 +5,7 @@ import { type Settings } from "./config.js";
 import { SockOddsError } from "./errors.js";
 import { bestPrice, fairOdds, findEvent, getOdds, listLeagues, type ToolDeps } from "./tools.js";
 
-export const VERSION = "1.0.0";
+export const VERSION = "1.1.0";
 
 const MARKET_ENUM = ["h2h", "h2h_3way", "line", "total"] as const;
 

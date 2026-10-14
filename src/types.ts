@@ -83,8 +83,42 @@ export interface QuotedBookmaker {
   markets: QuotedMarket[];
 }
 
+/** One bookmaker's price in a market-grouped response (the API default from 14 Oct 2026). */
+export interface Price {
+  bookmaker: string;
+  decimal_odds: number | null;
+  implied_probability: number | null;
+  available?: boolean;
+  observed_at: string;
+}
+
+export interface PricedOutcome {
+  id: string;
+  name: string;
+  side: string;
+  line: number | null;
+  /** Best first: prices[0] is the best price among the bookmakers asked for. */
+  prices: Price[];
+}
+
+export interface PricedMarket {
+  id: string;
+  key: string;
+  name: string;
+  period: string;
+  subject: QuotedMarket["subject"];
+  /** True when this line is not the market's main line. */
+  alternate: boolean;
+  outcomes: PricedOutcome[];
+}
+
+/**
+ * Prices for one event. The API groups them by market (`markets`); with `group_by=bookmaker` (and in
+ * 1.0.x) by bookmaker (`bookmakers`). The client turns either into `bookmakers` for the tools.
+ */
 export interface OddsEvent extends SockEvent {
   bookmakers?: QuotedBookmaker[];
+  markets?: PricedMarket[];
 }
 
 /** The result of one API call, with the moment it was read. */
@@ -94,4 +128,6 @@ export interface Fetched<T> {
   next?: string | null;
   fetchedAt: string;
   source: "live" | "demo";
+  /** Objects this answer also used on a lookup it needed (the bookmaker catalogue, read once). */
+  extraObjects?: number;
 }
