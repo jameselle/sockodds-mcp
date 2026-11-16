@@ -1,5 +1,7 @@
 # sockodds-mcp
 
+[![MCP Badge](https://lobehub.com/badge/mcp/jameselle-sockodds-mcp)](https://lobehub.com/mcp/jameselle-sockodds-mcp) [![sockodds-mcp MCP server](https://glama.ai/mcp/servers/jameselle/sockodds-mcp/badge)](https://glama.ai/mcp/servers/jameselle/sockodds-mcp)
+
 Ask Claude "what are the odds on X right now" and get Australian bookmakers' prices, the best price and the no-vig fair price, from the [SockOdds](https://sockodds.com/) sports odds API (v1). The free key covers 3 bookmakers and 6 leagues; paid plans add more ([pricing](https://sockodds.com/pricing/)).
 
 > **Version 1.0 speaks SockOdds API v1.** Versions 0.x called the older v2 API, which SockOdds is retiring: once it is switched off, 0.x stops working. Update to 1.0: restart your MCP client so `npx -y sockodds-mcp` fetches it, and if the server still starts as 0.x, point it at `sockodds-mcp@latest` once. Your key carries over. See [Upgrading from 0.x](#upgrading-from-0x).
