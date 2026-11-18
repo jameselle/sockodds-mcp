@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import { CACHE_TTL_MS, REQUEST_TIMEOUT_MS, type Settings } from "./config.js";
 import { TtlCache } from "./cache.js";
 import { MissingKeyError, SockOddsError, errorFromResponse, rateLimitMessage } from "./errors.js";
-import type { Envelope, Fetched, League, OddsEvent, SockEvent } from "./types.js";
+import type { Arb, Bookmaker, Envelope, Fetched, League, OddsEvent, SockEvent } from "./types.js";
 import { byBookmaker } from "./odds-shape.js";
 
 export type Params = Record<string, string | number | boolean | undefined>;
@@ -15,6 +15,10 @@ export interface OddsSource {
   events(params: Params): Promise<Fetched<SockEvent[]>>;
   /** GET /v1/events/{event_id}/odds (query: markets, bookmakers) */
   eventOdds(eventId: string, params?: Params): Promise<Fetched<OddsEvent>>;
+  /** GET /v1/bookmakers (query: regions, limit). A list without prices: it costs no credits. */
+  bookmakers(params?: Params): Promise<Fetched<Bookmaker[]>>;
+  /** GET /v1/opportunities/arbs (query: league, min_edge, limit, cursor). Pro or the Pro trial; 10 credits a page. */
+  arbs(params?: Params): Promise<Fetched<Arb[]>>;
 }
 
 type FetchFn = typeof fetch;
@@ -65,6 +69,14 @@ export class SockOddsClient implements OddsSource {
     const names = await this.bookmakerNames();
     // The catalogue read counts one object per bookmaker listed, so the answer that made it says so.
     return { ...fetched, data: byBookmaker(fetched.data, names), ...(fresh && names.size ? { extraObjects: names.size } : {}) };
+  }
+
+  bookmakers(params: Params = {}): Promise<Fetched<Bookmaker[]>> {
+    return this.get<Bookmaker[]>("/bookmakers", params);
+  }
+
+  arbs(params: Params = {}): Promise<Fetched<Arb[]>> {
+    return this.get<Arb[]>("/opportunities/arbs", params);
   }
 
   private names?: Promise<Map<string, string>>;
@@ -156,6 +168,19 @@ export class DemoSource implements OddsSource {
       .map((b) => ({ ...b, markets: b.markets.filter((m) => !markets || markets.includes(m.key)) }))
       .filter((b) => b.markets.length > 0);
     return this.wrap({ ...ev, bookmakers });
+  }
+
+  async bookmakers(params: Params = {}): Promise<Fetched<Bookmaker[]>> {
+    const env = loadFixture<Bookmaker[]>("demo/bookmakers-demo.json");
+    const regions = list(params.regions);
+    return this.wrap(env.data.filter((b) => !regions || (b.regions ?? []).some((r) => regions.includes(r))));
+  }
+
+  async arbs(params: Params = {}): Promise<Fetched<Arb[]>> {
+    const env = loadFixture<Arb[]>("demo/arbs-demo.json");
+    const league = params.league ? String(params.league) : undefined;
+    const minEdge = params.min_edge === undefined ? undefined : Number(params.min_edge);
+    return this.wrap(env.data.filter((a) => (!league || a.event.league === league) && (minEdge === undefined || a.profit_pct >= minEdge)));
   }
 
   private wrap<T>(data: T): Fetched<T> {

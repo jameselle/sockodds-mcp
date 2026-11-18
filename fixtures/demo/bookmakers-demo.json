@@ -1,0 +1,14 @@
+{
+  "_demo": "DEMO DATA in the SockOdds API v1 Bookmaker shape (GET /v1/bookmakers). A short sample of the catalogue; the full list is at https://sockodds.com/bookmakers/ .",
+  "data": [
+    { "key": "sportsbet", "name": "Sportsbet", "kind": "sportsbook", "regions": ["au"] },
+    { "key": "tab", "name": "TAB", "kind": "sportsbook", "regions": ["au"] },
+    { "key": "neds", "name": "Neds", "kind": "sportsbook", "regions": ["au"] },
+    { "key": "pointsbet", "name": "PointsBet", "kind": "sportsbook", "regions": ["au"] },
+    { "key": "pinnacle", "name": "Pinnacle", "kind": "sportsbook", "regions": ["intl"] },
+    { "key": "draftkings", "name": "DraftKings", "kind": "sportsbook", "regions": ["us"] },
+    { "key": "betfair_exchange", "name": "Betfair Exchange", "kind": "exchange", "regions": ["intl"] }
+  ],
+  "meta": { "count": 7, "cursor": null },
+  "links": { "next": null }
+}

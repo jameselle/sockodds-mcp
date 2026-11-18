@@ -131,3 +131,41 @@ export interface Fetched<T> {
   /** Objects this answer also used on a lookup it needed (the bookmaker catalogue, read once). */
   extraObjects?: number;
 }
+
+/** GET /v1/bookmakers: a bookmaker in the catalogue, with where it operates. */
+export interface Bookmaker {
+  key: string;
+  name: string;
+  kind?: "sportsbook" | "exchange" | "prediction_market";
+  /** Region keys such as au, us or intl (https://sockodds.com/bookmakers/). */
+  regions?: string[];
+}
+
+/** One bet of an arbitrage pair (GET /v1/opportunities/arbs, https://sockodds.com/docs/opportunities/). */
+export interface ArbLeg {
+  market_id: string;
+  outcome_id: string;
+  /** home, away, draw, over, under, yes, no, competitor_1, competitor_2. */
+  side: string;
+  line: number | null;
+  bookmaker: string;
+  bookmaker_name?: string;
+  decimal_odds: number;
+  implied_probability?: number;
+  stake_pct?: number | null;
+  observed_at: string;
+}
+
+/** An arbitrage pair: two prices at two bookmakers that cover one market for a profit either way. */
+export interface Arb {
+  id: string;
+  type: string;
+  event: { id: string; name: string | null; league: string; scheduled_start: string | null };
+  market: { key: string; name: string; period?: string; subject: null | string | { name?: string } };
+  legs: ArbLeg[];
+  implied_sum: number;
+  profit_pct: number;
+  price_age_seconds?: number;
+  computed_at?: string;
+  expires_at?: string;
+}

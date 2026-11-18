@@ -1,5 +1,5 @@
 /** Tool logic, kept apart from the MCP wiring so it can be tested with a fake odds source. */
-import { FREE_TIER, RESPONSIBLE_GAMBLING, listWords } from "./config.js";
+import { FREE_TIER, PRICING_URL, RESPONSIBLE_GAMBLING, listWords } from "./config.js";
 import type { OddsSource, Params } from "./client.js";
 import { SockOddsError } from "./errors.js";
 import {
@@ -19,7 +19,7 @@ import {
 import { consensusFairOdds, selectBestPrice, type BookMarket, type FairResult, type Quote } from "./odds-math.js";
 import { bookName, formatDecimal, formatKickoff, formatLine, formatStamp, noLongDashes, pct } from "./format.js";
 import { matchEvents, parseQuery } from "./search.js";
-import type { Fetched, OddsEvent, SockEvent } from "./types.js";
+import type { Arb, ArbLeg, Bookmaker, Fetched, OddsEvent, SockEvent } from "./types.js";
 
 export interface ToolDeps {
   source: OddsSource;
@@ -416,5 +416,202 @@ export async function fairOdds(deps: ToolDeps, args: FairOddsArgs): Promise<stri
     "SockOdds publishes each bookmaker's price as shown, margin included, so this fair price is worked out from those prices. It is an estimate of the chance, not a prediction or a tip.",
     RESPONSIBLE_GAMBLING,
   ];
+  return finish(lines);
+}
+
+// ---------------------------------------------------------------- find_arbs
+
+/** Regions find_arbs can keep to (the catalogue's region keys), or every bookmaker. */
+export const ARB_REGIONS = ["au", "nz", "us", "uk", "ie", "eu", "ca", "intl", "all"] as const;
+export type ArbRegion = (typeof ARB_REGIONS)[number];
+
+/** Each page of the arbs list costs this many credits, however many entries it holds (an empty one costs none). */
+const ARB_PAGE_CREDITS = 10;
+/** Pages read at most per answer, so one question costs at most 30 credits. */
+const ARB_MAX_PAGES = 3;
+const ARB_PAGE_SIZE = 100;
+
+const REGION_WORDS: Record<Exclude<ArbRegion, "all">, string> = {
+  au: "Australian",
+  nz: "New Zealand",
+  us: "US",
+  uk: "UK",
+  ie: "Irish",
+  eu: "European",
+  ca: "Canadian",
+  intl: "international",
+};
+
+export interface FindArbsArgs {
+  league_id?: string;
+  region?: ArbRegion;
+  min_profit_pct?: number;
+  stake?: number;
+  max_results?: number;
+}
+
+function money(n: number): string {
+  return `$${n.toFixed(2)}`;
+}
+
+function subjectName(s: Arb["market"]["subject"]): string | undefined {
+  if (!s) return undefined;
+  return typeof s === "string" ? s : s.name;
+}
+
+/** Event ID to side (home, away, competitor_1, competitor_2) to team or player name. */
+type TeamNames = Map<string, Map<string, string>>;
+
+/**
+ * Names the teams behind home and away from the free events list, one call per league shown. The arbs list
+ * names the event but not which team is home, and "Home: 2.10" is no use at a bookmaker. If the lookup fails
+ * the answer still goes out, with Home and Away.
+ */
+async function teamNames(deps: ToolDeps, arbs: Arb[]): Promise<TeamNames> {
+  const names: TeamNames = new Map();
+  const byLeague = new Map<string, number[]>();
+  for (const a of arbs) {
+    const t = Date.parse(a.event.scheduled_start ?? "");
+    if (Number.isFinite(t)) byLeague.set(a.event.league, [...(byLeague.get(a.event.league) ?? []), t]);
+  }
+  const wanted = new Set(arbs.map((a) => a.event.id));
+  for (const [league, times] of byLeague) {
+    try {
+      const hour = 3_600_000;
+      const fetched = await deps.source.events({
+        league,
+        starts_after: utc(new Date(Math.min(...times) - hour)),
+        starts_before: utc(new Date(Math.max(...times) + hour)),
+        limit: 100,
+      });
+      for (const ev of fetched.data) {
+        if (!wanted.has(ev.id)) continue;
+        names.set(ev.id, new Map((ev.participants ?? []).map((p) => [p.role, p.identity.name])));
+      }
+    } catch {
+      // Home and Away stand in for the names.
+    }
+  }
+  return names;
+}
+
+function legSide(leg: ArbLeg, teams?: Map<string, string>): string {
+  const words = leg.side.replace(/_/g, " ");
+  const label = teams?.get(leg.side) ?? words.charAt(0).toUpperCase() + words.slice(1);
+  if (leg.line === null || leg.line === undefined) return label;
+  return `${label} ${formatLine(leg.line, !/^(over|under)$/.test(leg.side))}`;
+}
+
+/** The cursor in a links.next URL, so the next page is asked for with the same filters. */
+function cursorOf(next: string | null | undefined): string | undefined {
+  if (!next) return undefined;
+  try {
+    return new URL(next).searchParams.get("cursor") ?? undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+function planRestriction(err: SockOddsError): SockOddsError {
+  return new SockOddsError(
+    [
+      "This API key's plan does not include arbitrage (HTTP 403, Plan restriction).",
+      "The arbs list is on Pro and Business, and on the free 7-day Pro trial.",
+      "If the account has not had its trial yet: sign in at https://sockodds.com/account/ and choose Start free Pro trial. The same key then works as Pro for 7 days, with no card and no charge.",
+      `Plans: ${PRICING_URL}`,
+    ].join(" "),
+    err.status,
+    undefined,
+    err.title,
+  );
+}
+
+/** The event's name, else its teams from the lookup, else its ID (the arbs list can carry no name). */
+function eventLabel(arb: Arb, teams?: Map<string, string>): string {
+  if (arb.event.name) return arb.event.name;
+  const home = teams?.get("home") ?? teams?.get("competitor_1"), away = teams?.get("away") ?? teams?.get("competitor_2");
+  return home && away ? `${home} v ${away}` : `Event ${arb.event.id}`;
+}
+
+function arbText(arb: Arb, n: number, stake: number, deps: ToolDeps, teams?: Map<string, string>): string[] {
+  const inverse = arb.legs.map((l) => 1 / l.decimal_odds);
+  const sum = inverse.reduce((a, b) => a + b, 0);
+  const subject = subjectName(arb.market.subject);
+  const period = arb.market.period && arb.market.period !== "full" ? `, ${arb.market.period.replace(/_/g, " ")}` : "";
+  const lines = [
+    `${n}. ${arb.profit_pct.toFixed(2)}% profit. ${eventLabel(arb, teams)} (${arb.event.league.replace(/_/g, " ").toUpperCase()}), ${formatKickoff(arb.event.scheduled_start ?? undefined, deps.timeZone)}`,
+    `   Market: ${arb.market.name}${period}${subject ? `, ${subject}` : ""}`,
+  ];
+  arb.legs.forEach((leg, i) => {
+    const share = stake * (inverse[i] / sum);
+    lines.push(
+      `   ${legSide(leg, teams)}: ${formatDecimal(leg.decimal_odds)} at ${bookName(leg.bookmaker, leg.bookmaker_name)}, stake ${money(share)} (seen ${formatStamp(leg.observed_at)})`,
+    );
+  });
+  lines.push(`   Staked like this, ${money(stake)} returns about ${money(stake / sum)} whichever side wins.`);
+  return lines;
+}
+
+export async function findArbs(deps: ToolDeps, args: FindArbsArgs): Promise<string> {
+  const region = args.region ?? "au";
+  const stake = args.stake ?? 100;
+  const maxResults = args.max_results ?? 10;
+  const league = args.league_id ? resolveLeagueKey(args.league_id) : undefined;
+
+  let allowed: Set<string> | undefined;
+  if (region !== "all") {
+    const catalogue: Fetched<Bookmaker[]> = await deps.source.bookmakers({ regions: region, limit: 100 });
+    allowed = new Set(catalogue.data.filter((b) => !b.regions || b.regions.includes(region)).map((b) => b.key));
+  }
+
+  const pages: Fetched<Arb[]>[] = [];
+  let cursor: string | undefined;
+  for (let i = 0; i < ARB_MAX_PAGES; i++) {
+    let page: Fetched<Arb[]>;
+    try {
+      page = await deps.source.arbs({ league, min_edge: args.min_profit_pct, limit: ARB_PAGE_SIZE, cursor });
+    } catch (err) {
+      if (err instanceof SockOddsError && err.status === 403) throw planRestriction(err);
+      throw err;
+    }
+    pages.push(page);
+    cursor = cursorOf(page.next);
+    if (!cursor) break;
+  }
+  const moreUnread = cursor !== undefined;
+  const all = pages.flatMap((p) => p.data);
+  const kept = allowed ? all.filter((a) => a.legs.length > 0 && a.legs.every((l) => allowed!.has(l.bookmaker))) : all;
+  const shown = kept.slice(0, maxResults);
+
+  const where = region === "all" ? "at any bookmaker your key can read" : `with every bet at ${REGION_WORDS[region]} bookmakers`;
+  const lines = [...readLine(pages[0], deps), "", `Arbitrage ${where}${league ? `, ${league.toUpperCase()} only` : ""}:`];
+  if (kept.length === 0) {
+    lines.push(
+      all.length === 0
+        ? "  None listed right now. The list is recomputed about every four minutes."
+        : `  None right now. SockOdds listed ${all.length} arb${all.length === 1 ? "" : "s"}, but each had a bet at a bookmaker outside this region.`,
+    );
+  } else {
+    lines.push(`Showing ${shown.length} of ${kept.length}, best profit first.`, "");
+    const teams = await teamNames(deps, shown);
+    shown.forEach((arb, i) => lines.push(...arbText(arb, i + 1, stake, deps, teams.get(arb.event.id)), ""));
+    lines.pop();
+  }
+  const leftOut = all.length - kept.length;
+  if (allowed && leftOut > 0 && kept.length > 0) {
+    lines.push("", `${leftOut} other arb${leftOut === 1 ? " was" : "s were"} left out because a bet was at a bookmaker outside this region.`);
+  }
+  if (moreUnread) {
+    lines.push("", `SockOdds has more arbs than the ${all.length} read here. Pass league_id or min_profit_pct to narrow the list.`);
+  }
+  lines.push(
+    "",
+    "An arb only pays if every bet is accepted at these prices. Prices move within minutes and bookmakers can refuse, limit or void bets, so check each price at the bookmaker before placing any of them.",
+  );
+  const paid = pages.filter((p) => isFresh(p, deps) && p.data.length > 0).length * ARB_PAGE_CREDITS;
+  if (paid > 0) {
+    lines.push("", `This answer used ${paid} credits (${ARB_PAGE_CREDITS} a page of up to ${ARB_PAGE_SIZE} arbs; the bookmaker list is free).`);
+  }
+  lines.push("", RESPONSIBLE_GAMBLING);
   return finish(lines);
 }

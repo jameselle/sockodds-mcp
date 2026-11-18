@@ -1,0 +1,52 @@
+{
+  "_demo": "DEMO DATA in the SockOdds API v1 arbitrage shape (GET /v1/opportunities/arbs, https://sockodds.com/docs/opportunities/). Invented teams and prices, not real or current odds.",
+  "data": [
+    {
+      "id": "op_demo00000000000a",
+      "type": "arbitrage",
+      "event": { "id": "ev_demo0000000a", "name": "Harbour City Comets v Riverside Owls", "league": "nba", "scheduled_start": "2026-11-19T00:30:00.000Z" },
+      "market": { "key": "total_points", "name": "Total points", "period": "full", "subject": null },
+      "legs": [
+        { "market_id": "mk_demo00000000000a", "outcome_id": "oc_demo00000000001a", "side": "over", "line": 221.5, "bookmaker": "pinnacle", "bookmaker_name": "Pinnacle", "decimal_odds": 2.08, "implied_probability": 0.480769, "stake_pct": 49.39, "observed_at": "2026-11-18T03:12:40.000Z" },
+        { "market_id": "mk_demo00000000000a", "outcome_id": "oc_demo00000000002a", "side": "under", "line": 221.5, "bookmaker": "sportsbet", "bookmaker_name": "Sportsbet", "decimal_odds": 2.03, "implied_probability": 0.492611, "stake_pct": 50.61, "observed_at": "2026-11-18T03:13:05.000Z" }
+      ],
+      "implied_sum": 0.97338,
+      "profit_pct": 2.735,
+      "price_age_seconds": 150,
+      "computed_at": "2026-11-18T03:14:00.000Z",
+      "expires_at": "2026-11-18T03:18:00.000Z"
+    },
+    {
+      "id": "op_demo00000000000b",
+      "type": "arbitrage",
+      "event": { "id": "ev_demo0000000b", "name": "Harbour City Comets v Riverside Owls", "league": "nba", "scheduled_start": "2026-11-19T00:30:00.000Z" },
+      "market": { "key": "h2h", "name": "Head to head", "period": "full", "subject": null },
+      "legs": [
+        { "market_id": "mk_demo00000000000b", "outcome_id": "oc_demo00000000001b", "side": "home", "line": null, "bookmaker": "neds", "bookmaker_name": "Neds", "decimal_odds": 2.1, "implied_probability": 0.47619, "stake_pct": 48.78, "observed_at": "2026-11-18T03:11:52.000Z" },
+        { "market_id": "mk_demo00000000000b", "outcome_id": "oc_demo00000000002b", "side": "away", "line": null, "bookmaker": "tab", "bookmaker_name": "TAB", "decimal_odds": 2.0, "implied_probability": 0.5, "stake_pct": 51.22, "observed_at": "2026-11-18T03:12:20.000Z" }
+      ],
+      "implied_sum": 0.97619,
+      "profit_pct": 2.439,
+      "price_age_seconds": 170,
+      "computed_at": "2026-11-18T03:14:00.000Z",
+      "expires_at": "2026-11-18T03:18:00.000Z"
+    },
+    {
+      "id": "op_demo00000000000c",
+      "type": "arbitrage",
+      "event": { "id": "ev_demo0000000c", "name": "Port Mallow Gulls v Inland Rovers", "league": "nfl", "scheduled_start": "2026-11-21T01:25:00.000Z" },
+      "market": { "key": "spread", "name": "Line", "period": "full", "subject": null },
+      "legs": [
+        { "market_id": "mk_demo00000000000c", "outcome_id": "oc_demo00000000001c", "side": "home", "line": -3.5, "bookmaker": "sportsbet", "bookmaker_name": "Sportsbet", "decimal_odds": 2.05, "implied_probability": 0.487805, "stake_pct": 49.63, "observed_at": "2026-11-18T03:10:31.000Z" },
+        { "market_id": "mk_demo00000000001c", "outcome_id": "oc_demo00000000002c", "side": "away", "line": 3.5, "bookmaker": "pointsbet", "bookmaker_name": "PointsBet", "decimal_odds": 2.02, "implied_probability": 0.49505, "stake_pct": 50.37, "observed_at": "2026-11-18T03:12:02.000Z" }
+      ],
+      "implied_sum": 0.982854,
+      "profit_pct": 1.744,
+      "price_age_seconds": 210,
+      "computed_at": "2026-11-18T03:14:00.000Z",
+      "expires_at": "2026-11-18T03:18:00.000Z"
+    }
+  ],
+  "meta": { "count": 3, "cursor": null },
+  "links": { "next": null }
+}

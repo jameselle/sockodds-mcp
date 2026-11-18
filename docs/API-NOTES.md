@@ -66,6 +66,24 @@ Prices name bookmakers by key, so the first market-grouped answer reads `/v1/boo
 for display names. It counts one object per bookmaker listed, and that answer's usage line includes them.
 If the read fails, keys stand in for names.
 
+### GET /v1/opportunities/arbs (tool: find_arbs)
+
+Source: https://sockodds.com/docs/opportunities/ . Pro and Business keys, and keys on the free Pro trial;
+other keys get `403 Plan restriction`, which the tool turns into a pointer to the trial. Query: `league`,
+`min_edge` (profit in percent), `limit` (up to 100) and `cursor`. Each page costs 10 credits however many
+entries it holds; an empty answer costs nothing. The tool reads at most 3 pages and follows the cursor in
+`links.next`. Each pair has `event` (`id`, `name`, `league`, `scheduled_start`), `market` (`key`, `name`,
+`period`, `subject`), two `legs` (`side`, `line`, `bookmaker`, `bookmaker_name`, `decimal_odds`,
+`observed_at`) and `profit_pct`.
+
+The `bookmakers` filter takes at most 20 keys, and there are more Australian bookmakers than that, so the
+tool does not use it. It reads `/v1/bookmakers?regions=au&limit=100` (free) and keeps a pair only when
+every leg's `bookmaker` is in that list. `region: all` skips the list.
+
+The pair names the event but not which team is home, so the tool reads `/v1/events` (free) once per league
+shown, in a window of an hour either side of those events, and names each leg's team from `participants`.
+If that read fails, the legs say Home and Away.
+
 Markets are lined up across bookmakers by market key, subject and period, and each side by the outcome's
 `side`. The market `id` includes the line, so it is not used to group lines together; an outcome `id` is
 the same at every bookmaker for one market, line and side, which is what `best_price` takes as `outcome_id`.

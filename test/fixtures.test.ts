@@ -14,6 +14,8 @@ function oneEvent(ev: OddsEvent, now: Date): OddsSource {
     leagues: async () => ({ ...fetched, data: [] }),
     events: async () => ({ ...fetched, data: [] }),
     eventOdds: async () => fetched,
+    bookmakers: async () => ({ ...fetched, data: [] }),
+    arbs: async () => ({ ...fetched, data: [] }),
   };
 }
 
