@@ -3,15 +3,15 @@ import { z } from "zod";
 import { DemoSource, SockOddsClient, type OddsSource } from "./client.js";
 import { type Settings } from "./config.js";
 import { SockOddsError } from "./errors.js";
-import { bestPrice, fairOdds, findEvent, getOdds, listLeagues, type ToolDeps } from "./tools.js";
+import { ARB_REGIONS, bestPrice, fairOdds, findArbs, findEvent, getOdds, listLeagues, type ToolDeps } from "./tools.js";
 
-export const VERSION = "1.1.0";
+export const VERSION = "1.2.0";
 
 const MARKET_ENUM = ["h2h", "h2h_3way", "line", "total"] as const;
 
 export const INSTRUCTIONS = [
   "Answers 'what are the odds on X right now' from SockOdds API v1 (Australian and international bookmakers, decimal odds).",
-  "Usual flow: find_event to get an event ID, then get_odds, best_price or fair_odds.",
+  "Usual flow: find_event to get an event ID, then get_odds, best_price or fair_odds. For arbitrage, call find_arbs (Pro or the free Pro trial); it keeps to Australian bookmakers unless asked otherwise.",
   "Always tell the person which bookmaker each price is from and when it was read. Odds change; nothing here is a tip. 18+, gamble responsibly.",
   "Usage is counted in objects: each event returned is one, plus one for every priced outcome in an odds answer (2,500 a month on the free plan, which also allows 10 requests a minute). Responses are cached for 60 s.",
 ].join(" ");
@@ -25,6 +25,8 @@ const TOOL_TEXT = {
     "Get every bookmaker's current decimal prices for one event's main markets: head to head (with the draw where the sport has one), line (handicap) and the main total. Each price shows the bookmaker and when SockOdds saw it. Set all_markets to true to include every priced market, such as halves and props (this costs more objects: one for the event plus one per priced outcome).",
   best_price:
     "Find the best (highest) decimal price for one side of one market across bookmakers, and show the rest of the field. Only available prices count. For line and total markets prices are compared at one line only: the line you give, else the line most bookmakers quote. Give market and side, or an exact outcome_id (oc_...) from get_odds with all_markets.",
+  find_arbs:
+    "List current arbitrage: two prices at two different bookmakers that cover one market, so a stake split between them returns a profit whichever side wins. By default only arbs where every bet is at an Australian bookmaker are shown; set region to all for every bookmaker. Each arb shows the event, market, each bookmaker's price and the time SockOdds saw it, and how to split the stake. Needs a Pro key or the free 7-day Pro trial. Costs 10 credits for each page of up to 100 arbs it reads (at most 3 pages); the bookmaker list it reads first is free.",
   fair_odds:
     "Work out the no-vig (margin-free) fair price for a two- or three-way market. Method: for each bookmaker that prices every outcome at the same line, convert prices to implied chances (1 / decimal price), divide by their total so they add to 100% (the proportional method), then average those chances across bookmakers and convert back (1 / chance). Also reports each bookmaker's margin and the combined margin of the best prices. Use event_id and market for live prices, or pass prices to calculate by hand with no API call. The result estimates the chance; it is not a prediction or a tip.",
 };
@@ -136,6 +138,26 @@ export function createServer(settings: Settings, source: OddsSource = sourceFor(
       annotations: { readOnlyHint: true, openWorldHint: false },
     },
     wrap(deps, fairOdds),
+  );
+
+  server.registerTool(
+    "find_arbs",
+    {
+      title: "Find arbitrage",
+      description: TOOL_TEXT.find_arbs,
+      inputSchema: {
+        league_id: z.string().optional().describe("Only this league, for example nba, nfl, afl or nrl. Leave it out for every league."),
+        region: z
+          .enum(ARB_REGIONS)
+          .optional()
+          .describe("Keep arbs whose every bet is at a bookmaker in this region. Default au (Australian bookmakers). Use all for every bookmaker."),
+        min_profit_pct: z.number().min(0).max(1000).optional().describe("Only arbs paying at least this percent of the total stake, for example 1"),
+        stake: z.number().gt(0).max(1_000_000).optional().describe("Total stake to split across the bets, in dollars. Default 100."),
+        max_results: z.number().int().min(1).max(50).optional().describe("Most arbs to show. Default 10."),
+      },
+      annotations: readOnly,
+    },
+    wrap(deps, findArbs),
   );
 
   return server;

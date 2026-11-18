@@ -47,12 +47,19 @@ This transcript uses demo mode (`SOCKODDS_DEMO=1`), so the prices are invented s
 | `get_odds` | Each bookmaker's decimal prices for head to head, line and total, each with the time SockOdds saw it |
 | `best_price` | Best price for one side of one market, plus the field; prices at other lines are left out |
 | `fair_odds` | No-vig fair price for a two- or three-way market (see the method below); also works by hand with no API call |
+| `find_arbs` | Current arbitrage, with each bookmaker's price and how to split the stake; Australian bookmakers only unless you ask for all. Pro or the free Pro trial |
 
 ### How `fair_odds` works
 
 For each bookmaker that prices every outcome at the same line, each price becomes an implied chance (1 / price). Those chances add up to more than 100%; the extra is the bookmaker's margin. Dividing each chance by the total removes the margin (the proportional method). The tool then averages each bookmaker's margin-free chances and turns them back into prices (1 / chance). It also shows each bookmaker's margin and the combined margin of the best prices.
 
 The free plan's books are retail bookmakers, so this is an estimate of the chance, not a prediction. SockOdds API v1 publishes each bookmaker's price exactly as shown, margin included, so the fair price is always worked out here from those prices.
+
+### Arbitrage with `find_arbs`
+
+Ask "any arbs at Aussie bookies right now?" and Claude calls `find_arbs`. It reads SockOdds' arbitrage list (`/v1/opportunities/arbs`, recomputed about every four minutes) and, by default, keeps only arbs where every bet is at an Australian bookmaker. Each arb shows the event, the market, each bookmaker's price with the time SockOdds saw it, and how to split your stake so both results pay the same. Set `region` to `all` for every bookmaker, or pass `league_id`, `min_profit_pct` and `stake`.
+
+The arbs list is on Pro and Business, and on the free 7-day Pro trial: sign in at [your account](https://sockodds.com/account/) and choose **Start free Pro trial**, and your existing key works as Pro for 7 days with no card. Each page of up to 100 arbs costs 10 credits, and one answer reads at most 3 pages. An arb only pays if every bet is accepted at those prices, so check each price at the bookmaker first.
 
 ### No line movement tool
 
@@ -147,6 +154,10 @@ npm test
 Tests use Node's built-in test runner with a fake `fetch`. They cover the fair odds maths, best price selection, parsing of the example responses from the SockOdds v1 docs, the v1 paths and query names, every error status, and the MCP tools end to end. No test calls the live API.
 
 `docs/API-NOTES.md` lists every endpoint and field this server relies on, with links to the SockOdds docs. `fixtures/docs/` holds example responses copied from those docs; `fixtures/demo/` holds invented data in the same shape for demo mode.
+
+## What changed in 1.2.0
+
+A sixth tool, `find_arbs`, lists current arbitrage from SockOdds' derived endpoints, Australian bookmakers only by default. It needs a Pro key or the free Pro trial. The other five tools are unchanged.
 
 ## What changed in 1.1.0
 

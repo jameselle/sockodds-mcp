@@ -5,7 +5,7 @@ description: Answer "what are the odds on X right now" with live bookmaker price
 
 # Sports odds with SockOdds
 
-The `sockodds` MCP server gives you five tools. Use them whenever someone asks about current odds or
+The `sockodds` MCP server gives you six tools. Use them whenever someone asks about current odds or
 prices for a game: "what are the odds on the grand final", "best price on the Broncos", "who is
 favourite tonight", "what is the fair price on the Swans".
 
@@ -20,7 +20,11 @@ favourite tonight", "what is the fair price on the Swans".
    - `best_price` for the single best price on one side, plus the field.
    - `fair_odds` for the no-vig fair price and each bookmaker's margin. It also takes `prices` to
      work out fair odds by hand from numbers the person gives you, with no API call.
-3. `list_leagues` only when you are unsure of a league key.
+3. `find_arbs` for arbitrage: two prices at two bookmakers that cover one market for a profit either
+   way. It needs a Pro key or the free 7-day Pro trial, and costs 10 credits a page of up to 100 arbs.
+   By default it shows only arbs where every bet is at an Australian bookmaker; pass `region: "all"`
+   only when the person asks for overseas bookmakers, exchanges or prediction markets too.
+4. `list_leagues` only when you are unsure of a league key.
 
 Event IDs from older versions of this server (such as `afl_2026-09-12_...`) no longer work. Run
 `find_event` again to get the current ID.
@@ -40,6 +44,8 @@ and the free plan allows only 10 requests a minute.
 - If a tool says no key is set, pass on the signup link it gives. If it says a rate limit was hit,
   tell the person how long to wait; do not keep calling. If it says the monthly allowance is used or
   the plan does not cover a league, say so plainly; asking again will not help.
+- For an arb, give each bet's bookmaker, price and stake, and say that it only pays if every bet is
+  accepted at those prices: prices move within minutes and bookmakers can refuse or limit bets.
 - End every answer that quotes odds with this line:
   "18+. Odds change and nothing here is a tip. Gamble responsibly: Gambling Help Online 1800 858 858."
 
