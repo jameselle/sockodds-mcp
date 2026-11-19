@@ -126,10 +126,10 @@ response is one more. Catalogue lists count one object per record.
 From https://sockodds.com/pricing/ and https://sockodds.com/docs/limits/ :
 
 - Free, no card required
-- 2,500 objects a month (reset each UTC calendar month)
+- 1,000 credits a month (reset each UTC calendar month); an odds call costs one credit per market returned
 - 10 requests a minute
-- Leagues: MLB, NFL, AFL, NRL, Rugby League World Cup, Rugby League World Cup Women's
-- Bookmakers: Sportsbet, TAB, Ladbrokes. Others are left out of responses rather than refused.
+- Leagues: NFL, NBA, NBL, English Premier League, plus MLB, AFL and NRL in season
+- Bookmakers: every bookmaker SockOdds delivers except bet365
 
 ## Not used
 

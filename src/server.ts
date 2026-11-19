@@ -17,7 +17,7 @@ export const INSTRUCTIONS = [
   "For arbitrage call find_arbs; for value find_ev, find_middles or find_low_holds; for steam line_moves. Those derived tools need Pro or the free Pro trial and keep to Australian bookmakers unless asked otherwise.",
   "Racing: list_races for race IDs, then race_odds, race_form or race_result; racing_arbs and racing_movers (Pro). Racing needs a paid plan or the Pro trial.",
   "Always tell the person which bookmaker each price is from and when it was read. Odds change; nothing here is a tip. 18+, gamble responsibly.",
-  "Usage is counted in objects: each event returned is one, plus one for every priced outcome in an odds answer (2,500 a month on the free plan, which also allows 10 requests a minute). Responses are cached for 60 s.",
+  "Usage is counted in credits: an odds call costs one credit for each market it returns (1,000 credits a month on the free plan, which also allows 10 requests a minute). Responses are cached for 60 s.",
 ].join(" ");
 
 const TOOL_TEXT = {

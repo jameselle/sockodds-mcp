@@ -96,12 +96,13 @@ A key whose plan does not include a route gets HTTP 403 from SockOdds. The tools
 
 The free Developer plan, as stated on the [pricing page](https://sockodds.com/pricing/) and in [plans and limits](https://sockodds.com/docs/limits/):
 
-- 2,500 objects a month, reset each UTC calendar month. Each event in a response is one object, and every priced outcome inside an odds response is one more: one game with three bookmakers each quoting a two-way market is 1 + 3 x 2 = 7 objects.
+- 1,000 credits a month, reset each UTC calendar month. An odds call costs one credit for each market it returns; [plans and limits](https://sockodds.com/docs/limits/) has the full rules.
 - 10 requests a minute
-- 6 leagues: MLB, NFL, AFL, NRL and the Rugby League World Cup (men's and women's)
-- 3 bookmakers: Sportsbet, TAB and Ladbrokes. Prices from bookmakers outside your plan are left out of responses rather than refused.
+- Leagues: NFL, NBA, NBL and the English Premier League, plus MLB, AFL and NRL in season. Paid plans cover every league.
+- Every bookmaker SockOdds delivers except bet365.
+- A free 7-day Pro trial (or 1,000 credits, whichever comes first) opens Pro-only tools such as EV, middles, line moves and racing.
 
-To stay inside that, this server caches every response for 60 seconds, never retries a failed request, and after a rate limit error (HTTP 429) refuses further calls until SockOdds' `Retry-After` time has passed. `find_event` reads events without prices (one object each) and asks for one league and a date window where it can. `get_odds`, `best_price` and `fair_odds` ask only for the markets they show, and every live answer says how many objects it used.
+To stay inside that, this server caches every response for 60 seconds, never retries a failed request, and after a rate limit error (HTTP 429) refuses further calls until SockOdds' `Retry-After` time has passed. `find_event` reads events without prices (one object each) and asks for one league and a date window where it can. `get_odds`, `best_price` and `fair_odds` ask only for the markets they show, and every live answer says how many credits it used.
 
 ## Install
 
