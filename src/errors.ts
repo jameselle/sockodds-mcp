@@ -30,7 +30,7 @@ export class MissingKeyError extends SockOddsError {
   }
 }
 
-const FREE_PLAN = `The free Developer plan allows ${FREE_TIER.requestsPerMinute} requests a minute and ${FREE_TIER.objectsPerMonth.toLocaleString("en-AU")} objects a month (each event counts as one object, plus one for every priced outcome in it).`;
+const FREE_PLAN = `The free Developer plan allows ${FREE_TIER.requestsPerMinute} requests a minute and ${FREE_TIER.creditsPerMonth.toLocaleString("en-AU")} credits a month (an odds call costs one credit for each market it returns; see https://sockodds.com/docs/limits/).`;
 
 export function rateLimitMessage(retryAfterSeconds?: number): string {
   const wait =
@@ -47,7 +47,7 @@ export function rateLimitMessage(retryAfterSeconds?: number): string {
 
 function monthlyAllowanceMessage(said: string): string {
   return [
-    `This API key has used its objects for this month (HTTP 429, Monthly allowance reached).${said}`,
+    `This API key has used its credits for this month (HTTP 429, Monthly allowance reached).${said}`,
     "Retrying will not help: the allowance resets at the start of the next calendar month (UTC), or when the plan changes.",
     FREE_PLAN,
     `Plans: ${PRICING_URL}`,
@@ -94,7 +94,7 @@ export function errorFromResponse(status: number, body: unknown, retryAfter: str
       );
     case 403:
       return new SockOddsError(
-        `This API key's plan does not include that (HTTP 403, Plan restriction).${said} The free Developer plan covers ${listWords(FREE_TIER.leagues)}, with ${listWords(FREE_TIER.bookmakers)}. Choose a league the plan covers, or see ${PRICING_URL}`,
+        `This API key's plan does not include that (HTTP 403, Plan restriction).${said} The free Developer plan covers ${listWords(FREE_TIER.leagues)}, with ${FREE_TIER.bookmakers} (MLB, AFL and NRL in season). Choose a league the plan covers, or see ${PRICING_URL}`,
         status,
         undefined,
         title,

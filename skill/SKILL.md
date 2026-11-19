@@ -12,8 +12,8 @@ favourite tonight", "what is the fair price on the Swans".
 ## Which tool
 
 1. `find_event` first, unless you already have an event ID (they look like `ev_000ckk0nc1tg`). Pass
-   `league_id` whenever you know the league (afl, nrl, nfl, mlb, rlwc): each event returned costs one
-   object of the free plan's 2,500 a month. It shows no prices.
+   `league_id` whenever you know the league (nfl, nba, nbl, epl, afl, nrl, mlb): it shows no prices and keeps
+   the free plan's 1,000 credits a month for the odds calls.
 2. Then one of:
    - `get_odds` for every bookmaker's head to head, line and total prices. Each priced outcome costs
      one more object, so only set `all_markets` when the person wants halves or props.

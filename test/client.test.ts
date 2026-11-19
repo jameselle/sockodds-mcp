@@ -116,7 +116,7 @@ test("401, 403, 404, 410 and 500 give plain messages and are not retried or cach
   ]);
   const c = new SockOddsClient({ apiKey: "bad", baseUrl: BASE }, f.fn);
   await assert.rejects(() => c.leagues(), /rejected the API key \(HTTP 401\).*Provide a valid bearer key.*Authorization: Bearer/);
-  await assert.rejects(() => c.leagues(), /Plan restriction.*This league is not in your plan.*Rugby League World Cup/);
+  await assert.rejects(() => c.leagues(), /Plan restriction.*This league is not in your plan.*English Premier League.*except bet365/);
   await assert.rejects(() => c.eventOdds("ev_000000000000"), /HTTP 404, Not found.*Event not found.*find_event/);
   await assert.rejects(() => c.leagues(), /HTTP 410 Gone.*https:\/\/api\.sockodds\.com\/v1/);
   await assert.rejects(() => c.leagues(), /HTTP 500/);

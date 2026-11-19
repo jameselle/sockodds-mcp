@@ -18,9 +18,9 @@ export const REQUEST_TIMEOUT_MS = 15_000;
 /** Free Developer plan, as stated on https://sockodds.com/pricing/ and https://sockodds.com/docs/limits/ */
 export const FREE_TIER = {
   requestsPerMinute: 10,
-  objectsPerMonth: 2500,
-  leagues: ["MLB", "NFL", "AFL", "NRL", "Rugby League World Cup", "Rugby League World Cup Women's"],
-  bookmakers: ["Sportsbet", "TAB", "Ladbrokes"],
+  creditsPerMonth: 1000,
+  leagues: ["NFL", "NBA", "NBL", "English Premier League", "MLB", "AFL", "NRL"],
+  bookmakers: "every bookmaker SockOdds delivers except bet365",
 } as const;
 
 export const RESPONSIBLE_GAMBLING =
