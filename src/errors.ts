@@ -8,6 +8,8 @@ export class SockOddsError extends Error {
     readonly status?: number,
     readonly retryAfterSeconds?: number,
     readonly title?: string,
+    /** The problem body's own `detail`, so a tool can quote SockOdds' words in its own message. */
+    readonly detail?: string,
   ) {
     super(message);
     this.name = "SockOddsError";
@@ -72,7 +74,7 @@ export function errorFromResponse(status: number, body: unknown, retryAfter: str
   const said = problem?.detail ? ` SockOdds said: "${problem.detail}".` : "";
   switch (status) {
     case 400:
-      return new SockOddsError(`SockOdds did not accept the request (HTTP 400, Invalid request).${said} Retrying it unchanged gets the same answer.`, status, undefined, title);
+      return new SockOddsError(`SockOdds did not accept the request (HTTP 400, Invalid request).${said} Retrying it unchanged gets the same answer.`, status, undefined, title, problem?.detail);
     case 401:
       if (title === "Access changed") {
         return new SockOddsError(
@@ -80,6 +82,7 @@ export function errorFromResponse(status: number, body: unknown, retryAfter: str
           status,
           undefined,
           title,
+          problem?.detail,
         );
       }
       return new SockOddsError(
@@ -87,6 +90,7 @@ export function errorFromResponse(status: number, body: unknown, retryAfter: str
         status,
         undefined,
         title,
+        problem?.detail,
       );
     case 403:
       return new SockOddsError(
@@ -94,6 +98,7 @@ export function errorFromResponse(status: number, body: unknown, retryAfter: str
         status,
         undefined,
         title,
+        problem?.detail,
       );
     case 404:
       if (!problem) {
@@ -107,6 +112,7 @@ export function errorFromResponse(status: number, body: unknown, retryAfter: str
         status,
         undefined,
         title,
+        problem?.detail,
       );
     case 410:
       return new SockOddsError(
@@ -114,14 +120,15 @@ export function errorFromResponse(status: number, body: unknown, retryAfter: str
         status,
         undefined,
         title,
+        problem?.detail,
       );
     case 429: {
       const secs = seconds(retryAfter);
       // Per the docs, a 429 without Retry-After is the monthly allowance (or the stream limit); retrying will not help.
       if (title === "Monthly allowance reached" || (secs === undefined && title !== "Rate limit reached")) {
-        return new SockOddsError(monthlyAllowanceMessage(said), status, undefined, title);
+        return new SockOddsError(monthlyAllowanceMessage(said), status, undefined, title, problem?.detail);
       }
-      return new SockOddsError(rateLimitMessage(secs), status, secs, title);
+      return new SockOddsError(rateLimitMessage(secs), status, secs, title, problem?.detail);
     }
     case 503: {
       const secs = seconds(retryAfter);
@@ -130,6 +137,7 @@ export function errorFromResponse(status: number, body: unknown, retryAfter: str
         status,
         secs,
         title,
+        problem?.detail,
       );
     }
     default:
@@ -138,6 +146,7 @@ export function errorFromResponse(status: number, body: unknown, retryAfter: str
         status,
         undefined,
         title,
+        problem?.detail,
       );
   }
 }

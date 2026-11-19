@@ -15,10 +15,13 @@ async function connect(env: Record<string, string>) {
 
 const text = (r: any) => r.content.map((c: any) => c.text).join("\n");
 
-test("lists the six tools, all read only", async () => {
+test("lists the nineteen tools, all read only", async () => {
   const client = await connect({});
   const { tools } = await client.listTools();
-  assert.deepEqual(tools.map((t) => t.name).sort(), ["best_price", "fair_odds", "find_arbs", "find_event", "get_odds", "list_leagues"]);
+  assert.deepEqual(tools.map((t) => t.name).sort(), [
+    "best_price", "closing_line", "fair_odds", "find_arbs", "find_ev", "find_event", "find_low_holds", "find_middles", "get_odds", "get_results",
+    "line_moves", "list_leagues", "list_races", "odds_history", "race_form", "race_odds", "race_result", "racing_arbs", "racing_movers",
+  ]);
   for (const t of tools) assert.equal(t.annotations?.readOnlyHint, true);
   const fair = tools.find((t) => t.name === "fair_odds")!;
   assert.match(fair.description!, /proportional method/);

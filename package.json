@@ -1,8 +1,8 @@
 {
   "name": "sockodds-mcp",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "mcpName": "io.github.jameselle/sockodds-mcp",
-  "description": "MCP server that lets Claude answer 'what are the odds on X right now' with SockOdds API v1.",
+  "description": "MCP server that lets Claude answer 'what are the odds on X right now' with SockOdds API v1: prices, fair odds, arbs, +EV, CLV, results and Australian racing.",
   "license": "MIT",
   "homepage": "https://github.com/jameselle/sockodds-mcp#readme",
   "repository": {
@@ -42,6 +42,9 @@
     "afl",
     "nrl",
     "rugby-league-world-cup",
+    "horse-racing",
+    "arbitrage",
+    "closing-line-value",
     "sockodds"
   ],
   "dependencies": {

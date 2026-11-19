@@ -1,0 +1,558 @@
+{
+  "_demo": "DEMO DATA in the SockOdds API v1 price history shape (GET /v1/odds/history, https://sockodds.com/docs/history/). Invented teams, players, ids and prices, not real or current odds.",
+  "data": [
+    {
+      "event": "ev_hc7rv2k9m4nq",
+      "market": {
+        "id": "mk_hc7rv2k9m4nqwnmk",
+        "key": "winner",
+        "name": "Winner",
+        "period": "full",
+        "subject": null
+      },
+      "outcome": {
+        "id": "oc_hc7rv2k9m4nqwn00",
+        "name": "Harbour City Comets",
+        "side": "home"
+      },
+      "bookmaker": "pinnacle",
+      "observed_at": "2026-11-18T01:05:00.000Z",
+      "kind": "changed",
+      "decimal_odds": 1.75,
+      "implied_probability": 0.571429,
+      "line": null
+    },
+    {
+      "event": "ev_hc7rv2k9m4nq",
+      "market": {
+        "id": "mk_hc7rv2k9m4nqwnmk",
+        "key": "winner",
+        "name": "Winner",
+        "period": "full",
+        "subject": null
+      },
+      "outcome": {
+        "id": "oc_hc7rv2k9m4nqwn01",
+        "name": "Riverside Owls",
+        "side": "away"
+      },
+      "bookmaker": "pinnacle",
+      "observed_at": "2026-11-18T01:05:00.000Z",
+      "kind": "changed",
+      "decimal_odds": 2.15,
+      "implied_probability": 0.465116,
+      "line": null
+    },
+    {
+      "event": "ev_hc7rv2k9m4nq",
+      "market": {
+        "id": "mk_hc7rv2k9m4nqwnmk",
+        "key": "winner",
+        "name": "Winner",
+        "period": "full",
+        "subject": null
+      },
+      "outcome": {
+        "id": "oc_hc7rv2k9m4nqwn00",
+        "name": "Harbour City Comets",
+        "side": "home"
+      },
+      "bookmaker": "sportsbet",
+      "observed_at": "2026-11-18T01:15:00.000Z",
+      "kind": "opened",
+      "decimal_odds": 1.8,
+      "implied_probability": 0.555556,
+      "line": null
+    },
+    {
+      "event": "ev_hc7rv2k9m4nq",
+      "market": {
+        "id": "mk_hc7rv2k9m4nqwnmk",
+        "key": "winner",
+        "name": "Winner",
+        "period": "full",
+        "subject": null
+      },
+      "outcome": {
+        "id": "oc_hc7rv2k9m4nqwn01",
+        "name": "Riverside Owls",
+        "side": "away"
+      },
+      "bookmaker": "sportsbet",
+      "observed_at": "2026-11-18T01:15:00.000Z",
+      "kind": "opened",
+      "decimal_odds": 2.05,
+      "implied_probability": 0.487805,
+      "line": null
+    },
+    {
+      "event": "ev_hc7rv2k9m4nq",
+      "market": {
+        "id": "mk_hc7rv2k9m4nqwnmk",
+        "key": "winner",
+        "name": "Winner",
+        "period": "full",
+        "subject": null
+      },
+      "outcome": {
+        "id": "oc_hc7rv2k9m4nqwn00",
+        "name": "Harbour City Comets",
+        "side": "home"
+      },
+      "bookmaker": "tab",
+      "observed_at": "2026-11-18T02:00:00.000Z",
+      "kind": "opened",
+      "decimal_odds": 1.78,
+      "implied_probability": 0.561798,
+      "line": null
+    },
+    {
+      "event": "ev_hc7rv2k9m4nq",
+      "market": {
+        "id": "mk_hc7rv2k9m4nqwnmk",
+        "key": "winner",
+        "name": "Winner",
+        "period": "full",
+        "subject": null
+      },
+      "outcome": {
+        "id": "oc_hc7rv2k9m4nqwn01",
+        "name": "Riverside Owls",
+        "side": "away"
+      },
+      "bookmaker": "tab",
+      "observed_at": "2026-11-18T02:00:00.000Z",
+      "kind": "opened",
+      "decimal_odds": 2.08,
+      "implied_probability": 0.480769,
+      "line": null
+    },
+    {
+      "event": "ev_hc7rv2k9m4nq",
+      "market": {
+        "id": "mk_hc7rv2k9m4nqwnmk",
+        "key": "winner",
+        "name": "Winner",
+        "period": "full",
+        "subject": null
+      },
+      "outcome": {
+        "id": "oc_hc7rv2k9m4nqwn00",
+        "name": "Harbour City Comets",
+        "side": "home"
+      },
+      "bookmaker": "draftkings",
+      "observed_at": "2026-11-18T03:00:00.000Z",
+      "kind": "opened",
+      "decimal_odds": 1.74,
+      "implied_probability": 0.574713,
+      "line": null
+    },
+    {
+      "event": "ev_hc7rv2k9m4nq",
+      "market": {
+        "id": "mk_hc7rv2k9m4nqwnmk",
+        "key": "winner",
+        "name": "Winner",
+        "period": "full",
+        "subject": null
+      },
+      "outcome": {
+        "id": "oc_hc7rv2k9m4nqwn01",
+        "name": "Riverside Owls",
+        "side": "away"
+      },
+      "bookmaker": "draftkings",
+      "observed_at": "2026-11-18T03:00:00.000Z",
+      "kind": "opened",
+      "decimal_odds": 2.15,
+      "implied_probability": 0.465116,
+      "line": null
+    },
+    {
+      "event": "ev_hc7rv2k9m4nq",
+      "market": {
+        "id": "mk_hc7rv2k9m4nqwnmk",
+        "key": "winner",
+        "name": "Winner",
+        "period": "full",
+        "subject": null
+      },
+      "outcome": {
+        "id": "oc_hc7rv2k9m4nqwn00",
+        "name": "Harbour City Comets",
+        "side": "home"
+      },
+      "bookmaker": "sportsbet",
+      "observed_at": "2026-11-18T09:40:00.000Z",
+      "kind": "changed",
+      "decimal_odds": 1.76,
+      "implied_probability": 0.568182,
+      "line": null
+    },
+    {
+      "event": "ev_hc7rv2k9m4nq",
+      "market": {
+        "id": "mk_hc7rv2k9m4nqwnmk",
+        "key": "winner",
+        "name": "Winner",
+        "period": "full",
+        "subject": null
+      },
+      "outcome": {
+        "id": "oc_hc7rv2k9m4nqwn01",
+        "name": "Riverside Owls",
+        "side": "away"
+      },
+      "bookmaker": "sportsbet",
+      "observed_at": "2026-11-18T09:40:00.000Z",
+      "kind": "changed",
+      "decimal_odds": 2.12,
+      "implied_probability": 0.471698,
+      "line": null
+    },
+    {
+      "event": "ev_hc7rv2k9m4nq",
+      "market": {
+        "id": "mk_hc7rv2k9m4nqwnmk",
+        "key": "winner",
+        "name": "Winner",
+        "period": "full",
+        "subject": null
+      },
+      "outcome": {
+        "id": "oc_hc7rv2k9m4nqwn00",
+        "name": "Harbour City Comets",
+        "side": "home"
+      },
+      "bookmaker": "pinnacle",
+      "observed_at": "2026-11-18T12:00:00.000Z",
+      "kind": "changed",
+      "decimal_odds": 1.78,
+      "implied_probability": 0.561798,
+      "line": null
+    },
+    {
+      "event": "ev_hc7rv2k9m4nq",
+      "market": {
+        "id": "mk_hc7rv2k9m4nqwnmk",
+        "key": "winner",
+        "name": "Winner",
+        "period": "full",
+        "subject": null
+      },
+      "outcome": {
+        "id": "oc_hc7rv2k9m4nqwn01",
+        "name": "Riverside Owls",
+        "side": "away"
+      },
+      "bookmaker": "pinnacle",
+      "observed_at": "2026-11-18T12:00:00.000Z",
+      "kind": "changed",
+      "decimal_odds": 2.1,
+      "implied_probability": 0.47619,
+      "line": null
+    },
+    {
+      "event": "ev_hc7rv2k9m4nq",
+      "market": {
+        "id": "mk_hc7rv2k9m4nqwnmk",
+        "key": "winner",
+        "name": "Winner",
+        "period": "full",
+        "subject": null
+      },
+      "outcome": {
+        "id": "oc_hc7rv2k9m4nqwn00",
+        "name": "Harbour City Comets",
+        "side": "home"
+      },
+      "bookmaker": "sportsbet",
+      "observed_at": "2026-11-18T20:05:00.000Z",
+      "kind": "changed",
+      "decimal_odds": 1.7,
+      "implied_probability": 0.588235,
+      "line": null
+    },
+    {
+      "event": "ev_hc7rv2k9m4nq",
+      "market": {
+        "id": "mk_hc7rv2k9m4nqwnmk",
+        "key": "winner",
+        "name": "Winner",
+        "period": "full",
+        "subject": null
+      },
+      "outcome": {
+        "id": "oc_hc7rv2k9m4nqwn01",
+        "name": "Riverside Owls",
+        "side": "away"
+      },
+      "bookmaker": "sportsbet",
+      "observed_at": "2026-11-18T20:05:00.000Z",
+      "kind": "changed",
+      "decimal_odds": 2.2,
+      "implied_probability": 0.454545,
+      "line": null
+    },
+    {
+      "event": "ev_hc7rv2k9m4nq",
+      "market": {
+        "id": "mk_hc7rv2k9m4nqwnmk",
+        "key": "winner",
+        "name": "Winner",
+        "period": "full",
+        "subject": null
+      },
+      "outcome": {
+        "id": "oc_hc7rv2k9m4nqwn00",
+        "name": "Harbour City Comets",
+        "side": "home"
+      },
+      "bookmaker": "tab",
+      "observed_at": "2026-11-18T22:10:00.000Z",
+      "kind": "changed",
+      "decimal_odds": 1.72,
+      "implied_probability": 0.581395,
+      "line": null
+    },
+    {
+      "event": "ev_hc7rv2k9m4nq",
+      "market": {
+        "id": "mk_hc7rv2k9m4nqwnmk",
+        "key": "winner",
+        "name": "Winner",
+        "period": "full",
+        "subject": null
+      },
+      "outcome": {
+        "id": "oc_hc7rv2k9m4nqwn01",
+        "name": "Riverside Owls",
+        "side": "away"
+      },
+      "bookmaker": "tab",
+      "observed_at": "2026-11-18T22:10:00.000Z",
+      "kind": "changed",
+      "decimal_odds": 2.16,
+      "implied_probability": 0.462963,
+      "line": null
+    },
+    {
+      "event": "ev_hc7rv2k9m4nq",
+      "market": {
+        "id": "mk_hc7rv2k9m4nqhpmk",
+        "key": "handicap",
+        "name": "Handicap",
+        "period": "full",
+        "subject": null
+      },
+      "outcome": {
+        "id": "oc_hc7rv2k9m4nqhp00",
+        "name": "Harbour City Comets",
+        "side": "home"
+      },
+      "bookmaker": "sportsbet",
+      "observed_at": "2026-11-18T23:10:00.000Z",
+      "kind": "changed",
+      "decimal_odds": 1.72,
+      "implied_probability": 0.581395,
+      "line": -3.5
+    },
+    {
+      "event": "ev_hc7rv2k9m4nq",
+      "market": {
+        "id": "mk_hc7rv2k9m4nqhpmk",
+        "key": "handicap",
+        "name": "Handicap",
+        "period": "full",
+        "subject": null
+      },
+      "outcome": {
+        "id": "oc_hc7rv2k9m4nqhp01",
+        "name": "Riverside Owls",
+        "side": "away"
+      },
+      "bookmaker": "sportsbet",
+      "observed_at": "2026-11-18T23:10:00.000Z",
+      "kind": "changed",
+      "decimal_odds": 2.18,
+      "implied_probability": 0.458716,
+      "line": 3.5
+    },
+    {
+      "event": "ev_hc7rv2k9m4nq",
+      "market": {
+        "id": "mk_hc7rv2k9m4nqwnmk",
+        "key": "winner",
+        "name": "Winner",
+        "period": "full",
+        "subject": null
+      },
+      "outcome": {
+        "id": "oc_hc7rv2k9m4nqwn00",
+        "name": "Harbour City Comets",
+        "side": "home"
+      },
+      "bookmaker": "draftkings",
+      "observed_at": "2026-11-19T00:15:00.000Z",
+      "kind": "changed",
+      "decimal_odds": 1.65,
+      "implied_probability": 0.606061,
+      "line": null
+    },
+    {
+      "event": "ev_hc7rv2k9m4nq",
+      "market": {
+        "id": "mk_hc7rv2k9m4nqwnmk",
+        "key": "winner",
+        "name": "Winner",
+        "period": "full",
+        "subject": null
+      },
+      "outcome": {
+        "id": "oc_hc7rv2k9m4nqwn01",
+        "name": "Riverside Owls",
+        "side": "away"
+      },
+      "bookmaker": "draftkings",
+      "observed_at": "2026-11-19T00:15:00.000Z",
+      "kind": "changed",
+      "decimal_odds": 2.35,
+      "implied_probability": 0.425532,
+      "line": null
+    },
+    {
+      "event": "ev_hc7rv2k9m4nq",
+      "market": {
+        "id": "mk_hc7rv2k9m4nqwnmk",
+        "key": "winner",
+        "name": "Winner",
+        "period": "full",
+        "subject": null
+      },
+      "outcome": {
+        "id": "oc_hc7rv2k9m4nqwn00",
+        "name": "Harbour City Comets",
+        "side": "home"
+      },
+      "bookmaker": "tab",
+      "observed_at": "2026-11-19T00:20:00.000Z",
+      "kind": "changed",
+      "decimal_odds": 1.67,
+      "implied_probability": 0.598802,
+      "line": null
+    },
+    {
+      "event": "ev_hc7rv2k9m4nq",
+      "market": {
+        "id": "mk_hc7rv2k9m4nqwnmk",
+        "key": "winner",
+        "name": "Winner",
+        "period": "full",
+        "subject": null
+      },
+      "outcome": {
+        "id": "oc_hc7rv2k9m4nqwn01",
+        "name": "Riverside Owls",
+        "side": "away"
+      },
+      "bookmaker": "tab",
+      "observed_at": "2026-11-19T00:20:00.000Z",
+      "kind": "changed",
+      "decimal_odds": 2.28,
+      "implied_probability": 0.438596,
+      "line": null
+    },
+    {
+      "event": "ev_hc7rv2k9m4nq",
+      "market": {
+        "id": "mk_hc7rv2k9m4nqwnmk",
+        "key": "winner",
+        "name": "Winner",
+        "period": "full",
+        "subject": null
+      },
+      "outcome": {
+        "id": "oc_hc7rv2k9m4nqwn00",
+        "name": "Harbour City Comets",
+        "side": "home"
+      },
+      "bookmaker": "pinnacle",
+      "observed_at": "2026-11-19T00:25:00.000Z",
+      "kind": "changed",
+      "decimal_odds": 1.66,
+      "implied_probability": 0.60241,
+      "line": null
+    },
+    {
+      "event": "ev_hc7rv2k9m4nq",
+      "market": {
+        "id": "mk_hc7rv2k9m4nqwnmk",
+        "key": "winner",
+        "name": "Winner",
+        "period": "full",
+        "subject": null
+      },
+      "outcome": {
+        "id": "oc_hc7rv2k9m4nqwn01",
+        "name": "Riverside Owls",
+        "side": "away"
+      },
+      "bookmaker": "pinnacle",
+      "observed_at": "2026-11-19T00:25:00.000Z",
+      "kind": "changed",
+      "decimal_odds": 2.33,
+      "implied_probability": 0.429185,
+      "line": null
+    },
+    {
+      "event": "ev_hc7rv2k9m4nq",
+      "market": {
+        "id": "mk_hc7rv2k9m4nqwnmk",
+        "key": "winner",
+        "name": "Winner",
+        "period": "full",
+        "subject": null
+      },
+      "outcome": {
+        "id": "oc_hc7rv2k9m4nqwn00",
+        "name": "Harbour City Comets",
+        "side": "home"
+      },
+      "bookmaker": "sportsbet",
+      "observed_at": "2026-11-19T00:29:00.000Z",
+      "kind": "changed",
+      "decimal_odds": 1.65,
+      "implied_probability": 0.606061,
+      "line": null
+    },
+    {
+      "event": "ev_hc7rv2k9m4nq",
+      "market": {
+        "id": "mk_hc7rv2k9m4nqwnmk",
+        "key": "winner",
+        "name": "Winner",
+        "period": "full",
+        "subject": null
+      },
+      "outcome": {
+        "id": "oc_hc7rv2k9m4nqwn01",
+        "name": "Riverside Owls",
+        "side": "away"
+      },
+      "bookmaker": "sportsbet",
+      "observed_at": "2026-11-19T00:29:00.000Z",
+      "kind": "changed",
+      "decimal_odds": 2.3,
+      "implied_probability": 0.434783,
+      "line": null
+    }
+  ],
+  "meta": {
+    "count": 26,
+    "cursor": null
+  },
+  "links": {
+    "next": null
+  }
+}

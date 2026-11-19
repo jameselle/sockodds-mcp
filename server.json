@@ -2,19 +2,19 @@
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.jameselle/sockodds-mcp",
   "title": "SockOdds",
-  "description": "Australian sports odds from SockOdds API v1: bookmaker prices, best price and no-vig fair odds.",
+  "description": "Australian sports odds and racing from SockOdds API v1: prices, fair odds, arbs, +EV, CLV and results.",
   "websiteUrl": "https://sockodds.com/",
   "repository": {
     "url": "https://github.com/jameselle/sockodds-mcp",
     "source": "github"
   },
-  "version": "1.2.0",
+  "version": "1.3.0",
   "packages": [
     {
       "registryType": "npm",
       "registryBaseUrl": "https://registry.npmjs.org",
       "identifier": "sockodds-mcp",
-      "version": "1.2.0",
+      "version": "1.3.0",
       "transport": {
         "type": "stdio"
       },

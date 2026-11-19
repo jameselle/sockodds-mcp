@@ -1,0 +1,161 @@
+{
+  "_demo": "DEMO DATA in the SockOdds API v1 race form shape (GET /v1/racing/races/{race_id}/form, https://sockodds.com/docs/racing/). Invented tracks, runners, jockeys, trainers and prices, not real races or current odds.",
+  "race_id": "thoroughbred_2026-11-19_AUS_kestrel_downs_r3",
+  "data": [
+    {
+      "number": 1,
+      "name": "Copper Lantern",
+      "form_figures": "x32",
+      "starts": [
+        {
+          "race_id": "thoroughbred_2026-11-02_AUS_gully_vale_r2",
+          "start": "2026-11-02T04:10:00.000Z",
+          "meeting": {
+            "name": "Gully Vale",
+            "state": "NSW",
+            "country": "AUS"
+          },
+          "race_number": 2,
+          "distance_m": 1100,
+          "class_conditions": "MDN",
+          "track_condition": "SOFT5",
+          "jockey": "A Fenwick",
+          "trainer": "M Ashgrove",
+          "barrier": 3,
+          "weight_kg": 57.0,
+          "position": 2,
+          "placed": true,
+          "field_size": 11,
+          "fixed_win": 6.5,
+          "tote_win": 7.1,
+          "bsp": 7.4
+        },
+        {
+          "race_id": "thoroughbred_2026-10-15_AUS_kestrel_downs_r1",
+          "start": "2026-10-15T03:30:00.000Z",
+          "meeting": {
+            "name": "Kestrel Downs",
+            "state": "NSW",
+            "country": "AUS"
+          },
+          "race_number": 1,
+          "distance_m": 1000,
+          "class_conditions": "MDN",
+          "track_condition": "GOOD4",
+          "jockey": "A Fenwick",
+          "trainer": "M Ashgrove",
+          "barrier": 8,
+          "weight_kg": 57.0,
+          "position": 3,
+          "placed": true,
+          "field_size": 9,
+          "fixed_win": 9.0,
+          "tote_win": 8.6,
+          "bsp": 9.8
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "name": "Midnight Ledger",
+      "form_figures": "45",
+      "starts": [
+        {
+          "race_id": "thoroughbred_2026-10-29_AUS_kestrel_downs_r3",
+          "start": "2026-10-29T04:40:00.000Z",
+          "meeting": {
+            "name": "Kestrel Downs",
+            "state": "NSW",
+            "country": "AUS"
+          },
+          "race_number": 3,
+          "distance_m": 1200,
+          "class_conditions": "MDN",
+          "track_condition": "GOOD3",
+          "jockey": "R Calder",
+          "trainer": "P Lindqvist",
+          "barrier": 5,
+          "weight_kg": 57.0,
+          "position": null,
+          "placed": false,
+          "field_size": 12,
+          "fixed_win": 11.0,
+          "tote_win": 12.4,
+          "bsp": 13.0
+        },
+        {
+          "race_id": "thoroughbred_2026-10-08_AUS_gully_vale_r1",
+          "start": "2026-10-08T03:00:00.000Z",
+          "meeting": {
+            "name": "Gully Vale",
+            "state": "NSW",
+            "country": "AUS"
+          },
+          "race_number": 1,
+          "distance_m": 1000,
+          "class_conditions": "MDN",
+          "track_condition": "HVY8",
+          "jockey": "R Calder",
+          "trainer": "P Lindqvist",
+          "barrier": 2,
+          "weight_kg": 57.0,
+          "position": 4,
+          "placed": false,
+          "field_size": 10,
+          "fixed_win": 8.0,
+          "tote_win": 9.2,
+          "bsp": 8.9
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "name": "Salt Road",
+      "form_figures": "1",
+      "starts": [
+        {
+          "race_id": "thoroughbred_2026-11-05_AUS_gully_vale_r5",
+          "start": "2026-11-05T05:20:00.000Z",
+          "meeting": {
+            "name": "Gully Vale",
+            "state": "NSW",
+            "country": "AUS"
+          },
+          "race_number": 5,
+          "distance_m": 1200,
+          "class_conditions": "2YO",
+          "track_condition": "GOOD4",
+          "jockey": "J Moreton",
+          "trainer": "M Ashgrove",
+          "barrier": 1,
+          "weight_kg": 56.5,
+          "position": 1,
+          "placed": true,
+          "field_size": 8,
+          "fixed_win": 4.2,
+          "tote_win": 4.5,
+          "bsp": 4.6
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "name": "Paper Comet",
+      "form_figures": null,
+      "starts": []
+    },
+    {
+      "number": 5,
+      "name": "Quiet Harbour",
+      "form_figures": "6x",
+      "starts": []
+    }
+  ],
+  "meta": {
+    "count": 5,
+    "cursor": null
+  },
+  "links": {
+    "next": null
+  }
+}

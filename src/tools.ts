@@ -27,30 +27,30 @@ export interface ToolDeps {
   now?: () => Date;
 }
 
-const DEMO_BANNER = "DEMO DATA: invented sample prices in the SockOdds format. These are not real or current odds.";
+export const DEMO_BANNER = "DEMO DATA: invented sample prices in the SockOdds format. These are not real or current odds.";
 
 /** v1 identifier formats, from the contract. */
-const EVENT_ID = /^ev_[0-9a-hjkmnp-tv-z]{12}$/;
-const OUTCOME_ID = /^oc_[0-9a-hjkmnp-tv-z]{16}$/;
-const KEY = /^[a-z][a-z0-9_]{1,47}$/;
+export const EVENT_ID = /^ev_[0-9a-hjkmnp-tv-z]{12}$/;
+export const OUTCOME_ID = /^oc_[0-9a-hjkmnp-tv-z]{16}$/;
+export const KEY = /^[a-z][a-z0-9_]{1,47}$/;
 
-function nowOf(deps: ToolDeps): Date {
+export function nowOf(deps: ToolDeps): Date {
   return deps.now ? deps.now() : new Date();
 }
 
 /** UTC to the second, the form the API documents for starts_after and starts_before. */
-function utc(d: Date): string {
+export function utc(d: Date): string {
   return `${d.toISOString().slice(0, 19)}Z`;
 }
 
-function readLine(fetched: Fetched<unknown>, deps: ToolDeps): string[] {
+export function readLine(fetched: Fetched<unknown>, deps: ToolDeps): string[] {
   if (fetched.source === "demo") return [DEMO_BANNER];
   const ageS = Math.round((nowOf(deps).getTime() - Date.parse(fetched.fetchedAt)) / 1000);
   return [`Read from SockOdds at ${formatStamp(fetched.fetchedAt)}${ageS >= 2 ? ` (cached, ${ageS} s ago)` : ""}.`];
 }
 
 /** Only a fresh live response cost anything; a cached or demo one did not. */
-function isFresh(fetched: Fetched<unknown>, deps: ToolDeps): boolean {
+export function isFresh(fetched: Fetched<unknown>, deps: ToolDeps): boolean {
   return fetched.source === "live" && Date.parse(fetched.fetchedAt) > nowOf(deps).getTime() - 2000;
 }
 
@@ -59,7 +59,7 @@ function costLine(fetched: Fetched<unknown>, deps: ToolDeps, objects: number, wh
   return isFresh(fetched, deps) ? ["", `${what} used ${used} object${used === 1 ? "" : "s"} of the key's monthly allowance.`] : [];
 }
 
-function finish(lines: string[]): string {
+export function finish(lines: string[]): string {
   return noLongDashes(lines.join("\n"));
 }
 
@@ -89,7 +89,7 @@ async function loadOdds(deps: ToolDeps, eventID: string, params: Params = {}): P
   return { ev: fetched.data, fetched };
 }
 
-function statusLine(ev: SockEvent): string | undefined {
+export function statusLine(ev: SockEvent): string | undefined {
   switch (ev.status) {
     case "live":
       return "Status: LIVE. In-play prices move fast.";
@@ -104,7 +104,7 @@ function statusLine(ev: SockEvent): string | undefined {
   }
 }
 
-function eventHeader(ev: SockEvent, deps: ToolDeps): string[] {
+export function eventHeader(ev: SockEvent, deps: ToolDeps): string[] {
   const lines = [`${eventTitle(ev)} (${ev.league?.name ?? "league not given"})`];
   lines.push(`Starts: ${formatKickoff(eventStart(ev), deps.timeZone)}`);
   const status = statusLine(ev);
@@ -222,7 +222,7 @@ export interface GetOddsArgs {
 
 const MAX_MARKETS = 40;
 
-function bookmakersParam(input?: string): string | undefined {
+export function bookmakersParam(input?: string): string | undefined {
   if (!input) return undefined;
   const keys = input.split(",").map((s) => s.trim().toLowerCase()).filter(Boolean);
   const bad = keys.filter((k) => !KEY.test(k));
@@ -431,7 +431,7 @@ const ARB_PAGE_CREDITS = 10;
 const ARB_MAX_PAGES = 3;
 const ARB_PAGE_SIZE = 100;
 
-const REGION_WORDS: Record<Exclude<ArbRegion, "all">, string> = {
+export const REGION_WORDS: Record<Exclude<ArbRegion, "all">, string> = {
   au: "Australian",
   nz: "New Zealand",
   us: "US",
@@ -450,11 +450,11 @@ export interface FindArbsArgs {
   max_results?: number;
 }
 
-function money(n: number): string {
+export function money(n: number): string {
   return `$${n.toFixed(2)}`;
 }
 
-function subjectName(s: Arb["market"]["subject"]): string | undefined {
+export function subjectName(s: Arb["market"]["subject"]): string | undefined {
   if (!s) return undefined;
   return typeof s === "string" ? s : s.name;
 }
@@ -467,7 +467,7 @@ type TeamNames = Map<string, Map<string, string>>;
  * names the event but not which team is home, and "Home: 2.10" is no use at a bookmaker. If the lookup fails
  * the answer still goes out, with Home and Away.
  */
-async function teamNames(deps: ToolDeps, arbs: Arb[]): Promise<TeamNames> {
+export async function teamNames(deps: ToolDeps, arbs: Array<Pick<Arb, "event">>): Promise<TeamNames> {
   const names: TeamNames = new Map();
   const byLeague = new Map<string, number[]>();
   for (const a of arbs) {
@@ -495,7 +495,7 @@ async function teamNames(deps: ToolDeps, arbs: Arb[]): Promise<TeamNames> {
   return names;
 }
 
-function legSide(leg: ArbLeg, teams?: Map<string, string>): string {
+export function legSide(leg: Pick<ArbLeg, "side" | "line">, teams?: Map<string, string>): string {
   const words = leg.side.replace(/_/g, " ");
   const label = teams?.get(leg.side) ?? words.charAt(0).toUpperCase() + words.slice(1);
   if (leg.line === null || leg.line === undefined) return label;
@@ -503,7 +503,7 @@ function legSide(leg: ArbLeg, teams?: Map<string, string>): string {
 }
 
 /** The cursor in a links.next URL, so the next page is asked for with the same filters. */
-function cursorOf(next: string | null | undefined): string | undefined {
+export function cursorOf(next: string | null | undefined): string | undefined {
   if (!next) return undefined;
   try {
     return new URL(next).searchParams.get("cursor") ?? undefined;
@@ -512,22 +512,78 @@ function cursorOf(next: string | null | undefined): string | undefined {
   }
 }
 
-function planRestriction(err: SockOddsError): SockOddsError {
+/**
+ * A 403 from a route the free plan does not have, explained: which plans include it, the free Pro trial, and
+ * SockOdds' own words from the problem body. `tier` "pro" is Pro and Business; "paid" is every paid plan.
+ */
+export function planNeeded(err: SockOddsError, what: string, feature: string, tier: "pro" | "paid" = "pro"): SockOddsError {
+  const said = err.detail ? ` SockOdds said: "${err.detail}".` : "";
+  const plans =
+    tier === "pro"
+      ? `${feature} is on Pro and Business, and on the free 7-day Pro trial.`
+      : `${feature} is on every paid plan (Starter, Pro and Business), and on the free 7-day Pro trial; the free Developer plan does not include it.`;
   return new SockOddsError(
     [
-      "This API key's plan does not include arbitrage (HTTP 403, Plan restriction).",
-      "The arbs list is on Pro and Business, and on the free 7-day Pro trial.",
+      `This API key's plan does not include ${what} (HTTP 403, Plan restriction).${said}`,
+      plans,
       "If the account has not had its trial yet: sign in at https://sockodds.com/account/ and choose Start free Pro trial. The same key then works as Pro for 7 days, with no card and no charge.",
       `Plans: ${PRICING_URL}`,
     ].join(" "),
     err.status,
     undefined,
     err.title,
+    err.detail,
   );
 }
 
+/** Calls `load` and turns a 403 into `planNeeded`. */
+export async function withPlan<T>(load: () => Promise<T>, what: string, feature: string, tier: "pro" | "paid" = "pro"): Promise<T> {
+  try {
+    return await load();
+  } catch (err) {
+    if (err instanceof SockOddsError && err.status === 403) throw planNeeded(err, what, feature, tier);
+    throw err;
+  }
+}
+
+/**
+ * The bookmaker keys of one region, from the free bookmaker list, or undefined for "all". The API's
+ * bookmakers filter takes at most 20 keys and some regions have more bookmakers than that, so the derived
+ * tools filter on these keys themselves.
+ */
+export async function regionBookmakers(deps: ToolDeps, region: ArbRegion): Promise<Set<string> | undefined> {
+  if (region === "all") return undefined;
+  const catalogue: Fetched<Bookmaker[]> = await deps.source.bookmakers({ regions: region, limit: 100 });
+  return new Set(catalogue.data.filter((b) => !b.regions || b.regions.includes(region)).map((b) => b.key));
+}
+
+/** Reads up to `maxPages` pages of a cursor list, following links.next. `moreUnread` says the list went on. */
+export async function readPages<T>(
+  load: (cursor: string | undefined) => Promise<Fetched<T[]>>,
+  maxPages: number,
+): Promise<{ pages: Fetched<T[]>[]; all: T[]; moreUnread: boolean }> {
+  const pages: Fetched<T[]>[] = [];
+  let cursor: string | undefined;
+  for (let i = 0; i < maxPages; i++) {
+    const page = await load(cursor);
+    pages.push(page);
+    cursor = cursorOf(page.next);
+    if (!cursor) break;
+  }
+  return { pages, all: pages.flatMap((p) => p.data), moreUnread: cursor !== undefined };
+}
+
+/** Credits used by fresh, non-empty pages that cost `each` credits apiece (an empty answer costs nothing). */
+export function creditsUsed(pages: Fetched<unknown[]>[], deps: ToolDeps, each: number): number {
+  return pages.filter((p) => isFresh(p, deps) && p.data.length > 0).length * each;
+}
+
+function planRestriction(err: SockOddsError): SockOddsError {
+  return planNeeded(err, "arbitrage", "The arbs list");
+}
+
 /** The event's name, else its teams from the lookup, else its ID (the arbs list can carry no name). */
-function eventLabel(arb: Arb, teams?: Map<string, string>): string {
+export function eventLabel(arb: Pick<Arb, "event">, teams?: Map<string, string>): string {
   if (arb.event.name) return arb.event.name;
   const home = teams?.get("home") ?? teams?.get("competitor_1"), away = teams?.get("away") ?? teams?.get("competitor_2");
   return home && away ? `${home} v ${away}` : `Event ${arb.event.id}`;

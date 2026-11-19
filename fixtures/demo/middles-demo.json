@@ -1,0 +1,159 @@
+{
+  "_demo": "DEMO DATA in the SockOdds API v1 middles shape (GET /v1/opportunities/middles, https://sockodds.com/docs/opportunities/). Invented teams, players, ids and prices, not real or current odds.",
+  "data": [
+    {
+      "id": "op_d000000000000001",
+      "type": "middle",
+      "event": {
+        "id": "ev_7pmgr22n0v3b",
+        "name": "Port Mallow Gulls v Inland Rovers",
+        "league": "nfl",
+        "scheduled_start": "2026-11-22T18:00:00.000Z"
+      },
+      "market": {
+        "key": "total_points",
+        "name": "Total points",
+        "period": "full",
+        "subject": null
+      },
+      "legs": [
+        {
+          "market_id": "mk_d000000000000001",
+          "outcome_id": "oc_d000000000000001",
+          "side": "over",
+          "line": 44.5,
+          "bookmaker": "sportsbet",
+          "bookmaker_name": "Sportsbet",
+          "decimal_odds": 2.0,
+          "implied_probability": 0.5,
+          "stake_pct": null,
+          "observed_at": "2026-11-19T03:05:40.000Z"
+        },
+        {
+          "market_id": "mk_d000000000000002",
+          "outcome_id": "oc_d000000000000002",
+          "side": "under",
+          "line": 47.5,
+          "bookmaker": "tab",
+          "bookmaker_name": "TAB",
+          "decimal_odds": 1.95,
+          "implied_probability": 0.512821,
+          "stake_pct": null,
+          "observed_at": "2026-11-19T03:07:15.000Z"
+        }
+      ],
+      "implied_sum": 1.012821,
+      "profit_pct": -1.266,
+      "gap": 3,
+      "middle_profit_pct": 97.468,
+      "price_age_seconds": 260,
+      "computed_at": "2026-11-19T03:10:00.000Z",
+      "expires_at": "2026-11-19T03:14:00.000Z"
+    },
+    {
+      "id": "op_d000000000000002",
+      "type": "middle",
+      "event": {
+        "id": "ev_8hcrv21n0v2a",
+        "name": "Harbour City Comets v Riverside Owls",
+        "league": "nba",
+        "scheduled_start": "2026-11-21T00:30:00.000Z"
+      },
+      "market": {
+        "key": "total_points",
+        "name": "Total points",
+        "period": "full",
+        "subject": null
+      },
+      "legs": [
+        {
+          "market_id": "mk_d000000000000003",
+          "outcome_id": "oc_d000000000000003",
+          "side": "over",
+          "line": 219.5,
+          "bookmaker": "pointsbet",
+          "bookmaker_name": "PointsBet",
+          "decimal_odds": 1.95,
+          "implied_probability": 0.512821,
+          "stake_pct": null,
+          "observed_at": "2026-11-19T03:06:05.000Z"
+        },
+        {
+          "market_id": "mk_d000000000000004",
+          "outcome_id": "oc_d000000000000004",
+          "side": "under",
+          "line": 222.5,
+          "bookmaker": "neds",
+          "bookmaker_name": "Neds",
+          "decimal_odds": 1.91,
+          "implied_probability": 0.52356,
+          "stake_pct": null,
+          "observed_at": "2026-11-19T03:08:20.000Z"
+        }
+      ],
+      "implied_sum": 1.036381,
+      "profit_pct": -3.51,
+      "gap": 3,
+      "middle_profit_pct": 92.979,
+      "price_age_seconds": 235,
+      "computed_at": "2026-11-19T03:10:00.000Z",
+      "expires_at": "2026-11-19T03:14:00.000Z"
+    },
+    {
+      "id": "op_d000000000000003",
+      "type": "middle",
+      "event": {
+        "id": "ev_8hcrv21n0v2a",
+        "name": "Harbour City Comets v Riverside Owls",
+        "league": "nba",
+        "scheduled_start": "2026-11-21T00:30:00.000Z"
+      },
+      "market": {
+        "key": "handicap",
+        "name": "Handicap",
+        "period": "full",
+        "subject": null
+      },
+      "legs": [
+        {
+          "market_id": "mk_d000000000000005",
+          "outcome_id": "oc_d000000000000005",
+          "side": "home",
+          "line": -4.5,
+          "bookmaker": "neds",
+          "bookmaker_name": "Neds",
+          "decimal_odds": 1.95,
+          "implied_probability": 0.512821,
+          "stake_pct": null,
+          "observed_at": "2026-11-19T03:07:00.000Z"
+        },
+        {
+          "market_id": "mk_d000000000000006",
+          "outcome_id": "oc_d000000000000006",
+          "side": "away",
+          "line": 6.5,
+          "bookmaker": "pinnacle",
+          "bookmaker_name": "Pinnacle",
+          "decimal_odds": 1.9,
+          "implied_probability": 0.526316,
+          "stake_pct": null,
+          "observed_at": "2026-11-19T03:08:40.000Z"
+        }
+      ],
+      "implied_sum": 1.039136,
+      "profit_pct": -3.766,
+      "gap": 2,
+      "middle_profit_pct": 92.468,
+      "price_age_seconds": 180,
+      "computed_at": "2026-11-19T03:10:00.000Z",
+      "expires_at": "2026-11-19T03:14:00.000Z"
+    }
+  ],
+  "meta": {
+    "count": 3,
+    "cursor": null
+  },
+  "links": {
+    "next": null
+  }
+}

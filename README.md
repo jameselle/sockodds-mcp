@@ -2,7 +2,7 @@
 
 [![MCP Badge](https://lobehub.com/badge/mcp/jameselle-sockodds-mcp)](https://lobehub.com/mcp/jameselle-sockodds-mcp) [![sockodds-mcp MCP server](https://glama.ai/mcp/servers/jameselle/sockodds-mcp/badge)](https://glama.ai/mcp/servers/jameselle/sockodds-mcp)
 
-Ask Claude "what are the odds on X right now" and get Australian bookmakers' prices, the best price and the no-vig fair price, from the [SockOdds](https://sockodds.com/) sports odds API (v1). The free key covers 3 bookmakers and 6 leagues; paid plans add more ([pricing](https://sockodds.com/pricing/)).
+Ask Claude "what are the odds on X right now" and get Australian bookmakers' prices, the best price and the no-vig fair price, from the [SockOdds](https://sockodds.com/) sports odds API (v1). With a paid key it also finds arbs, +EV prices, middles and steam, shows the closing line and price history, settles results, and covers Australian and New Zealand racing. The free key covers 3 bookmakers and 6 leagues; paid plans add more ([pricing](https://sockodds.com/pricing/)).
 
 > **Version 1.0 speaks SockOdds API v1.** Versions 0.x called the older v2 API, which SockOdds is retiring: once it is switched off, 0.x stops working. Update to 1.0: restart your MCP client so `npx -y sockodds-mcp` fetches it, and if the server still starts as 0.x, point it at `sockodds-mcp@latest` once. Your key carries over. See [Upgrading from 0.x](#upgrading-from-0x).
 
@@ -48,6 +48,19 @@ This transcript uses demo mode (`SOCKODDS_DEMO=1`), so the prices are invented s
 | `best_price` | Best price for one side of one market, plus the field; prices at other lines are left out |
 | `fair_odds` | No-vig fair price for a two- or three-way market (see the method below); also works by hand with no API call |
 | `find_arbs` | Current arbitrage, with each bookmaker's price and how to split the stake; Australian bookmakers only unless you ask for all. Pro or the free Pro trial |
+| `find_ev` | Positive EV prices: a bookmaker price longer than the fair price, with the EV, the fair price and how it was made, and the Kelly stake. Pro |
+| `find_middles` | Two bets on different lines at two bookmakers that both win if the result lands in the gap. Pro |
+| `find_low_holds` | The tightest markets: best prices on each side at two bookmakers with almost no margin. Pro |
+| `line_moves` | Lines that moved in one league in the last minutes to hours, with steam and whether Pinnacle moved. Pro |
+| `closing_line` | One event's opening and closing prices, the fair closing price and closing line value (CLV), including your own bet's. Pro |
+| `odds_history` | How an event's prices moved: per bookmaker, the first and latest price, high, low and number of changes. Paid plans |
+| `get_results` | Graded results from official sources: score, which outcomes won, voids and dead heats |
+| `list_races` | Upcoming Australian (or New Zealand) thoroughbred, harness and greyhound races, with race IDs. Paid plans, no credits |
+| `race_odds` | Every bookmaker's win and place prices for each runner, plus Betfair Exchange back and lay. Paid plans |
+| `racing_arbs` | Bookmaker win prices that beat the Betfair lay, with back and lay stakes and the profit after commission. Pro |
+| `racing_movers` | Runners firming or drifting most since their price opened. Pro |
+| `race_result` | Placings with the prices paid, scratchings and tote dividends. Paid plans |
+| `race_form` | Each runner's recent recorded starts: track, distance, finish, jockey, trainer and starting prices. Paid plans |
 
 ### How `fair_odds` works
 
@@ -61,9 +74,21 @@ Ask "any arbs at Aussie bookies right now?" and Claude calls `find_arbs`. It rea
 
 The arbs list is on Pro and Business, and on the free 7-day Pro trial: sign in at [your account](https://sockodds.com/account/) and choose **Start free Pro trial**, and your existing key works as Pro for 7 days with no card. Each page of up to 100 arbs costs 10 credits, and one answer reads at most 3 pages. An arb only pays if every bet is accepted at those prices, so check each price at the bookmaker first.
 
-### No line movement tool
+### +EV, middles, low holds and steam
 
-SockOdds API v1 has recorded price history (`/v1/odds/history`), but [history is on the Pro plan](https://sockodds.com/docs/history/) and other plans get HTTP 403. The free key cannot read it, so this server does not include a line movement tool.
+`find_ev`, `find_middles` and `find_low_holds` read SockOdds' other derived lists (`/v1/opportunities/ev`, `/middles`, `/low-holds`) the same way `find_arbs` does: Australian bookmakers only unless you set `region`, at most 3 pages of 100 entries, 10 credits a page. `find_ev` names where each fair price came from: a sharp bookmaker's own market with its margin removed, an exchange, or a consensus of other bookmakers. `line_moves` reads `/v1/moves` for one league and flags steam (several bookmakers moving the same way) and whether Pinnacle moved with them. +EV is an estimate, not a guarantee, and every price should be checked at the bookmaker first.
+
+### After the game: `closing_line`, `odds_history` and `get_results`
+
+`closing_line` shows each bookmaker's opening and closing price, the fair closing price and the closing line value of each opening price; give `outcome_id` and `odds` to get the CLV of your own bet (Pro, 10 credits). `odds_history` summarises recorded price history (`/v1/odds/history`) instead of listing every change: for each outcome and bookmaker, the first and latest price, the high, the low and how many changes, over the 24 hours before the start by default ([paid plans](https://sockodds.com/docs/history/), charged at 10 times the live price). `get_results` reads graded results (`/v1/results`, 1 or 2 credits): the score and which outcomes won.
+
+### Racing
+
+Australian and New Zealand thoroughbred, harness and greyhound racing is on every paid plan and the Pro trial ([racing docs](https://sockodds.com/docs/racing/)). `list_races` gives race IDs such as `thoroughbred_2026-11-19_AUS_kestrel_downs_r3` (free); `race_odds` (about 1 credit per 10 bookmakers), `race_form` and `race_result` (1 credit each) take one. `racing_arbs` and `racing_movers` are on Pro (10 credits a call). Australian races are the default; pass `country` for New Zealand or both.
+
+### When a key's plan does not cover a tool
+
+A key whose plan does not include a route gets HTTP 403 from SockOdds. The tools turn that into a plain answer: which plans include it, how to start the free 7-day Pro trial, and SockOdds' own words from the error. Only a fresh live answer reports credits; cached and demo answers cost nothing.
 
 ## Get a free SockOdds key
 
@@ -154,6 +179,10 @@ npm test
 Tests use Node's built-in test runner with a fake `fetch`. They cover the fair odds maths, best price selection, parsing of the example responses from the SockOdds v1 docs, the v1 paths and query names, every error status, and the MCP tools end to end. No test calls the live API.
 
 `docs/API-NOTES.md` lists every endpoint and field this server relies on, with links to the SockOdds docs. `fixtures/docs/` holds example responses copied from those docs; `fixtures/demo/` holds invented data in the same shape for demo mode.
+
+## What changed in 1.3.0
+
+Thirteen new tools cover the rest of SockOdds API v1's public routes: `find_ev`, `find_middles`, `find_low_holds`, `line_moves`, `closing_line`, `odds_history` and `get_results`, and for racing `list_races`, `race_odds`, `racing_arbs`, `racing_movers`, `race_result` and `race_form`. Like `find_arbs`, they keep to Australian bookmakers (or Australian races) by default, show times in your time zone and UTC, and explain a plan restriction instead of failing. Every one works in demo mode on invented data. The first six tools are unchanged.
 
 ## What changed in 1.2.0
 

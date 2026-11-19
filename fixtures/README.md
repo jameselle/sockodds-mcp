@@ -16,5 +16,7 @@ API with invented prices:
 | `error-403.json` | https://sockodds.com/docs/limits/ (a league outside the free plan) |
 | `error-429.json`, `error-429-monthly.json` | Built from the problem fields and the two 429 titles in https://sockodds.com/docs/errors/ (the docs show no recorded 429 body) |
 
-`demo/` holds INVENTED data in the v1 shape, used by demo mode (`SOCKODDS_DEMO=1`) and by tests. Every id,
+`demo/` holds INVENTED data in the v1 shape, used by demo mode (`SOCKODDS_DEMO=1`) and by tests. The 1.3.0
+files (`ev-`, `middles-`, `low-holds-`, `moves-`, `closing-`, `history-`, `results-` and `racing-*-demo.json`)
+use invented teams, players, tracks, runners, jockeys and trainers as well. Every id,
 price and timestamp is made up and none are real or current odds.

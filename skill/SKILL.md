@@ -1,11 +1,11 @@
 ---
 name: sockodds-odds
-description: Answer "what are the odds on X right now" with live bookmaker prices from SockOdds API v1 through the sockodds MCP tools. Use when someone asks for odds, prices, the best price, who is favourite, or the fair (no-vig) price for an AFL, NRL, NFL, MLB or Rugby League World Cup game, or any league their SockOdds key covers.
+description: Answer "what are the odds on X right now" with live bookmaker prices from SockOdds API v1 through the sockodds MCP tools. Use when someone asks for odds, prices, the best price, who is favourite, or the fair (no-vig) price for an AFL, NRL, NFL, MLB or Rugby League World Cup game, or any league their SockOdds key covers; for arbs, +EV, middles, steam, the closing line, price history or results; or for Australian and New Zealand horse, harness and greyhound racing.
 ---
 
 # Sports odds with SockOdds
 
-The `sockodds` MCP server gives you six tools. Use them whenever someone asks about current odds or
+The `sockodds` MCP server gives you nineteen tools. Use them whenever someone asks about current odds or
 prices for a game: "what are the odds on the grand final", "best price on the Broncos", "who is
 favourite tonight", "what is the fair price on the Swans".
 
@@ -24,7 +24,23 @@ favourite tonight", "what is the fair price on the Swans".
    way. It needs a Pro key or the free 7-day Pro trial, and costs 10 credits a page of up to 100 arbs.
    By default it shows only arbs where every bet is at an Australian bookmaker; pass `region: "all"`
    only when the person asks for overseas bookmakers, exchanges or prediction markets too.
-4. `list_leagues` only when you are unsure of a league key.
+4. The other derived lists, all Pro (or the free Pro trial), 10 credits a page, Australian bookmakers by
+   default like `find_arbs`:
+   - `find_ev` for prices longer than the fair price. Give the EV, the fair price and how it was made,
+     and call it an estimate, never a sure thing.
+   - `find_middles` for two bets on different lines that both win if the result lands in the gap.
+   - `find_low_holds` for the tightest markets (not an arbitrage).
+   - `line_moves` (needs `league_id`) for lines that moved and steam.
+5. After a game, or about a bet already placed:
+   - `closing_line` for opening and closing prices and closing line value; pass `outcome_id` and `odds`
+     for the person's own bet (Pro).
+   - `odds_history` for how prices moved, summarised per bookmaker (paid plans; costs 10 times the live
+     price, so ask for one market).
+   - `get_results` for the score and which outcomes won.
+6. Racing (paid plans or the Pro trial): `list_races` first to get a race ID (they look like
+   `thoroughbred_2026-11-19_AUS_kestrel_downs_r3`, not `ev_`), then `race_odds`, `race_form` or
+   `race_result`. `racing_arbs` and `racing_movers` need Pro. Australian races are the default.
+7. `list_leagues` only when you are unsure of a league key.
 
 Event IDs from older versions of this server (such as `afl_2026-09-12_...`) no longer work. Run
 `find_event` again to get the current ID.
@@ -44,6 +60,8 @@ and the free plan allows only 10 requests a minute.
 - If a tool says no key is set, pass on the signup link it gives. If it says a rate limit was hit,
   tell the person how long to wait; do not keep calling. If it says the monthly allowance is used or
   the plan does not cover a league, say so plainly; asking again will not help.
+- If a tool says the key's plan does not include it, pass on which plans do and the free Pro trial it
+  describes; do not retry.
 - For an arb, give each bet's bookmaker, price and stake, and say that it only pays if every bet is
   accepted at those prices: prices move within minutes and bookmakers can refuse or limit bets.
 - End every answer that quotes odds with this line:

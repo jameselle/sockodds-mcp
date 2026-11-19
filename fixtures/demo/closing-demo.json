@@ -1,0 +1,308 @@
+{
+  "_demo": "DEMO DATA in the SockOdds API v1 closing line shape (GET /v1/events/{event_id}/closing, https://sockodds.com/docs/fair-odds/). Invented teams, players, ids and prices, not real or current odds.",
+  "data": {
+    "id": "ev_hc7rv2k9m4nq",
+    "name": "Harbour City Comets v Riverside Owls",
+    "league": {
+      "key": "nba",
+      "name": "NBA"
+    },
+    "scheduled_start": "2026-11-19T00:30:00.000Z",
+    "status": "final",
+    "participants": [
+      {
+        "role": "home",
+        "identity": {
+          "key": "harbour_city_comets",
+          "name": "Harbour City Comets"
+        }
+      },
+      {
+        "role": "away",
+        "identity": {
+          "key": "riverside_owls",
+          "name": "Riverside Owls"
+        }
+      }
+    ],
+    "markets": [
+      {
+        "id": "mk_hc7rv2k9m4nqwnmk",
+        "key": "winner",
+        "name": "Winner",
+        "period": "full",
+        "subject": null,
+        "alternate": false,
+        "closing_fair": {
+          "source": "sharp_book",
+          "bookmaker": "pinnacle",
+          "devig": "proportional",
+          "books": 1,
+          "overround": 1.03159
+        },
+        "outcomes": [
+          {
+            "id": "oc_hc7rv2k9m4nqwn00",
+            "name": "Harbour City Comets",
+            "side": "home",
+            "line": null,
+            "closing_fair_probability": 0.58396,
+            "closing_fair_decimal_odds": 1.712,
+            "prices": [
+              {
+                "bookmaker": "pinnacle",
+                "opening": {
+                  "decimal_odds": 1.75,
+                  "implied_probability": 0.571429,
+                  "observed_at": "2026-11-17T22:05:00.000Z"
+                },
+                "closing": {
+                  "decimal_odds": 1.66,
+                  "implied_probability": 0.60241,
+                  "observed_at": "2026-11-19T00:29:40.000Z"
+                },
+                "opening_clv_pct": 2.193
+              },
+              {
+                "bookmaker": "sportsbet",
+                "opening": {
+                  "decimal_odds": 1.8,
+                  "implied_probability": 0.555556,
+                  "observed_at": "2026-11-18T01:15:00.000Z"
+                },
+                "closing": {
+                  "decimal_odds": 1.65,
+                  "implied_probability": 0.606061,
+                  "observed_at": "2026-11-19T00:29:10.000Z"
+                },
+                "opening_clv_pct": 5.113
+              },
+              {
+                "bookmaker": "tab",
+                "opening": {
+                  "decimal_odds": 1.78,
+                  "implied_probability": 0.561798,
+                  "observed_at": "2026-11-18T02:00:00.000Z"
+                },
+                "closing": {
+                  "decimal_odds": 1.67,
+                  "implied_probability": 0.598802,
+                  "observed_at": "2026-11-19T00:28:50.000Z"
+                },
+                "opening_clv_pct": 3.945
+              },
+              {
+                "bookmaker": "draftkings",
+                "opening": {
+                  "decimal_odds": 1.74,
+                  "implied_probability": 0.574713,
+                  "observed_at": "2026-11-18T03:00:00.000Z"
+                },
+                "closing": {
+                  "decimal_odds": 1.65,
+                  "implied_probability": 0.606061,
+                  "observed_at": "2026-11-19T00:27:30.000Z"
+                },
+                "opening_clv_pct": 1.609
+              }
+            ]
+          },
+          {
+            "id": "oc_hc7rv2k9m4nqwn01",
+            "name": "Riverside Owls",
+            "side": "away",
+            "line": null,
+            "closing_fair_probability": 0.41604,
+            "closing_fair_decimal_odds": 2.404,
+            "prices": [
+              {
+                "bookmaker": "pinnacle",
+                "opening": {
+                  "decimal_odds": 2.15,
+                  "implied_probability": 0.465116,
+                  "observed_at": "2026-11-17T22:05:00.000Z"
+                },
+                "closing": {
+                  "decimal_odds": 2.33,
+                  "implied_probability": 0.429185,
+                  "observed_at": "2026-11-19T00:29:40.000Z"
+                },
+                "opening_clv_pct": -10.551
+              },
+              {
+                "bookmaker": "sportsbet",
+                "opening": {
+                  "decimal_odds": 2.05,
+                  "implied_probability": 0.487805,
+                  "observed_at": "2026-11-18T01:15:00.000Z"
+                },
+                "closing": {
+                  "decimal_odds": 2.3,
+                  "implied_probability": 0.434783,
+                  "observed_at": "2026-11-19T00:29:10.000Z"
+                },
+                "opening_clv_pct": -14.712
+              },
+              {
+                "bookmaker": "tab",
+                "opening": {
+                  "decimal_odds": 2.08,
+                  "implied_probability": 0.480769,
+                  "observed_at": "2026-11-18T02:00:00.000Z"
+                },
+                "closing": {
+                  "decimal_odds": 2.28,
+                  "implied_probability": 0.438596,
+                  "observed_at": "2026-11-19T00:28:50.000Z"
+                },
+                "opening_clv_pct": -13.464
+              },
+              {
+                "bookmaker": "draftkings",
+                "opening": {
+                  "decimal_odds": 2.15,
+                  "implied_probability": 0.465116,
+                  "observed_at": "2026-11-18T03:00:00.000Z"
+                },
+                "closing": {
+                  "decimal_odds": 2.35,
+                  "implied_probability": 0.425532,
+                  "observed_at": "2026-11-19T00:27:30.000Z"
+                },
+                "opening_clv_pct": -10.551
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "mk_hc7rv2k9m4nqhpmk",
+        "key": "handicap",
+        "name": "Handicap",
+        "period": "full",
+        "subject": null,
+        "alternate": false,
+        "closing_fair": {
+          "source": "sharp_book",
+          "bookmaker": "pinnacle",
+          "devig": "proportional",
+          "books": 1,
+          "overround": 1.03638
+        },
+        "outcomes": [
+          {
+            "id": "oc_hc7rv2k9m4nqhp00",
+            "name": "Harbour City Comets",
+            "side": "home",
+            "line": -3.5,
+            "closing_fair_probability": 0.505181,
+            "closing_fair_decimal_odds": 1.979,
+            "prices": [
+              {
+                "bookmaker": "pinnacle",
+                "opening": {
+                  "decimal_odds": 1.95,
+                  "implied_probability": 0.512821,
+                  "observed_at": "2026-11-17T22:05:00.000Z"
+                },
+                "closing": {
+                  "decimal_odds": 1.91,
+                  "implied_probability": 0.52356,
+                  "observed_at": "2026-11-19T00:29:40.000Z"
+                },
+                "opening_clv_pct": -1.49
+              },
+              {
+                "bookmaker": "sportsbet",
+                "opening": {
+                  "decimal_odds": 1.92,
+                  "implied_probability": 0.520833,
+                  "observed_at": "2026-11-18T01:15:00.000Z"
+                },
+                "closing": {
+                  "decimal_odds": 1.9,
+                  "implied_probability": 0.526316,
+                  "observed_at": "2026-11-19T00:29:10.000Z"
+                },
+                "opening_clv_pct": -3.005
+              },
+              {
+                "bookmaker": "tab",
+                "opening": {
+                  "decimal_odds": 1.9,
+                  "implied_probability": 0.526316,
+                  "observed_at": "2026-11-18T02:00:00.000Z"
+                },
+                "closing": {
+                  "decimal_odds": 1.88,
+                  "implied_probability": 0.531915,
+                  "observed_at": "2026-11-19T00:28:50.000Z"
+                },
+                "opening_clv_pct": -4.016
+              }
+            ]
+          },
+          {
+            "id": "oc_hc7rv2k9m4nqhp01",
+            "name": "Riverside Owls",
+            "side": "away",
+            "line": 3.5,
+            "closing_fair_probability": 0.494819,
+            "closing_fair_decimal_odds": 2.021,
+            "prices": [
+              {
+                "bookmaker": "pinnacle",
+                "opening": {
+                  "decimal_odds": 1.89,
+                  "implied_probability": 0.529101,
+                  "observed_at": "2026-11-17T22:05:00.000Z"
+                },
+                "closing": {
+                  "decimal_odds": 1.95,
+                  "implied_probability": 0.512821,
+                  "observed_at": "2026-11-19T00:29:40.000Z"
+                },
+                "opening_clv_pct": -6.479
+              },
+              {
+                "bookmaker": "sportsbet",
+                "opening": {
+                  "decimal_odds": 1.9,
+                  "implied_probability": 0.526316,
+                  "observed_at": "2026-11-18T01:15:00.000Z"
+                },
+                "closing": {
+                  "decimal_odds": 1.9,
+                  "implied_probability": 0.526316,
+                  "observed_at": "2026-11-19T00:29:10.000Z"
+                },
+                "opening_clv_pct": -5.984
+              },
+              {
+                "bookmaker": "tab",
+                "opening": {
+                  "decimal_odds": 1.9,
+                  "implied_probability": 0.526316,
+                  "observed_at": "2026-11-18T02:00:00.000Z"
+                },
+                "closing": {
+                  "decimal_odds": 1.92,
+                  "implied_probability": 0.520833,
+                  "observed_at": "2026-11-19T00:28:50.000Z"
+                },
+                "opening_clv_pct": -5.984
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "meta": {
+    "count": 1,
+    "cursor": null
+  },
+  "links": {
+    "next": null
+  }
+}
