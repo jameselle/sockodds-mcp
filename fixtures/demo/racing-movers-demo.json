@@ -1,0 +1,99 @@
+{
+  "_demo": "DEMO DATA in the SockOdds API v1 market movers shape (GET /v1/racing/movers, https://sockodds.com/docs/racing/). Invented tracks, runners, jockeys, trainers and prices, not real races or current odds.",
+  "data": [
+    {
+      "race": {
+        "id": "thoroughbred_2026-11-19_AUS_kestrel_downs_r4",
+        "code": "thoroughbred",
+        "meeting": {
+          "name": "Kestrel Downs",
+          "state": "NSW",
+          "country": "AUS"
+        },
+        "race_number": 4,
+        "scheduled_start": "2026-11-19T05:15:00.000Z"
+      },
+      "runner_number": 7,
+      "runner_name": "Rusty Compass",
+      "opening": {
+        "decimal_odds": 5.0,
+        "bookmaker": "tab",
+        "observed_at": "2026-11-18T21:40:00.000Z"
+      },
+      "current": {
+        "median": 7.5,
+        "best": 8.0,
+        "best_bookmaker": "pointsbet",
+        "bookmaker_count": 3,
+        "observed_at": "2026-11-19T04:18:00.000Z"
+      },
+      "change": 0.5,
+      "direction": "drifting"
+    },
+    {
+      "race": {
+        "id": "harness_2026-11-19_NZL_ashby_park_r5",
+        "code": "harness",
+        "meeting": {
+          "name": "Ashby Park",
+          "state": null,
+          "country": "NZL"
+        },
+        "race_number": 5,
+        "scheduled_start": "2026-11-19T06:05:00.000Z"
+      },
+      "runner_number": 3,
+      "runner_name": "Fernleaf Dancer",
+      "opening": {
+        "decimal_odds": 6.0,
+        "bookmaker": "tab",
+        "observed_at": "2026-11-18T22:30:00.000Z"
+      },
+      "current": {
+        "median": 4.2,
+        "best": 4.4,
+        "best_bookmaker": "tab",
+        "bookmaker_count": 3,
+        "observed_at": "2026-11-19T04:17:00.000Z"
+      },
+      "change": -0.3,
+      "direction": "firming"
+    },
+    {
+      "race": {
+        "id": "thoroughbred_2026-11-19_AUS_kestrel_downs_r3",
+        "code": "thoroughbred",
+        "meeting": {
+          "name": "Kestrel Downs",
+          "state": "NSW",
+          "country": "AUS"
+        },
+        "race_number": 3,
+        "scheduled_start": "2026-11-19T04:40:00.000Z"
+      },
+      "runner_number": 2,
+      "runner_name": "Midnight Ledger",
+      "opening": {
+        "decimal_odds": 4.4,
+        "bookmaker": "sportsbet",
+        "observed_at": "2026-11-18T22:10:00.000Z"
+      },
+      "current": {
+        "median": 3.25,
+        "best": 3.3,
+        "best_bookmaker": "sportsbet",
+        "bookmaker_count": 3,
+        "observed_at": "2026-11-19T04:21:05.000Z"
+      },
+      "change": -0.2614,
+      "direction": "firming"
+    }
+  ],
+  "meta": {
+    "count": 3,
+    "cursor": null
+  },
+  "links": {
+    "next": null
+  }
+}

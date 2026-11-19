@@ -2,7 +2,27 @@ import { readFileSync } from "node:fs";
 import { CACHE_TTL_MS, REQUEST_TIMEOUT_MS, type Settings } from "./config.js";
 import { TtlCache } from "./cache.js";
 import { MissingKeyError, SockOddsError, errorFromResponse, rateLimitMessage } from "./errors.js";
-import type { Arb, Bookmaker, Envelope, Fetched, League, OddsEvent, SockEvent } from "./types.js";
+import type {
+  Arb,
+  Bookmaker,
+  ClosingEvent,
+  Envelope,
+  EvOpportunity,
+  Fetched,
+  HistoryChange,
+  League,
+  LineMove,
+  OddsEvent,
+  PairOpportunity,
+  Race,
+  RaceOdds,
+  RaceResultData,
+  RacingArb,
+  RacingMover,
+  Result,
+  RunnerForm,
+  SockEvent,
+} from "./types.js";
 import { byBookmaker } from "./odds-shape.js";
 
 export type Params = Record<string, string | number | boolean | undefined>;
@@ -21,6 +41,44 @@ export interface OddsSource {
   arbs(params?: Params): Promise<Fetched<Arb[]>>;
 }
 
+/**
+ * The routes added in 1.3.0: the other derived endpoints, recorded history, results and racing. Kept apart
+ * from OddsSource so a source that serves only the first six tools still type-checks.
+ */
+export interface MoreSource {
+  /** GET /v1/events/{event_id} (free) */
+  event(eventId: string): Promise<Fetched<SockEvent>>;
+  /** GET /v1/opportunities/ev (query: league, markets, min_edge, fair, limit, cursor). Pro; 10 credits a page. */
+  ev(params?: Params): Promise<Fetched<EvOpportunity[]>>;
+  /** GET /v1/opportunities/middles (query: league, markets, min_edge, limit, cursor). Pro; 10 credits a page. */
+  middles(params?: Params): Promise<Fetched<PairOpportunity[]>>;
+  /** GET /v1/opportunities/low-holds (query: league, markets, max_hold, limit, cursor). Pro; 10 credits a page. */
+  lowHolds(params?: Params): Promise<Fetched<PairOpportunity[]>>;
+  /** GET /v1/moves (query: league, window, min_books, steam, markets, limit, cursor). Pro; 10 credits a call. */
+  moves(params: Params): Promise<Fetched<LineMove[]>>;
+  /** GET /v1/events/{event_id}/closing (query: markets, bookmakers, outcome_id, odds). Pro; 10 credits. */
+  closing(eventId: string, params?: Params): Promise<Fetched<ClosingEvent>>;
+  /** GET /v1/odds/history (query: event_id, from, to, markets, bookmakers, limit, cursor). Paid plans. */
+  oddsHistory(params: Params): Promise<Fetched<HistoryChange[]>>;
+  /** GET /v1/results (query: league, event_id, starts_after, starts_before, limit, cursor). 1 credit, 2 with a window. */
+  results(params: Params): Promise<Fetched<Result[]>>;
+  /** GET /v1/racing/races (query: code, country, starts_after, starts_before, limit, cursor). Paid plans; free. */
+  races(params?: Params): Promise<Fetched<Race[]>>;
+  /** GET /v1/racing/races/{race_id}/odds (query: bookmakers). Paid plans; 1 credit per region. */
+  raceOdds(raceId: string, params?: Params): Promise<Fetched<RaceOdds>>;
+  /** GET /v1/racing/arbs (query: code, country, starts_before, commission, min_margin, limit). Pro; 10 credits. */
+  racingArbs(params?: Params): Promise<Fetched<RacingArb[]>>;
+  /** GET /v1/racing/movers (query: code, country, starts_before, min_change, direction, limit). Pro; 10 credits. */
+  racingMovers(params?: Params): Promise<Fetched<RacingMover[]>>;
+  /** GET /v1/racing/races/{race_id}/result. Paid plans; 1 credit. */
+  raceResult(raceId: string): Promise<Fetched<RaceResultData>>;
+  /** GET /v1/racing/races/{race_id}/form (query: limit). Paid plans; 1 credit. */
+  raceForm(raceId: string, params?: Params): Promise<Fetched<RunnerForm[] | { runners?: RunnerForm[] }>>;
+}
+
+/** Every route the tools read. */
+export type FullSource = OddsSource & MoreSource;
+
 type FetchFn = typeof fetch;
 
 function queryString(params: Params): string {
@@ -37,7 +95,7 @@ function queryString(params: Params): string {
  * caches each response for 60 s, and never retries. After a 429 with Retry-After it refuses to call
  * again until that time has passed, because every request counts towards the per-minute limit.
  */
-export class SockOddsClient implements OddsSource {
+export class SockOddsClient implements FullSource {
   private readonly cache: TtlCache<Fetched<unknown>>;
   private blockedUntil = 0;
 
@@ -77,6 +135,62 @@ export class SockOddsClient implements OddsSource {
 
   arbs(params: Params = {}): Promise<Fetched<Arb[]>> {
     return this.get<Arb[]>("/opportunities/arbs", params);
+  }
+
+  event(eventId: string): Promise<Fetched<SockEvent>> {
+    return this.get<SockEvent>(`/events/${encodeURIComponent(eventId)}`, {});
+  }
+
+  ev(params: Params = {}): Promise<Fetched<EvOpportunity[]>> {
+    return this.get<EvOpportunity[]>("/opportunities/ev", params);
+  }
+
+  middles(params: Params = {}): Promise<Fetched<PairOpportunity[]>> {
+    return this.get<PairOpportunity[]>("/opportunities/middles", params);
+  }
+
+  lowHolds(params: Params = {}): Promise<Fetched<PairOpportunity[]>> {
+    return this.get<PairOpportunity[]>("/opportunities/low-holds", params);
+  }
+
+  moves(params: Params): Promise<Fetched<LineMove[]>> {
+    return this.get<LineMove[]>("/moves", params);
+  }
+
+  closing(eventId: string, params: Params = {}): Promise<Fetched<ClosingEvent>> {
+    return this.get<ClosingEvent>(`/events/${encodeURIComponent(eventId)}/closing`, params);
+  }
+
+  oddsHistory(params: Params): Promise<Fetched<HistoryChange[]>> {
+    return this.get<HistoryChange[]>("/odds/history", params);
+  }
+
+  results(params: Params): Promise<Fetched<Result[]>> {
+    return this.get<Result[]>("/results", params);
+  }
+
+  races(params: Params = {}): Promise<Fetched<Race[]>> {
+    return this.get<Race[]>("/racing/races", params);
+  }
+
+  raceOdds(raceId: string, params: Params = {}): Promise<Fetched<RaceOdds>> {
+    return this.get<RaceOdds>(`/racing/races/${encodeURIComponent(raceId)}/odds`, params);
+  }
+
+  racingArbs(params: Params = {}): Promise<Fetched<RacingArb[]>> {
+    return this.get<RacingArb[]>("/racing/arbs", params);
+  }
+
+  racingMovers(params: Params = {}): Promise<Fetched<RacingMover[]>> {
+    return this.get<RacingMover[]>("/racing/movers", params);
+  }
+
+  raceResult(raceId: string): Promise<Fetched<RaceResultData>> {
+    return this.get<RaceResultData>(`/racing/races/${encodeURIComponent(raceId)}/result`, {});
+  }
+
+  raceForm(raceId: string, params: Params = {}): Promise<Fetched<RunnerForm[] | { runners?: RunnerForm[] }>> {
+    return this.get<RunnerForm[] | { runners?: RunnerForm[] }>(`/racing/races/${encodeURIComponent(raceId)}/form`, params);
   }
 
   private names?: Promise<Map<string, string>>;
@@ -136,12 +250,16 @@ function loadFixture<T>(name: string): Envelope<T> {
   return JSON.parse(readFileSync(url, "utf8")) as Envelope<T>;
 }
 
+function demoNotFound(detail: string): SockOddsError {
+  return new SockOddsError(`SockOdds could not find that (HTTP 404, Not found). SockOdds said: "${detail}".`, 404, undefined, "Not found", detail);
+}
+
 function list(value: Params[string]): string[] | undefined {
   return value === undefined || value === "" ? undefined : String(value).split(",").map((s) => s.trim()).filter(Boolean);
 }
 
 /** Serves the invented demo fixtures. Used only when SOCKODDS_DEMO=1 and no key is set. */
-export class DemoSource implements OddsSource {
+export class DemoSource implements FullSource {
   async leagues(params: Params = {}): Promise<Fetched<League[]>> {
     const env = loadFixture<League[]>("demo/leagues-demo.json");
     const sport = params.sport ? String(params.sport) : undefined;
@@ -181,6 +299,138 @@ export class DemoSource implements OddsSource {
     const league = params.league ? String(params.league) : undefined;
     const minEdge = params.min_edge === undefined ? undefined : Number(params.min_edge);
     return this.wrap(env.data.filter((a) => (!league || a.event.league === league) && (minEdge === undefined || a.profit_pct >= minEdge)));
+  }
+
+  async event(eventId: string): Promise<Fetched<SockEvent>> {
+    const odds = loadFixture<OddsEvent[]>("demo/odds-demo.json").data.find((e) => e.id === eventId);
+    if (odds) {
+      const { bookmakers: _omit, ...event } = odds;
+      return this.wrap(event as SockEvent);
+    }
+    const closing = loadFixture<ClosingEvent>("demo/closing-demo.json").data;
+    if (closing.id !== eventId) throw demoNotFound("Event not found.");
+    const { markets: _m, bet: _b, ...event } = closing;
+    return this.wrap(event as SockEvent);
+  }
+
+  async ev(params: Params = {}): Promise<Fetched<EvOpportunity[]>> {
+    const minEdge = params.min_edge === undefined ? undefined : Number(params.min_edge);
+    const methods = list(params.fair);
+    return this.wrap(
+      this.byLeague(loadFixture<EvOpportunity[]>("demo/ev-demo.json").data, params).filter(
+        (e) => (minEdge === undefined || e.ev_pct >= minEdge) && (!methods || methods.includes(e.fair.method)),
+      ),
+    );
+  }
+
+  async middles(params: Params = {}): Promise<Fetched<PairOpportunity[]>> {
+    const minEdge = params.min_edge === undefined ? undefined : Number(params.min_edge);
+    return this.wrap(this.byLeague(loadFixture<PairOpportunity[]>("demo/middles-demo.json").data, params).filter((m) => minEdge === undefined || (m.middle_profit_pct ?? 0) >= minEdge));
+  }
+
+  async lowHolds(params: Params = {}): Promise<Fetched<PairOpportunity[]>> {
+    const maxHold = params.max_hold === undefined ? undefined : Number(params.max_hold);
+    return this.wrap(this.byLeague(loadFixture<PairOpportunity[]>("demo/low-holds-demo.json").data, params).filter((m) => maxHold === undefined || (m.hold_pct ?? 0) <= maxHold));
+  }
+
+  async moves(params: Params): Promise<Fetched<LineMove[]>> {
+    const steamOnly = String(params.steam) === "true";
+    return this.wrap(this.byLeague(loadFixture<LineMove[]>("demo/moves-demo.json").data, params).filter((m) => !steamOnly || m.steam));
+  }
+
+  async closing(eventId: string, params: Params = {}): Promise<Fetched<ClosingEvent>> {
+    const ev = loadFixture<ClosingEvent>("demo/closing-demo.json").data;
+    if (ev.id !== eventId) throw demoNotFound("Event not found.");
+    const markets = list(params.markets);
+    const books = list(params.bookmakers);
+    const shown = {
+      ...ev,
+      markets: ev.markets
+        .filter((m) => !markets || markets.includes(m.key))
+        .map((m) => ({ ...m, outcomes: m.outcomes.map((o) => ({ ...o, prices: o.prices.filter((p) => !books || books.includes(p.bookmaker)) })) })),
+    };
+    const outcome = params.outcome_id ? String(params.outcome_id) : undefined;
+    const odds = params.odds === undefined ? undefined : Number(params.odds);
+    if (outcome && odds !== undefined) {
+      const fair = ev.markets.flatMap((m) => m.outcomes).find((o) => o.id === outcome)?.closing_fair_decimal_odds ?? null;
+      const clv = fair === null ? null : Math.round((odds / fair - 1) * 100_000) / 1000;
+      return this.wrap({ ...shown, bet: { outcome_id: outcome, decimal_odds: odds, closing_fair_decimal_odds: fair, clv_pct: clv, beat_close: clv === null ? null : clv > 0 } });
+    }
+    const { bet: _omit, ...rest } = shown;
+    return this.wrap(rest);
+  }
+
+  async oddsHistory(params: Params): Promise<Fetched<HistoryChange[]>> {
+    const markets = list(params.markets);
+    const books = list(params.bookmakers);
+    const from = Date.parse(String(params.from ?? "")), to = Date.parse(String(params.to ?? ""));
+    const rows = loadFixture<HistoryChange[]>("demo/history-demo.json").data.filter((r) => {
+      const t = Date.parse(r.observed_at);
+      return r.event === params.event_id && (!markets || markets.includes(r.market.key)) && (!books || books.includes(r.bookmaker)) && (Number.isNaN(from) || t >= from) && (Number.isNaN(to) || t <= to);
+    });
+    return this.wrap(rows);
+  }
+
+  async results(params: Params): Promise<Fetched<Result[]>> {
+    const eventId = params.event_id ? String(params.event_id) : undefined;
+    const league = params.league ? String(params.league) : undefined;
+    return this.wrap(loadFixture<Result[]>("demo/results-demo.json").data.filter((r) => (!eventId || r.event.id === eventId) && (!league || r.event.league.key === league)));
+  }
+
+  async races(params: Params = {}): Promise<Fetched<Race[]>> {
+    const codes = list(params.code);
+    const countries = list(params.country);
+    return this.wrap(
+      loadFixture<Race[]>("demo/racing-races-demo.json").data.filter(
+        (r) => (!codes || codes.includes(r.code)) && (!countries || countries.includes(r.meeting.country ?? "")),
+      ),
+    );
+  }
+
+  async raceOdds(raceId: string, params: Params = {}): Promise<Fetched<RaceOdds>> {
+    const odds = loadFixture<RaceOdds>("demo/racing-odds-demo.json").data;
+    if (odds.race.id !== raceId) throw demoNotFound("Race not found.");
+    const books = list(params.bookmakers);
+    return this.wrap({ ...odds, runners: odds.runners.map((r) => ({ ...r, prices: r.prices.filter((p) => !books || books.includes(p.bookmaker)) })) });
+  }
+
+  async racingArbs(params: Params = {}): Promise<Fetched<RacingArb[]>> {
+    const minMargin = params.min_margin === undefined ? 0 : Number(params.min_margin);
+    return this.wrap(this.byRacing(loadFixture<RacingArb[]>("demo/racing-arbs-demo.json").data, params).filter((a) => a.margin >= minMargin));
+  }
+
+  async racingMovers(params: Params = {}): Promise<Fetched<RacingMover[]>> {
+    const minChange = params.min_change === undefined ? 0.1 : Number(params.min_change);
+    const direction = params.direction ? String(params.direction) : "any";
+    return this.wrap(
+      this.byRacing(loadFixture<RacingMover[]>("demo/racing-movers-demo.json").data, params).filter(
+        (m) => Math.abs(m.change) >= minChange && (direction === "any" || m.direction === direction),
+      ),
+    );
+  }
+
+  async raceResult(raceId: string): Promise<Fetched<RaceResultData>> {
+    const result = loadFixture<RaceResultData>("demo/racing-result-demo.json").data;
+    if (result.race.id !== raceId) throw demoNotFound("Race not found.");
+    return this.wrap(result);
+  }
+
+  async raceForm(raceId: string, params: Params = {}): Promise<Fetched<RunnerForm[]>> {
+    const env = loadFixture<RunnerForm[]>("demo/racing-form-demo.json") as Envelope<RunnerForm[]> & { race_id?: string };
+    if (env.race_id !== raceId) throw demoNotFound("Race not found.");
+    const limit = params.limit === undefined ? 5 : Number(params.limit);
+    return this.wrap(env.data.map((r) => ({ ...r, starts: r.starts.slice(0, limit) })));
+  }
+
+  private byLeague<T extends { event: { league: string } }>(rows: T[], params: Params): T[] {
+    const league = params.league ? String(params.league) : undefined;
+    return rows.filter((r) => !league || r.event.league === league);
+  }
+
+  private byRacing<T extends { race: Race }>(rows: T[], params: Params): T[] {
+    const codes = list(params.code);
+    const countries = list(params.country);
+    return rows.filter((r) => (!codes || codes.includes(r.race.code)) && (!countries || countries.includes(r.race.meeting.country ?? "")));
   }
 
   private wrap<T>(data: T): Fetched<T> {

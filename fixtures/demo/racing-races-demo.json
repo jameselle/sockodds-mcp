@@ -1,0 +1,96 @@
+{
+  "_demo": "DEMO DATA in the SockOdds API v1 racing shape (GET /v1/racing/races, https://sockodds.com/docs/racing/). Invented tracks, runners, jockeys, trainers and prices, not real races or current odds.",
+  "data": [
+    {
+      "id": "thoroughbred_2026-11-19_AUS_kestrel_downs_r3",
+      "code": "thoroughbred",
+      "meeting": {
+        "name": "Kestrel Downs",
+        "state": "NSW",
+        "country": "AUS"
+      },
+      "race_number": 3,
+      "name": "Kestrel Downs Maiden Plate",
+      "distance_m": 1200,
+      "scheduled_start": "2026-11-19T04:40:00.000Z",
+      "jumped_at": null,
+      "status": "open",
+      "runner_count": 5,
+      "bookmaker_count": 4,
+      "updated_at": "2026-11-19T03:55:00.000Z",
+      "class_conditions": "MDN",
+      "prize_money": 35000,
+      "track_condition": "GOOD4"
+    },
+    {
+      "id": "greyhound_2026-11-19_AUS_marrow_flat_r2",
+      "code": "greyhound",
+      "meeting": {
+        "name": "Marrow Flat",
+        "state": "VIC",
+        "country": "AUS"
+      },
+      "race_number": 2,
+      "name": "Marrow Flat Stake",
+      "distance_m": 515,
+      "scheduled_start": "2026-11-19T04:52:00.000Z",
+      "jumped_at": null,
+      "status": "open",
+      "runner_count": 8,
+      "bookmaker_count": 4,
+      "updated_at": "2026-11-19T03:55:00.000Z",
+      "class_conditions": "Grade 5",
+      "prize_money": 2400,
+      "track_condition": "GOOD"
+    },
+    {
+      "id": "thoroughbred_2026-11-19_AUS_kestrel_downs_r4",
+      "code": "thoroughbred",
+      "meeting": {
+        "name": "Kestrel Downs",
+        "state": "NSW",
+        "country": "AUS"
+      },
+      "race_number": 4,
+      "name": "Lantern Handicap",
+      "distance_m": 1400,
+      "scheduled_start": "2026-11-19T05:15:00.000Z",
+      "jumped_at": null,
+      "status": "open",
+      "runner_count": 9,
+      "bookmaker_count": 4,
+      "updated_at": "2026-11-19T03:55:00.000Z",
+      "class_conditions": "BM64",
+      "prize_money": 40000,
+      "track_condition": "GOOD4"
+    },
+    {
+      "id": "harness_2026-11-19_NZL_ashby_park_r5",
+      "code": "harness",
+      "meeting": {
+        "name": "Ashby Park",
+        "state": null,
+        "country": "NZL"
+      },
+      "race_number": 5,
+      "name": "Ashby Park Mobile Pace",
+      "distance_m": 2200,
+      "scheduled_start": "2026-11-19T06:05:00.000Z",
+      "jumped_at": null,
+      "status": "open",
+      "runner_count": 10,
+      "bookmaker_count": 3,
+      "updated_at": "2026-11-19T03:55:00.000Z",
+      "class_conditions": "C1",
+      "prize_money": 12000,
+      "track_condition": "FAST"
+    }
+  ],
+  "meta": {
+    "count": 4,
+    "cursor": null
+  },
+  "links": {
+    "next": null
+  }
+}

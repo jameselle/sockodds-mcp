@@ -2,7 +2,7 @@
 
 Everything this server relies on, taken only from the public SockOdds API v1 contract and docs:
 the OpenAPI contract at https://sockodds.com/openapi.json and the guides under https://sockodds.com/docs/ .
-Written for sockodds-mcp 1.1.0 against SockOdds API 1.0.0. If the contract changes, these notes and the
+Written for sockodds-mcp 1.1.0 against SockOdds API 1.0.0, and extended for 1.2.0 and 1.3.0. If the contract changes, these notes and the
 fixtures may need updating.
 
 Every docs page is also served as Markdown: add `.md` to the page path, for example
@@ -145,3 +145,43 @@ From https://sockodds.com/pricing/ and https://sockodds.com/docs/limits/ :
   (`fixtures/docs/`) or invented in the documented shape (`fixtures/demo/`).
 - Whether `/v1/leagues` lists only the leagues in the key's plan.
 - The exact `detail` text of a 429; `fixtures/docs/error-429*.json` are built from the documented titles.
+
+## Routes added in 1.3.0
+
+Sources: https://sockodds.com/openapi.json , https://sockodds.com/docs/opportunities/ ,
+https://sockodds.com/docs/fair-odds/ , https://sockodds.com/docs/history/ , https://sockodds.com/docs/results/ ,
+https://sockodds.com/docs/racing/ and https://sockodds.com/docs/plans-and-limits/ . A 403 on any of them is
+turned into a plain plan message (`planNeeded` in `src/tools.ts`) that quotes the problem body's `detail`.
+
+| Route | Tool | Plan and credits | Query this server sends |
+| --- | --- | --- | --- |
+| `GET /v1/opportunities/ev` | find_ev | Pro; 10 a page | `league`, `markets`, `min_edge`, `fair`, `limit=100`, `cursor` (at most 3 pages) |
+| `GET /v1/opportunities/middles` | find_middles | Pro; 10 a page | `league`, `markets`, `min_edge`, `limit=100`, `cursor` |
+| `GET /v1/opportunities/low-holds` | find_low_holds | Pro; 10 a page | `league`, `markets`, `max_hold`, `limit=100`, `cursor` |
+| `GET /v1/moves` | line_moves | Pro; 10 a call | `league` (required), `window` (5 to 360, steps of 5), `min_books`, `steam`, `limit=100` |
+| `GET /v1/events/{event_id}/closing` | closing_line | Pro; 10 a call | `markets`, `bookmakers`, `outcome_id` with `odds` |
+| `GET /v1/events/{event_id}` | odds_history | free | none (for the start time, which ends the default window) |
+| `GET /v1/odds/history` | odds_history | paid plans; 10 x markets x regions | `event_id`, `from`, `to` (at most 24 h apart), `markets`, `bookmakers`, `limit=1000`, `cursor` (at most 3 pages) |
+| `GET /v1/results` | get_results | 1; 2 with a window | `event_id`, or `league` with `starts_after`, `starts_before`, `limit=25` |
+| `GET /v1/racing/races` | list_races | paid plans; free | `code`, `country` (AUS unless asked), `starts_after` (30 min ago), `starts_before`, `limit=100` |
+| `GET /v1/racing/races/{race_id}/odds` | race_odds | paid plans; 1 per region | `bookmakers` |
+| `GET /v1/racing/arbs` | racing_arbs | Pro; 10 a call | `code`, `country`, `starts_before`, `commission`, `min_margin` (a fraction), `limit=50` |
+| `GET /v1/racing/movers` | racing_movers | Pro; 10 a call | `code`, `country`, `starts_before`, `direction`, `min_change` (a fraction), `limit=50` |
+| `GET /v1/racing/races/{race_id}/result` | race_result | paid plans; 1 | none |
+| `GET /v1/racing/races/{race_id}/form` | race_form | paid plans; 1 | `limit` (starts per runner) |
+
+The `bookmakers` filter takes at most 20 keys and some regions have more bookmakers, so the derived tools
+read `/v1/bookmakers?regions=<region>` (free) and filter on those keys themselves, as `find_arbs` does.
+`line_moves` keeps a move when any bookmaker in the region moved, and lists the others separately, because
+steam and the median lines are computed by SockOdds over every bookmaker. `closing_line` and `odds_history`
+filter the prices shown but leave SockOdds' fair closing price as it is.
+
+The racing arbs, movers, result and form bodies are typed in the contract only as racing data, so the
+fields read are the ones shown in the racing guide. `race_form` accepts `data` as either a list of runners
+or an object with `runners`. Race ids are checked against the contract's pattern before any call.
+
+Not wrapped: `/v1/odds` (many events at once), `/v1/stream/odds`, `/v1/fair-odds` and
+`/v1/events/{event_id}/fair-odds` (fair_odds works the price out itself, at no credit cost),
+`/v1/history/files`, `/v1/events/lookup`, the catalogue lists (`/sports`, `/markets`, `/teams`,
+`/players`), and the racing meetings, card, history, results list, tote, runner form and connections
+routes. `/v1/sgm` is not in the public contract.

@@ -1,0 +1,135 @@
+{
+  "_demo": "DEMO DATA in the SockOdds API v1 positive EV shape (GET /v1/opportunities/ev, https://sockodds.com/docs/opportunities/). Invented teams, players, ids and prices, not real or current odds.",
+  "data": [
+    {
+      "id": "op_e000000000000001",
+      "type": "positive_ev",
+      "event": {
+        "id": "ev_8hcrv21n0v2a",
+        "name": "Harbour City Comets v Riverside Owls",
+        "league": "nba",
+        "scheduled_start": "2026-11-21T00:30:00.000Z"
+      },
+      "market": {
+        "id": "mk_e000000000000001",
+        "key": "player_points_over_under",
+        "name": "Player points over/under",
+        "period": "full",
+        "subject": {
+          "id": "pl_tv0000000001",
+          "name": "Tobias Venn"
+        }
+      },
+      "outcome": {
+        "id": "oc_e000000000000001",
+        "side": "over",
+        "line": 24.5
+      },
+      "bookmaker": "tab",
+      "bookmaker_name": "TAB",
+      "decimal_odds": 2.1,
+      "implied_probability": 0.47619,
+      "fair": {
+        "probability": 0.5,
+        "decimal_odds": 2.0,
+        "method": "sharp_book",
+        "bookmaker": "pinnacle",
+        "devig": null,
+        "books": 1
+      },
+      "ev_pct": 5.0,
+      "kelly_pct": 4.545,
+      "observed_at": "2026-11-19T03:07:52.000Z",
+      "price_age_seconds": 128,
+      "computed_at": "2026-11-19T03:10:00.000Z",
+      "expires_at": "2026-11-19T03:14:00.000Z"
+    },
+    {
+      "id": "op_e000000000000002",
+      "type": "positive_ev",
+      "event": {
+        "id": "ev_8hcrv21n0v2a",
+        "name": "Harbour City Comets v Riverside Owls",
+        "league": "nba",
+        "scheduled_start": "2026-11-21T00:30:00.000Z"
+      },
+      "market": {
+        "id": "mk_e000000000000002",
+        "key": "winner",
+        "name": "Winner",
+        "period": "full",
+        "subject": null
+      },
+      "outcome": {
+        "id": "oc_e000000000000002",
+        "side": "away",
+        "line": null
+      },
+      "bookmaker": "sportsbet",
+      "bookmaker_name": "Sportsbet",
+      "decimal_odds": 2.45,
+      "implied_probability": 0.408163,
+      "fair": {
+        "probability": 0.425,
+        "decimal_odds": 2.353,
+        "method": "consensus",
+        "bookmaker": null,
+        "devig": "proportional",
+        "books": 4
+      },
+      "ev_pct": 4.125,
+      "kelly_pct": 2.845,
+      "observed_at": "2026-11-19T03:08:30.000Z",
+      "price_age_seconds": 90,
+      "computed_at": "2026-11-19T03:10:00.000Z",
+      "expires_at": "2026-11-19T03:14:00.000Z"
+    },
+    {
+      "id": "op_e000000000000003",
+      "type": "positive_ev",
+      "event": {
+        "id": "ev_7pmgr22n0v3b",
+        "name": "Port Mallow Gulls v Inland Rovers",
+        "league": "nfl",
+        "scheduled_start": "2026-11-22T18:00:00.000Z"
+      },
+      "market": {
+        "id": "mk_e000000000000003",
+        "key": "total_points",
+        "name": "Total points",
+        "period": "full",
+        "subject": null
+      },
+      "outcome": {
+        "id": "oc_e000000000000003",
+        "side": "under",
+        "line": 45.5
+      },
+      "bookmaker": "draftkings",
+      "bookmaker_name": "DraftKings",
+      "decimal_odds": 2.0,
+      "implied_probability": 0.5,
+      "fair": {
+        "probability": 0.52,
+        "decimal_odds": 1.923,
+        "method": "exchange",
+        "bookmaker": "betfair_exchange",
+        "devig": null,
+        "books": 1
+      },
+      "ev_pct": 4.0,
+      "kelly_pct": 4.0,
+      "observed_at": "2026-11-19T03:06:10.000Z",
+      "price_age_seconds": 230,
+      "computed_at": "2026-11-19T03:10:00.000Z",
+      "expires_at": "2026-11-19T03:14:00.000Z"
+    }
+  ],
+  "meta": {
+    "count": 3,
+    "cursor": null
+  },
+  "links": {
+    "next": null
+  }
+}

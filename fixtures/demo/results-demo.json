@@ -1,0 +1,288 @@
+{
+  "_demo": "DEMO DATA in the SockOdds API v1 results shape (GET /v1/results, https://sockodds.com/docs/results/). Invented teams, players, ids and prices, not real or current odds.",
+  "data": [
+    {
+      "event": {
+        "id": "ev_hc7rv2k9m4nq",
+        "name": "Harbour City Comets v Riverside Owls",
+        "league": {
+          "key": "nba",
+          "name": "NBA"
+        },
+        "scheduled_start": "2026-11-19T00:30:00.000Z",
+        "status": "final",
+        "participants": [
+          {
+            "role": "home",
+            "identity": {
+              "key": "harbour_city_comets",
+              "name": "Harbour City Comets"
+            }
+          },
+          {
+            "role": "away",
+            "identity": {
+              "key": "riverside_owls",
+              "name": "Riverside Owls"
+            }
+          }
+        ]
+      },
+      "status": "final",
+      "settlement": "complete",
+      "pending_markets": 0,
+      "settled_at": "2026-11-19T03:05:00.000Z",
+      "outcomes": [
+        {
+          "id": "oc_r000000000000001",
+          "name": "Harbour City Comets",
+          "verdict": "won",
+          "market": {
+            "id": "mk_hc7rv2k9m4nqwnmk",
+            "key": "winner",
+            "name": "Winner",
+            "period": "full",
+            "subject": null
+          },
+          "side": "home",
+          "line": null
+        },
+        {
+          "id": "oc_r000000000000002",
+          "name": "Riverside Owls",
+          "verdict": "lost",
+          "market": {
+            "id": "mk_hc7rv2k9m4nqwnmk",
+            "key": "winner",
+            "name": "Winner",
+            "period": "full",
+            "subject": null
+          },
+          "side": "away",
+          "line": null
+        },
+        {
+          "id": "oc_r000000000000003",
+          "name": "Harbour City Comets",
+          "verdict": "won",
+          "market": {
+            "id": "mk_hc7rv2k9m4nqhpmk",
+            "key": "handicap",
+            "name": "Handicap",
+            "period": "full",
+            "subject": null
+          },
+          "side": "home",
+          "line": -3.5
+        },
+        {
+          "id": "oc_r000000000000004",
+          "name": "Riverside Owls",
+          "verdict": "lost",
+          "market": {
+            "id": "mk_hc7rv2k9m4nqhpmk",
+            "key": "handicap",
+            "name": "Handicap",
+            "period": "full",
+            "subject": null
+          },
+          "side": "away",
+          "line": 3.5
+        },
+        {
+          "id": "oc_r000000000000005",
+          "name": "Over",
+          "verdict": "lost",
+          "market": {
+            "id": "mk_hc7rv2k9m4nqttmk",
+            "key": "total_points",
+            "name": "Total points",
+            "period": "full",
+            "subject": null
+          },
+          "side": "over",
+          "line": 216.5
+        },
+        {
+          "id": "oc_r000000000000006",
+          "name": "Under",
+          "verdict": "won",
+          "market": {
+            "id": "mk_hc7rv2k9m4nqttmk",
+            "key": "total_points",
+            "name": "Total points",
+            "period": "full",
+            "subject": null
+          },
+          "side": "under",
+          "line": 216.5
+        },
+        {
+          "id": "oc_r000000000000007",
+          "name": "Over",
+          "verdict": "won",
+          "market": {
+            "id": "mk_hc7rv2k9m4nqptmk",
+            "key": "player_points_over_under",
+            "name": "Player points over/under",
+            "period": "full",
+            "subject": {
+              "id": "pl_tv0000000001",
+              "name": "Tobias Venn"
+            }
+          },
+          "side": "over",
+          "line": 24.5
+        },
+        {
+          "id": "oc_r000000000000008",
+          "name": "Under",
+          "verdict": "lost",
+          "market": {
+            "id": "mk_hc7rv2k9m4nqptmk",
+            "key": "player_points_over_under",
+            "name": "Player points over/under",
+            "period": "full",
+            "subject": {
+              "id": "pl_tv0000000001",
+              "name": "Tobias Venn"
+            }
+          },
+          "side": "under",
+          "line": 24.5
+        }
+      ],
+      "box_score": {
+        "revision": 1,
+        "observed_at": "2026-11-19T03:00:00.000Z",
+        "periods": [
+          {
+            "period": "quarter_1",
+            "completed": true,
+            "home": 28,
+            "away": 26
+          },
+          {
+            "period": "quarter_2",
+            "completed": true,
+            "home": 30,
+            "away": 24
+          },
+          {
+            "period": "quarter_3",
+            "completed": true,
+            "home": 25,
+            "away": 27
+          },
+          {
+            "period": "quarter_4",
+            "completed": true,
+            "home": 29,
+            "away": 27
+          }
+        ],
+        "players": [],
+        "unmatched": null,
+        "withheld_players": []
+      }
+    },
+    {
+      "event": {
+        "id": "ev_sh4cm2n9k8q1",
+        "name": "Saltmarsh Herons v Copperfield Miners",
+        "league": {
+          "key": "nfl",
+          "name": "NFL"
+        },
+        "scheduled_start": "2026-11-16T18:00:00.000Z",
+        "status": "final",
+        "participants": [
+          {
+            "role": "home",
+            "identity": {
+              "key": "saltmarsh_herons",
+              "name": "Saltmarsh Herons"
+            }
+          },
+          {
+            "role": "away",
+            "identity": {
+              "key": "copperfield_miners",
+              "name": "Copperfield Miners"
+            }
+          }
+        ]
+      },
+      "status": "final",
+      "settlement": "partial",
+      "pending_markets": 1,
+      "settled_at": "2026-11-17T02:00:00.000Z",
+      "outcomes": [
+        {
+          "id": "oc_r000000000000011",
+          "name": "Saltmarsh Herons",
+          "verdict": "lost",
+          "market": {
+            "id": "mk_sh4cm2n9k8q1wnmk",
+            "key": "winner",
+            "name": "Winner",
+            "period": "full",
+            "subject": null
+          },
+          "side": "home",
+          "line": null
+        },
+        {
+          "id": "oc_r000000000000012",
+          "name": "Copperfield Miners",
+          "verdict": "won",
+          "market": {
+            "id": "mk_sh4cm2n9k8q1wnmk",
+            "key": "winner",
+            "name": "Winner",
+            "period": "full",
+            "subject": null
+          },
+          "side": "away",
+          "line": null
+        },
+        {
+          "id": "oc_r000000000000013",
+          "name": "Saltmarsh Herons",
+          "verdict": "lost",
+          "market": {
+            "id": "mk_sh4cm2n9k8q1hpmk",
+            "key": "handicap",
+            "name": "Handicap",
+            "period": "full",
+            "subject": null
+          },
+          "side": "home",
+          "line": -2.5
+        },
+        {
+          "id": "oc_r000000000000014",
+          "name": "Copperfield Miners",
+          "verdict": "won",
+          "market": {
+            "id": "mk_sh4cm2n9k8q1hpmk",
+            "key": "handicap",
+            "name": "Handicap",
+            "period": "full",
+            "subject": null
+          },
+          "side": "away",
+          "line": 2.5
+        }
+      ],
+      "box_score": null
+    }
+  ],
+  "meta": {
+    "count": 2,
+    "cursor": null
+  },
+  "links": {
+    "next": null
+  }
+}

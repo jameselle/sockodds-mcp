@@ -1,0 +1,222 @@
+{
+  "_demo": "DEMO DATA in the SockOdds API v1 race odds shape (GET /v1/racing/races/{race_id}/odds, https://sockodds.com/docs/racing/). Invented tracks, runners, jockeys, trainers and prices, not real races or current odds.",
+  "data": {
+    "race": {
+      "id": "thoroughbred_2026-11-19_AUS_kestrel_downs_r3",
+      "code": "thoroughbred",
+      "meeting": {
+        "name": "Kestrel Downs",
+        "state": "NSW",
+        "country": "AUS"
+      },
+      "race_number": 3,
+      "name": "Kestrel Downs Maiden Plate",
+      "distance_m": 1200,
+      "scheduled_start": "2026-11-19T04:40:00.000Z",
+      "jumped_at": null,
+      "status": "open",
+      "runner_count": 5,
+      "bookmaker_count": 4,
+      "updated_at": "2026-11-19T03:55:00.000Z",
+      "class_conditions": "MDN",
+      "prize_money": 35000,
+      "track_condition": "GOOD4"
+    },
+    "runners": [
+      {
+        "number": 1,
+        "name": "Copper Lantern",
+        "barrier": 4,
+        "scratched": false,
+        "prices": [
+          {
+            "bookmaker": "tab",
+            "bookmaker_name": "TAB",
+            "win": 4.8,
+            "place": 1.9,
+            "observed_at": "2026-11-19T04:20:10.000Z",
+            "available": true
+          },
+          {
+            "bookmaker": "sportsbet",
+            "bookmaker_name": "Sportsbet",
+            "win": 4.6,
+            "place": 1.85,
+            "observed_at": "2026-11-19T04:21:05.000Z",
+            "available": true
+          },
+          {
+            "bookmaker": "pointsbet",
+            "bookmaker_name": "PointsBet",
+            "win": 4.5,
+            "place": 1.8,
+            "observed_at": "2026-11-19T04:20:40.000Z",
+            "available": true
+          },
+          {
+            "bookmaker": "betfair_exchange",
+            "bookmaker_name": "Betfair Exchange",
+            "win": 5.0,
+            "place": 1.95,
+            "win_lay": 5.2,
+            "place_lay": 2.1,
+            "win_back_size": 120.5,
+            "win_lay_size": 64.0,
+            "win_matched": 2310.4,
+            "observed_at": "2026-11-19T04:21:30.000Z",
+            "available": true
+          }
+        ]
+      },
+      {
+        "number": 2,
+        "name": "Midnight Ledger",
+        "barrier": 1,
+        "scratched": false,
+        "prices": [
+          {
+            "bookmaker": "tab",
+            "bookmaker_name": "TAB",
+            "win": 3.2,
+            "place": 1.45,
+            "observed_at": "2026-11-19T04:20:10.000Z",
+            "available": true
+          },
+          {
+            "bookmaker": "sportsbet",
+            "bookmaker_name": "Sportsbet",
+            "win": 3.3,
+            "place": 1.5,
+            "observed_at": "2026-11-19T04:21:05.000Z",
+            "available": true
+          },
+          {
+            "bookmaker": "pointsbet",
+            "bookmaker_name": "PointsBet",
+            "win": 3.25,
+            "place": 1.48,
+            "observed_at": "2026-11-19T04:20:40.000Z",
+            "available": true
+          },
+          {
+            "bookmaker": "betfair_exchange",
+            "bookmaker_name": "Betfair Exchange",
+            "win": 3.35,
+            "place": 1.52,
+            "win_lay": 3.45,
+            "place_lay": 1.6,
+            "win_back_size": 410.0,
+            "win_lay_size": 220.0,
+            "win_matched": 5120.0,
+            "observed_at": "2026-11-19T04:21:30.000Z",
+            "available": true
+          }
+        ]
+      },
+      {
+        "number": 3,
+        "name": "Salt Road",
+        "barrier": 6,
+        "scratched": false,
+        "prices": [
+          {
+            "bookmaker": "tab",
+            "bookmaker_name": "TAB",
+            "win": 6.5,
+            "place": 2.3,
+            "observed_at": "2026-11-19T04:20:10.000Z",
+            "available": true
+          },
+          {
+            "bookmaker": "sportsbet",
+            "bookmaker_name": "Sportsbet",
+            "win": 6.0,
+            "place": 2.2,
+            "observed_at": "2026-11-19T04:21:05.000Z",
+            "available": true
+          },
+          {
+            "bookmaker": "pointsbet",
+            "bookmaker_name": "PointsBet",
+            "win": 7.0,
+            "place": 2.4,
+            "observed_at": "2026-11-19T04:05:00.000Z",
+            "available": false
+          },
+          {
+            "bookmaker": "betfair_exchange",
+            "bookmaker_name": "Betfair Exchange",
+            "win": 6.8,
+            "place": 2.35,
+            "win_lay": 7.2,
+            "place_lay": 2.6,
+            "win_back_size": 55.0,
+            "win_lay_size": 38.0,
+            "win_matched": 980.0,
+            "observed_at": "2026-11-19T04:21:30.000Z",
+            "available": true
+          }
+        ]
+      },
+      {
+        "number": 4,
+        "name": "Paper Comet",
+        "barrier": 3,
+        "scratched": true,
+        "prices": []
+      },
+      {
+        "number": 5,
+        "name": "Quiet Harbour",
+        "barrier": 2,
+        "scratched": false,
+        "prices": [
+          {
+            "bookmaker": "tab",
+            "bookmaker_name": "TAB",
+            "win": 9.0,
+            "place": 2.8,
+            "observed_at": "2026-11-19T04:20:10.000Z",
+            "available": true
+          },
+          {
+            "bookmaker": "sportsbet",
+            "bookmaker_name": "Sportsbet",
+            "win": 8.5,
+            "place": 2.7,
+            "observed_at": "2026-11-19T04:21:05.000Z",
+            "available": true
+          },
+          {
+            "bookmaker": "pointsbet",
+            "bookmaker_name": "PointsBet",
+            "win": 9.5,
+            "place": 2.9,
+            "observed_at": "2026-11-19T04:20:40.000Z",
+            "available": true
+          },
+          {
+            "bookmaker": "betfair_exchange",
+            "bookmaker_name": "Betfair Exchange",
+            "win": 10.0,
+            "place": 3.0,
+            "win_lay": 11.0,
+            "place_lay": 3.4,
+            "win_back_size": 30.0,
+            "win_lay_size": 45.0,
+            "win_matched": 640.0,
+            "observed_at": "2026-11-19T04:21:30.000Z",
+            "available": true
+          }
+        ]
+      }
+    ]
+  },
+  "meta": {
+    "count": 1,
+    "cursor": null
+  },
+  "links": {
+    "next": null
+  }
+}

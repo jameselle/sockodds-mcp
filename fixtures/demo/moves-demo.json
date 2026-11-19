@@ -1,0 +1,141 @@
+{
+  "_demo": "DEMO DATA in the SockOdds API v1 line moves shape (GET /v1/moves, https://sockodds.com/docs/fair-odds/). Invented teams, players, ids and prices, not real or current odds.",
+  "data": [
+    {
+      "id": "mv_a000000000000001",
+      "event": {
+        "id": "ev_8hcrv21n0v2a",
+        "name": "Harbour City Comets v Riverside Owls",
+        "league": "nba",
+        "scheduled_start": "2026-11-21T00:30:00.000Z"
+      },
+      "market": {
+        "key": "handicap",
+        "name": "Handicap",
+        "period": "full",
+        "subject": null
+      },
+      "direction": "down",
+      "steam": true,
+      "sharp": true,
+      "books_moved": 4,
+      "books_up": 0,
+      "books_down": 4,
+      "from_line": -4.5,
+      "to_line": -6.5,
+      "first_move_at": "2026-11-19T02:21:00.000Z",
+      "last_move_at": "2026-11-19T02:41:00.000Z",
+      "moves": [
+        {
+          "bookmaker": "pinnacle",
+          "from_line": -4.5,
+          "to_line": -6.5,
+          "observed_at": "2026-11-19T02:21:00.000Z"
+        },
+        {
+          "bookmaker": "sportsbet",
+          "from_line": -4.5,
+          "to_line": -6.5,
+          "observed_at": "2026-11-19T02:26:00.000Z"
+        },
+        {
+          "bookmaker": "tab",
+          "from_line": -4.5,
+          "to_line": -6,
+          "observed_at": "2026-11-19T02:36:00.000Z"
+        },
+        {
+          "bookmaker": "neds",
+          "from_line": -5,
+          "to_line": -6.5,
+          "observed_at": "2026-11-19T02:41:00.000Z"
+        }
+      ]
+    },
+    {
+      "id": "mv_a000000000000002",
+      "event": {
+        "id": "ev_7pmgr22n0v3b",
+        "name": "Port Mallow Gulls v Inland Rovers",
+        "league": "nfl",
+        "scheduled_start": "2026-11-22T18:00:00.000Z"
+      },
+      "market": {
+        "key": "total_points",
+        "name": "Total points",
+        "period": "full",
+        "subject": null
+      },
+      "direction": "up",
+      "steam": false,
+      "sharp": true,
+      "books_moved": 2,
+      "books_up": 2,
+      "books_down": 0,
+      "from_line": 44.5,
+      "to_line": 45.5,
+      "first_move_at": "2026-11-19T02:30:00.000Z",
+      "last_move_at": "2026-11-19T02:50:00.000Z",
+      "moves": [
+        {
+          "bookmaker": "pinnacle",
+          "from_line": 44.5,
+          "to_line": 45.5,
+          "observed_at": "2026-11-19T02:30:00.000Z"
+        },
+        {
+          "bookmaker": "draftkings",
+          "from_line": 44.5,
+          "to_line": 45.5,
+          "observed_at": "2026-11-19T02:50:00.000Z"
+        }
+      ]
+    },
+    {
+      "id": "mv_a000000000000003",
+      "event": {
+        "id": "ev_8hcrv21n0v2a",
+        "name": "Harbour City Comets v Riverside Owls",
+        "league": "nba",
+        "scheduled_start": "2026-11-21T00:30:00.000Z"
+      },
+      "market": {
+        "key": "total_points",
+        "name": "Total points",
+        "period": "full",
+        "subject": null
+      },
+      "direction": "up",
+      "steam": false,
+      "sharp": false,
+      "books_moved": 2,
+      "books_up": 2,
+      "books_down": 0,
+      "from_line": 218.5,
+      "to_line": 220.5,
+      "first_move_at": "2026-11-19T02:45:00.000Z",
+      "last_move_at": "2026-11-19T02:55:00.000Z",
+      "moves": [
+        {
+          "bookmaker": "pointsbet",
+          "from_line": 218.5,
+          "to_line": 220.5,
+          "observed_at": "2026-11-19T02:45:00.000Z"
+        },
+        {
+          "bookmaker": "sportsbet",
+          "from_line": 219.5,
+          "to_line": 220.5,
+          "observed_at": "2026-11-19T02:55:00.000Z"
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "count": 3,
+    "cursor": null
+  },
+  "links": {
+    "next": null
+  }
+}

@@ -1,0 +1,186 @@
+{
+  "_demo": "DEMO DATA in the SockOdds API v1 race result shape (GET /v1/racing/races/{race_id}/result, https://sockodds.com/docs/racing/). Invented tracks, runners, jockeys, trainers and prices, not real races or current odds.",
+  "data": {
+    "race": {
+      "id": "thoroughbred_2026-11-19_AUS_kestrel_downs_r1",
+      "code": "thoroughbred",
+      "meeting": {
+        "name": "Kestrel Downs",
+        "state": "NSW",
+        "country": "AUS"
+      },
+      "race_number": 1,
+      "name": "Kestrel Downs Class 1",
+      "distance_m": 1000,
+      "scheduled_start": "2026-11-19T03:20:00.000Z",
+      "status": "resulted"
+    },
+    "result": {
+      "placings": [
+        {
+          "runner_number": 3,
+          "position": 1,
+          "name": "Ironbark Belle",
+          "fixed_win": 3.8,
+          "fixed_place": 1.55,
+          "tote_win": 4.1,
+          "tote_place": 1.6,
+          "bsp_win": 4.25,
+          "bsp_place": 1.62
+        },
+        {
+          "runner_number": 7,
+          "position": 2,
+          "name": "Coastal Drift",
+          "fixed_win": 5.5,
+          "fixed_place": 1.95,
+          "tote_win": 5.9,
+          "tote_place": 2.05,
+          "bsp_win": 6.1,
+          "bsp_place": 2.08
+        },
+        {
+          "runner_number": 1,
+          "position": 3,
+          "name": "Morning Tally",
+          "fixed_win": 2.6,
+          "fixed_place": 1.3,
+          "tote_win": 2.7,
+          "tote_place": 1.35,
+          "bsp_win": 2.72,
+          "bsp_place": 1.36
+        },
+        {
+          "runner_number": 5,
+          "position": 4,
+          "name": "Velvet Gully",
+          "fixed_win": 12.0,
+          "fixed_place": 3.2,
+          "tote_win": 13.4,
+          "tote_place": 3.5,
+          "bsp_win": null,
+          "bsp_place": null
+        }
+      ],
+      "scratched": [
+        {
+          "runner_number": 9,
+          "win_deduction": 0.08,
+          "place_deduction": 0.03
+        }
+      ],
+      "pools": [
+        {
+          "pool": "win",
+          "total": 18450.2,
+          "status": "closed"
+        },
+        {
+          "pool": "place",
+          "total": 9120.75,
+          "status": "closed"
+        },
+        {
+          "pool": "quinella",
+          "total": 6230.4,
+          "status": "closed"
+        },
+        {
+          "pool": "trifecta",
+          "total": 12890.0,
+          "status": "closed"
+        }
+      ],
+      "dividends": [
+        {
+          "pool": "win",
+          "selections": [
+            3
+          ],
+          "dividend": 4.1
+        },
+        {
+          "pool": "place",
+          "selections": [
+            3
+          ],
+          "dividend": 1.6
+        },
+        {
+          "pool": "place",
+          "selections": [
+            7
+          ],
+          "dividend": 2.05
+        },
+        {
+          "pool": "place",
+          "selections": [
+            1
+          ],
+          "dividend": 1.35
+        },
+        {
+          "pool": "quinella",
+          "selections": [
+            3,
+            7
+          ],
+          "dividend": 11.8
+        },
+        {
+          "pool": "exacta",
+          "selections": [
+            3,
+            7
+          ],
+          "dividend": 21.4
+        },
+        {
+          "pool": "trifecta",
+          "selections": [
+            3,
+            7,
+            1
+          ],
+          "dividend": 38.9
+        },
+        {
+          "pool": "first_four",
+          "selections": [
+            3,
+            7,
+            1,
+            5
+          ],
+          "dividend": 412.6
+        }
+      ],
+      "recorded_at": "2026-11-19T03:31:00.000Z"
+    },
+    "betfair_sp": [
+      {
+        "runner_number": 3,
+        "market": "win",
+        "bsp": 4.25
+      },
+      {
+        "runner_number": 7,
+        "market": "win",
+        "bsp": 6.1
+      },
+      {
+        "runner_number": 1,
+        "market": "win",
+        "bsp": 2.72
+      }
+    ]
+  },
+  "meta": {
+    "count": 1,
+    "cursor": null
+  },
+  "links": {
+    "next": null
+  }
+}
